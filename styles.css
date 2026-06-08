@@ -833,6 +833,9 @@ p {
 }
 
 .footer-description {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
   max-width: 32rem;
 }
 
