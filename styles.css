@@ -857,8 +857,17 @@ p {
 }
 
 .modal-phone .form-modal-icon {
+  color: var(--color-primary);
   font-size: var(--text-3xl);
   line-height: 1.1;
+}
+
+.modal-success .form-modal-icon {
+  color: var(--color-success);
+}
+
+.modal-error .form-modal-icon {
+  color: var(--color-error);
 }
 
 .legal-page {
@@ -950,18 +959,26 @@ p {
 .bg-dark { background: var(--color-bg-dark); }
 .text-white { color: var(--color-white); }
 .text-light { color: var(--color-text-light); }
+.text-error { color: var(--color-error); }
+.text-success { color: var(--color-success); }
 .text-center { text-align: center; }
 .font-bold { font-weight: 800; }
 .fixed { position: fixed; }
 .top-0 { top: 0; }
 .w-full { width: 100%; }
 .hidden { display: none !important; }
+.overflow-hidden { overflow: hidden; }
 .grid { display: grid; }
 .flex { display: flex; }
 .flex-wrap { flex-wrap: wrap; }
 .justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
 .gap-4 { gap: var(--space-4); }
+.mx-auto { margin-inline: auto; }
+.mt-4 { margin-top: var(--space-4); }
 .mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
 .mb-8 { margin-bottom: var(--space-8); }
 .text-xs { font-size: var(--text-xs); }
 .text-sm { font-size: var(--text-sm); }

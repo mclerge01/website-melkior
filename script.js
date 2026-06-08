@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navMenu.classList.remove("active");
       if (nav) nav.classList.remove("menu-open");
       hamburger.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
+      body.classList.remove("overflow-hidden");
     }
 
     function openMenu() {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navMenu.classList.add("active");
       if (nav) nav.classList.add("menu-open");
       hamburger.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
+      body.classList.add("overflow-hidden");
     }
 
     hamburger.addEventListener("click", () => {
@@ -119,18 +119,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showModal(success, message, options = {}) {
     if (!modal || !modalIcon || !modalMessage) return;
+    modal.classList.remove("modal-error", "modal-phone", "modal-success");
     modal.classList.toggle("modal-phone", options.variant === "phone");
+    modal.classList.add(success ? "modal-success" : "modal-error");
     modalIcon.textContent = options.title || getModalTitle(success);
-    modalIcon.style.color = options.titleColor || (success ? "var(--color-success)" : "var(--color-error)");
     modalMessage.textContent = message;
     modal.classList.remove("hidden");
-    document.body.style.overflow = "hidden";
+    body.classList.add("overflow-hidden");
   }
 
   function closeModal() {
     if (!modal) return;
     modal.classList.add("hidden");
-    document.body.style.overflow = "";
+    body.classList.remove("overflow-hidden");
   }
 
   if (modalClose) modalClose.addEventListener("click", closeModal);
@@ -164,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showModal(true, message, {
         title: phone,
-        titleColor: "var(--color-primary)",
         variant: "phone",
       });
     });

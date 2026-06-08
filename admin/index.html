@@ -11,10 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <style>
-    body {
-      background: var(--color-bg-light);
-    }
-
     .admin-login {
       min-height: 100svh;
       display: grid;
@@ -92,7 +88,7 @@
       margin-bottom: var(--space-5);
     }
 
-    .admin-field > label,
+    .admin-label,
     .admin-legend {
       color: var(--color-text);
       font-size: var(--text-sm);
@@ -173,14 +169,14 @@
     }
   </style>
 </head>
-<body>
+<body class="bg-light">
   <section id="login-screen" class="admin-login">
     <div class="admin-login-card">
-      <span class="logo-mark" style="margin:0 auto var(--space-5);">MC</span>
+      <span class="logo-mark mx-auto mb-5">MC</span>
       <h1 class="text-3xl mb-4">Administration</h1>
       <p class="text-light mb-8">Connectez-vous avec GitHub. Seuls les contributeurs du dépôt peuvent accéder à l'éditeur.</p>
       <a class="btn btn-primary w-full" href="/api/auth/github">Se connecter avec GitHub</a>
-      <p id="login-error" class="admin-status" style="margin-top: var(--space-4); color: var(--color-error);"></p>
+      <p id="login-error" class="admin-status mt-4 text-error"></p>
     </div>
   </section>
 
@@ -201,7 +197,7 @@
     <main class="admin-main">
       <nav class="admin-tabs" id="admin-tabs" aria-label="Sections admin"></nav>
       <section class="admin-card">
-        <div class="admin-actions" style="justify-content: space-between; margin-bottom: var(--space-6);">
+        <div class="admin-actions justify-between mb-6">
           <div>
             <h2 class="text-2xl" id="section-title">Contenu</h2>
             <p class="admin-status" id="translation-status"></p>

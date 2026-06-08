@@ -59,7 +59,8 @@ function loginErrorMessage(error) {
 
 function setStatus(message, tone = "neutral") {
   saveStatus.textContent = message;
-  saveStatus.style.color = tone === "error" ? "var(--color-error)" : tone === "success" ? "var(--color-success)" : "var(--color-text-light)";
+  saveStatus.classList.remove("text-error", "text-light", "text-success");
+  saveStatus.classList.add(tone === "error" ? "text-error" : tone === "success" ? "text-success" : "text-light");
 }
 
 function apiHeaders(includeCsrf = false) {
@@ -201,8 +202,7 @@ function renderArrayEditor(path, value, label) {
   wrapper.className = "admin-fieldset";
 
   const header = document.createElement("div");
-  header.className = "admin-actions";
-  header.style.justifyContent = "space-between";
+  header.className = "admin-actions justify-between";
   const legend = document.createElement("p");
   legend.className = "admin-legend";
   legend.textContent = `${label} (${value.length})`;
@@ -223,9 +223,8 @@ function renderArrayEditor(path, value, label) {
     itemBox.className = "admin-array-item";
     const remove = document.createElement("button");
     remove.type = "button";
-    remove.className = "btn btn-outline";
+    remove.className = "btn btn-outline mb-4";
     remove.textContent = "Retirer";
-    remove.style.marginBottom = "var(--space-4)";
     remove.addEventListener("click", () => {
       value.splice(index, 1);
       setPath(path, value);
@@ -244,6 +243,7 @@ function renderScalarEditor(path, value, label) {
   group.className = "admin-field";
 
   const labelEl = document.createElement("label");
+  labelEl.className = "admin-label";
   labelEl.textContent = label;
   group.appendChild(labelEl);
 
