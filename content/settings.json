@@ -93,6 +93,24 @@
         "eyebrow": "Calculateur",
         "heading": "Calculez vos paiements hypothécaires",
         "description": "Obtenez une estimation rapide de votre mensualité. Les résultats sont indicatifs et ne remplacent pas une analyse personnalisée.",
+        "rate_note_title": "Taux du jour",
+        "rate_note": "Multi-Prêts publie des taux indicatifs, mais le taux applicable dépend du montant emprunté, de votre profil, des garanties et des conditions du prêteur.",
+        "rate_link_label": "Voir les taux Multi-Prêts",
+        "rate_link_url": "https://www.multi-prets.com/fr/courtier-hypothecaire-melkior-clerge/options-hypothecaires/nos-taux/",
+        "details": [
+          {
+            "title": "À ajuster",
+            "description": "Modifiez le taux, l'amortissement et la fréquence pour comparer différents scénarios de paiement."
+          },
+          {
+            "title": "À prévoir",
+            "description": "Le paiement ne tient pas compte des taxes, assurances, frais de condo ou frais de démarrage."
+          },
+          {
+            "title": "À valider",
+            "description": "Melkior peut confirmer le taux, les conditions et la stratégie qui conviennent à votre dossier."
+          }
+        ],
         "amount_label": "Montant du prêt",
         "rate_label": "Taux d'intérêt annuel",
         "amortization_label": "Amortissement",
@@ -340,6 +358,24 @@
         "eyebrow": "Calculator",
         "heading": "Calculate your mortgage payments",
         "description": "Get a quick estimate of your payment. Results are indicative and do not replace a personalized review.",
+        "rate_note_title": "Today's rates",
+        "rate_note": "Multi-Prêts publishes indicative rates, but the rate that applies depends on the amount borrowed, your profile, guarantees, and lender conditions.",
+        "rate_link_label": "View Multi-Prêts rates",
+        "rate_link_url": "https://www.multi-prets.com/en/mortgage-broker-melkior-clerge/mortgage-options/our-rates/",
+        "details": [
+          {
+            "title": "Adjust",
+            "description": "Change the rate, amortization, and frequency to compare different payment scenarios."
+          },
+          {
+            "title": "Plan for",
+            "description": "The payment does not include taxes, insurance, condo fees, or closing costs."
+          },
+          {
+            "title": "Validate",
+            "description": "Melkior can confirm the rate, conditions, and strategy that fit your file."
+          }
+        ],
         "amount_label": "Loan amount",
         "rate_label": "Annual interest rate",
         "amortization_label": "Amortization",

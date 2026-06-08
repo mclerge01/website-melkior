@@ -494,6 +494,51 @@ p {
   padding: var(--space-6);
 }
 
+.calculator-info {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.calculator-rate-note,
+.calculator-detail {
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-4);
+  background: var(--color-bg-light);
+}
+
+.calculator-rate-note {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.calculator-rate-note strong,
+.calculator-detail strong {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.calculator-rate-note p,
+.calculator-detail p {
+  color: var(--color-text-light);
+}
+
+.calculator-rate-note a {
+  width: fit-content;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.calculator-rate-note a:hover {
+  color: var(--color-secondary);
+}
+
+.calculator-detail-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
 .calculator-result {
   display: flex;
   align-items: center;

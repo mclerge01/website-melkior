@@ -107,6 +107,21 @@
           <p class="eyebrow">{{calculator.eyebrow}}</p>
           <h2 class="section-title">{{calculator.heading}}</h2>
           <p class="section-lead">{{calculator.description}}</p>
+          <div class="calculator-info">
+            <div class="calculator-rate-note">
+              <strong>{{calculator.rate_note_title}}</strong>
+              <p>{{calculator.rate_note}}</p>
+              <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
+            </div>
+            <div class="calculator-detail-list">
+              {{#each calculator.details}}
+              <div class="calculator-detail">
+                <strong>{{title}}</strong>
+                <p>{{description}}</p>
+              </div>
+              {{/each}}
+            </div>
+          </div>
         </div>
         <form class="calculator-card" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
           <label class="form-group">
