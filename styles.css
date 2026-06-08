@@ -480,14 +480,15 @@ p {
 
 .stat-item {
   display: grid;
+  width: 100%;
   justify-items: center;
   padding: var(--space-6) var(--space-4);
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   text-align: center;
 }
 
-.stat-item:last-child {
-  border-right: 0;
+.stat-item:nth-last-child(-n + 2) {
+  border-bottom: 0;
 }
 
 .stat-item strong {
@@ -1182,6 +1183,15 @@ p {
 
   .stats-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .stat-item {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 0;
+  }
+
+  .stat-item:last-child {
+    border-right: 0;
   }
 
   .service-grid,
