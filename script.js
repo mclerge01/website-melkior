@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (calculator) {
     const result = calculator.querySelector("[data-payment-result]");
     const amountInput = calculator.querySelector("[data-money-input]");
+    const percentInput = calculator.querySelector("[data-percent-input]");
     const formatter = new Intl.NumberFormat(body.dataset.locale || "fr-CA", {
       style: "currency",
       currency: "CAD",
@@ -103,9 +104,25 @@ document.addEventListener("DOMContentLoaded", () => {
       input.value = amount ? String(amount) : "";
     }
 
+    function parsePercentInput(value) {
+      return Number(String(value || "").replace(",", ".").replace(/[^\d.]/g, "")) || 0;
+    }
+
+    function formatPercentInput(input) {
+      if (!input) return;
+      const value = parsePercentInput(input.value);
+      input.value = value ? `${value.toFixed(2).replace(/\.?0+$/, "")}%` : "";
+    }
+
+    function showRawPercentInput(input) {
+      if (!input) return;
+      const value = parsePercentInput(input.value);
+      input.value = value ? String(value) : "";
+    }
+
     function calculatePayment() {
       const amount = parseMoneyInput(calculator.elements.amount.value);
-      const annualRate = Number(calculator.elements.rate.value) || 0;
+      const annualRate = parsePercentInput(calculator.elements.rate.value);
       const years = Number(calculator.elements.years.value) || 0;
       const frequency = calculator.elements.frequency.value;
       const months = Math.max(years * 12, 1);
@@ -126,6 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
       formatMoneyInput(amountInput);
       amountInput.addEventListener("focus", () => showRawMoneyInput(amountInput));
       amountInput.addEventListener("blur", () => formatMoneyInput(amountInput));
+    }
+    if (percentInput) {
+      formatPercentInput(percentInput);
+      percentInput.addEventListener("focus", () => showRawPercentInput(percentInput));
+      percentInput.addEventListener("blur", () => formatPercentInput(percentInput));
     }
     calculator.querySelectorAll("input, select").forEach((input) => {
       input.addEventListener("input", calculatePayment);
