@@ -760,6 +760,12 @@ p {
   gap: var(--space-4);
 }
 
+.footer-nav {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
 .footer-legal {
   align-content: start;
 }
