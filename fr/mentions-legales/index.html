@@ -24,16 +24,27 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col" data-locale="fr-CA" data-locale-slug="fr">
-  <header class="site-nav scrolled fixed top-0 w-full" id="site-nav">
+  <header class="site-nav nav-light scrolled fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
-      <a class="site-logo" href="/fr/">
+      <a class="site-logo" href="/fr/" aria-label="Melkior Clergé">
         <span class="logo-mark">MC</span>
-        <span><strong>Melkior Clergé</strong><small>Courtier hypothécaire | Multi-Prêts</small></span>
+        <span>
+          <strong>Melkior Clergé</strong>
+          <small>Courtier hypothécaire | Multi-Prêts</small>
+        </span>
       </a>
-      <nav class="nav-menu legal-nav">
+      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" aria-label="Navigation">
+        <a class="nav-link" href="/fr/#calculator">Calculateur</a>
         <a class="nav-link" href="/fr/#services">Services</a>
-        <a class="nav-link" href="/fr/#contact">Contact</a>
+        <a class="nav-link" href="/fr/#guide">Guide</a>
+        <a class="nav-link" href="/fr/#about">À propos</a>
+        
+        
         <a class="language-link" href="/en/legal-notice/" data-locale-target="en-CA">EN</a>
+        <a class="btn btn-primary nav-cta" href="/fr/#contact">Me contacter</a>
       </nav>
     </div>
   </header>

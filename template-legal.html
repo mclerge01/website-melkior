@@ -24,16 +24,27 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col" data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
-  <header class="site-nav scrolled fixed top-0 w-full" id="site-nav">
+  <header class="site-nav nav-light scrolled fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
-      <a class="site-logo" href="/{{locale_slug}}/">
+      <a class="site-logo" href="/{{locale_slug}}/" aria-label="{{header.site_name}}">
         <span class="logo-mark">MC</span>
-        <span><strong>{{header.site_name}}</strong><small>{{header.credential}}</small></span>
+        <span>
+          <strong>{{header.site_name}}</strong>
+          <small>{{header.credential}}</small>
+        </span>
       </a>
-      <nav class="nav-menu legal-nav">
-        <a class="nav-link" href="/{{locale_slug}}/#services">{{nav.services}}</a>
-        <a class="nav-link" href="/{{locale_slug}}/#contact">{{nav.contact}}</a>
+      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" aria-label="Navigation">
+        <a class="nav-link" href="{{nav_calculator_href}}">{{nav.calculator}}</a>
+        <a class="nav-link" href="{{nav_services_href}}">{{nav.services}}</a>
+        <a class="nav-link" href="{{nav_guide_href}}">{{nav.guide}}</a>
+        <a class="nav-link" href="{{nav_about_href}}">{{nav.about}}</a>
+        {{#if testimonials.has_items}}<a class="nav-link" href="{{nav_testimonials_href}}">{{nav.testimonials}}</a>{{/if}}
+        {{#if media.has_items}}<a class="nav-link" href="{{nav_media_href}}">{{nav.media}}</a>{{/if}}
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
+        <a class="btn btn-primary nav-cta" href="{{nav_contact_href}}">{{header.cta_text}}</a>
       </nav>
     </div>
   </header>

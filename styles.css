@@ -213,6 +213,14 @@ p {
   backdrop-filter: blur(12px);
 }
 
+.site-nav.nav-light {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
 .site-nav.menu-open,
 .site-nav:has(.nav-menu.active) {
   color: var(--color-white);

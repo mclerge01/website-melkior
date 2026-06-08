@@ -24,16 +24,27 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col" data-locale="en-CA" data-locale-slug="en">
-  <header class="site-nav scrolled fixed top-0 w-full" id="site-nav">
+  <header class="site-nav nav-light scrolled fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
-      <a class="site-logo" href="/en/">
+      <a class="site-logo" href="/en/" aria-label="Melkior Clergé">
         <span class="logo-mark">MC</span>
-        <span><strong>Melkior Clergé</strong><small>Mortgage Broker | Multi-Prêts</small></span>
+        <span>
+          <strong>Melkior Clergé</strong>
+          <small>Mortgage Broker | Multi-Prêts</small>
+        </span>
       </a>
-      <nav class="nav-menu legal-nav">
+      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" aria-label="Navigation">
+        <a class="nav-link" href="/en/#calculator">Calculator</a>
         <a class="nav-link" href="/en/#services">Services</a>
-        <a class="nav-link" href="/en/#contact">Contact</a>
+        <a class="nav-link" href="/en/#guide">Guide</a>
+        <a class="nav-link" href="/en/#about">About</a>
+        
+        
         <a class="language-link" href="/fr/politique-de-confidentialite/" data-locale-target="fr-CA">FR</a>
+        <a class="btn btn-primary nav-cta" href="/en/#contact">Contact me</a>
       </nav>
     </div>
   </header>
