@@ -562,19 +562,48 @@ p {
 }
 
 .timeline {
+  position: relative;
   display: grid;
-  gap: var(--space-4);
   margin-block: var(--space-8);
 }
 
-.timeline-item {
-  padding-left: var(--space-5);
-  border-left: 2px solid var(--color-accent);
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: 0.4375rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), rgba(198, 161, 91, 0.25));
 }
 
-.timeline-item span {
+.timeline-item {
+  position: relative;
+  padding: 0 0 var(--space-6) var(--space-8);
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 0.3rem;
+  left: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--rounded-full);
+  background: var(--color-primary-dark);
+  box-shadow: 0 0 0 4px rgba(198, 161, 91, 0.12);
+}
+
+.timeline-year {
+  display: block;
   color: var(--color-accent);
   font-weight: 800;
+  line-height: 1.1;
 }
 
 .timeline-item h3 {

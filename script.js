@@ -17,6 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", () => setLocaleCookie(link.dataset.localeTarget));
   });
 
+  document.querySelectorAll(".timeline-year").forEach((year) => {
+    const value = year.textContent.trim().toLowerCase();
+    if (value === "today" || value === "aujourd'hui" || value === "aujourd’hui") {
+      year.textContent = String(new Date().getFullYear());
+    }
+  });
+
   if (hamburger && navMenu) {
     function closeMenu() {
       hamburger.classList.remove("active");
