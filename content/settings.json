@@ -167,8 +167,7 @@
             "title": "Courtier Multi-Prêts",
             "description": "Accompagnement rigoureux pour des projets immobiliers et financiers bien structurés."
           }
-        ],
-        "cta_text": "Me contacter"
+        ]
       },
       "promo": {
         "enabled": false,
@@ -415,8 +414,7 @@
             "title": "Multi-Prêts broker",
             "description": "Structured guidance for well-planned real estate and financial projects."
           }
-        ],
-        "cta_text": "Contact me"
+        ]
       },
       "promo": {
         "enabled": false,
