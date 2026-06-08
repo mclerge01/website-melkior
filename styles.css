@@ -365,7 +365,7 @@ p {
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-12);
+  gap: var(--space-8);
   align-items: center;
 }
 
@@ -402,15 +402,15 @@ p {
 }
 
 .hero-portrait {
-  width: min(100%, 32rem);
-  justify-self: center;
+  width: 100%;
+  justify-self: stretch;
 }
 
 .hero-portrait img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 11;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 22%;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-lg);
@@ -969,6 +969,17 @@ p {
 
   .hero-grid {
     grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr);
+    gap: var(--space-12);
+  }
+
+  .hero-portrait {
+    width: min(100%, 32rem);
+    justify-self: center;
+  }
+
+  .hero-portrait img {
+    aspect-ratio: 4 / 5;
+    object-position: center top;
   }
 
   .calculator-grid,
