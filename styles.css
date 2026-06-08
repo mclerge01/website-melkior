@@ -430,8 +430,15 @@ p {
 }
 
 .stat-item {
+  display: grid;
+  justify-items: center;
   padding: var(--space-6) var(--space-4);
   border-right: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.stat-item:last-child {
+  border-right: 0;
 }
 
 .stat-item strong {
