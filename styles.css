@@ -93,7 +93,6 @@ p {
   --color-primary-dark: #3c0012;
   --color-primary-light: #fff1f3;
   --color-secondary: #007167;
-  --color-secondary-light: #e8f5f3;
   --color-accent: #dbaa4b;
   --color-accent-dark: #8f641f;
   --color-link-bright: #ffcf4a;
@@ -103,6 +102,9 @@ p {
   --color-bg: #ffffff;
   --color-bg-light: #f3f5f9;
   --color-bg-dark: #002521;
+  --color-bg-dark-rgb: 0, 37, 33;
+  --color-bg-dark-tint: rgba(var(--color-bg-dark-rgb), 0.08);
+  --color-bg-dark-tint-border: rgba(var(--color-bg-dark-rgb), 0.14);
   --color-border: #e1e1e1;
   --color-white: #ffffff;
   --color-error: #dc2626;
@@ -830,7 +832,8 @@ p {
 
 .consultation-note {
   margin-top: var(--space-5);
-  background: var(--color-secondary-light);
+  border-color: var(--color-bg-dark-tint-border);
+  background: var(--color-bg-dark-tint);
 }
 
 .consultation-note h3 {
