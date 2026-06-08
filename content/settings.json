@@ -48,7 +48,7 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Courtier hypothécaire | Multi-Prêts",
-        "cta_text": "Parler de mon projet",
+        "cta_text": "Me contacter",
         "cta_link": "#contact"
       },
       "nav": {
@@ -64,9 +64,9 @@
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
         "title": "Votre projet immobilier mérite une stratégie claire.",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
-        "primary_cta": "Demander une consultation",
-        "secondary_cta": "Calculer mes paiements",
-        "phone_label": "Appeler directement",
+        "primary_cta": "Me contacter",
+        "secondary_cta": "Calculer",
+        "phone_label": "Appeler Melkior",
         "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire"
       },
       "stats": {
@@ -100,37 +100,37 @@
         "monthly_label": "Mensuel",
         "biweekly_label": "Aux deux semaines",
         "result_label": "Paiement estimé",
-        "cta_text": "Valider ma capacité d'emprunt",
+        "cta_text": "Me contacter",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "Comment puis-je vous aider?",
+        "heading": "Services hypothécaires",
         "items": [
           {
             "title": "Achat de propriété",
             "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
-            "cta_text": "Obtenir ma soumission",
+            "cta_text": "Me contacter",
             "cta_link": "#contact"
           },
           {
             "title": "Préautorisation",
             "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux.",
-            "cta_text": "Planifier ma préautorisation",
+            "cta_text": "Me contacter",
             "cta_link": "#contact"
           },
           {
             "title": "Renouvellement",
             "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts.",
-            "cta_text": "Comparer mes options",
+            "cta_text": "Me contacter",
             "cta_link": "#contact"
           },
           {
             "title": "Refinancement",
             "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité.",
-            "cta_text": "Analyser mon refinancement",
+            "cta_text": "Me contacter",
             "cta_link": "#contact"
           }
         ]
@@ -176,7 +176,7 @@
             "description": "Accompagnement rigoureux pour des projets immobiliers et financiers bien structurés."
           }
         ],
-        "cta_text": "Discutons de votre projet"
+        "cta_text": "Me contacter"
       },
       "promo": {
         "enabled": false,
@@ -200,22 +200,22 @@
         "items": []
       },
       "final_cta": {
-        "eyebrow": "Passez à l'action",
-        "heading": "Votre prochain chapitre immobilier commence ici.",
-        "description": "Un court appel suffit pour comprendre votre situation et identifier les prochaines étapes.",
-        "primary_cta": "Demander une consultation",
-        "secondary_cta": "Appeler maintenant"
+        "eyebrow": "Consultation hypothécaire",
+        "heading": "Prêt à comparer vos options hypothécaires?",
+        "description": "Envoyez votre demande ou appelez Melkior pour clarifier vos prochaines étapes.",
+        "primary_cta": "Me contacter",
+        "secondary_cta": "Appeler Melkior"
       },
       "contact": {
-        "heading": "Parlons de votre projet",
-        "subtitle": "Envoyez-moi quelques détails. Je vous répondrai dans les meilleurs délais.",
+        "heading": "Consultation hypothécaire",
+        "subtitle": "Remplissez le formulaire avec les détails de votre achat, renouvellement ou refinancement. Melkior vous répondra dans les meilleurs délais.",
         "info_heading": "Coordonnées",
         "phone_label": "Téléphone",
         "email_label": "Courriel",
         "address_label": "Bureau",
         "regions_label": "Régions desservies",
-        "consultation_heading": "Consultation initiale",
-        "consultation_text": "Aucune obligation. L'objectif est de clarifier vos besoins et les options disponibles.",
+        "consultation_heading": "Consultation sans obligation",
+        "consultation_text": "L'objectif est de comprendre votre situation et de vous expliquer clairement les options hypothécaires disponibles.",
         "form_name_label": "Nom complet",
         "form_name_placeholder": "Votre nom",
         "form_email_label": "Courriel",
@@ -226,9 +226,9 @@
         "form_subject_placeholder": "Sélectionnez un sujet",
         "form_message_label": "Message",
         "form_message_placeholder": "Décrivez brièvement votre projet...",
-        "form_referral_label": "Comment m'avez-vous trouve?",
+        "form_referral_label": "Comment m'avez-vous trouvé?",
         "form_referral_placeholder": "Sélectionnez une option",
-        "form_submit": "Envoyer le message",
+        "form_submit": "Envoyer",
         "form_sending": "Envoi en cours...",
         "form_success": "Votre message a bien été envoyé. Je vous répondrai dans les meilleurs délais.",
         "form_error": "Une erreur est survenue. Veuillez réessayer.",
@@ -274,7 +274,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Courtier hypothécaire Multi-Prêts dédié à trouver une stratégie claire pour votre projet immobilier.",
+        "description": "Courtier hypothécaire Multi-Prêts pour achat, préautorisation, renouvellement et refinancement.",
         "privacy_label": "Politique de confidentialité",
         "legal_label": "Mentions légales",
         "admin_label": "Administration",
@@ -301,7 +301,7 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Mortgage Broker | Multi-Prêts",
-        "cta_text": "Discuss my project",
+        "cta_text": "Contact me",
         "cta_link": "#contact"
       },
       "nav": {
@@ -317,9 +317,9 @@
         "eyebrow": "Mortgage Broker | Multi-Prêts",
         "title": "Your real estate project deserves a clear mortgage strategy.",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
-        "primary_cta": "Request a consultation",
-        "secondary_cta": "Calculate payments",
-        "phone_label": "Call directly",
+        "primary_cta": "Contact me",
+        "secondary_cta": "Calculate",
+        "phone_label": "Call Melkior",
         "image_alt": "Portrait of Melkior Clergé, mortgage broker"
       },
       "stats": {
@@ -353,37 +353,37 @@
         "monthly_label": "Monthly",
         "biweekly_label": "Biweekly",
         "result_label": "Estimated payment",
-        "cta_text": "Validate my borrowing capacity",
+        "cta_text": "Contact me",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "How can I help?",
+        "heading": "Mortgage services",
         "items": [
           {
             "title": "Property purchase",
             "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
-            "cta_text": "Get my quote",
+            "cta_text": "Contact me",
             "cta_link": "#contact"
           },
           {
             "title": "Pre-approval",
             "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate.",
-            "cta_text": "Plan my pre-approval",
+            "cta_text": "Contact me",
             "cta_link": "#contact"
           },
           {
             "title": "Renewal",
             "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind.",
-            "cta_text": "Compare my options",
+            "cta_text": "Contact me",
             "cta_link": "#contact"
           },
           {
             "title": "Refinancing",
             "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity.",
-            "cta_text": "Review my refinance",
+            "cta_text": "Contact me",
             "cta_link": "#contact"
           }
         ]
@@ -429,7 +429,7 @@
             "description": "Structured guidance for well-planned real estate and financial projects."
           }
         ],
-        "cta_text": "Let's discuss your project"
+        "cta_text": "Contact me"
       },
       "promo": {
         "enabled": false,
@@ -453,22 +453,22 @@
         "items": []
       },
       "final_cta": {
-        "eyebrow": "Take action",
-        "heading": "Your next real estate chapter starts here.",
-        "description": "A short call is enough to understand your situation and identify the next steps.",
-        "primary_cta": "Request a consultation",
-        "secondary_cta": "Call now"
+        "eyebrow": "Mortgage consultation",
+        "heading": "Ready to compare your mortgage options?",
+        "description": "Send your request or call Melkior to clarify your next steps.",
+        "primary_cta": "Contact me",
+        "secondary_cta": "Call Melkior"
       },
       "contact": {
-        "heading": "Let's talk about your project",
-        "subtitle": "Send me a few details. I will get back to you as soon as possible.",
+        "heading": "Mortgage consultation",
+        "subtitle": "Fill out the form with details about your purchase, renewal, or refinance. Melkior will reply as soon as possible.",
         "info_heading": "Contact details",
         "phone_label": "Phone",
         "email_label": "Email",
         "address_label": "Office",
         "regions_label": "Regions served",
-        "consultation_heading": "Initial consultation",
-        "consultation_text": "No obligation. The goal is to clarify your needs and the options available.",
+        "consultation_heading": "No-obligation consultation",
+        "consultation_text": "The goal is to understand your situation and clearly explain the mortgage options available.",
         "form_name_label": "Full name",
         "form_name_placeholder": "Your name",
         "form_email_label": "Email",
@@ -481,7 +481,7 @@
         "form_message_placeholder": "Briefly describe your project...",
         "form_referral_label": "How did you find me?",
         "form_referral_placeholder": "Select an option",
-        "form_submit": "Send message",
+        "form_submit": "Send",
         "form_sending": "Sending...",
         "form_success": "Your message has been sent. I will reply as soon as possible.",
         "form_error": "An error occurred. Please try again.",
@@ -527,7 +527,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Multi-Prêts mortgage broker dedicated to finding a clear strategy for your real estate project.",
+        "description": "Multi-Prêts mortgage broker for purchases, pre-approvals, renewals, and refinancing.",
         "privacy_label": "Privacy Policy",
         "legal_label": "Legal Notice",
         "admin_label": "Administration",
