@@ -1,0 +1,6 @@
+name = "email-sender"
+main = "index.js"
+compatibility_date = "2026-04-27"
+
+[[send_email]]
+name = "SEND_EMAIL"

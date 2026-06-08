@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Administration - Melkior Clergé</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    body {
+      background: var(--color-bg-light);
+    }
+
+    .admin-login {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: var(--space-6);
+      background: linear-gradient(135deg, var(--color-bg-dark), var(--color-primary));
+    }
+
+    .admin-login-card,
+    .admin-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--card-radius);
+      background: var(--color-white);
+      box-shadow: var(--shadow);
+    }
+
+    .admin-login-card {
+      width: min(100%, 28rem);
+      padding: var(--space-8);
+      text-align: center;
+    }
+
+    .admin-shell {
+      min-height: 100svh;
+    }
+
+    .admin-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .admin-main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      padding: var(--space-6);
+    }
+
+    .admin-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .admin-tab {
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded-full);
+      background: var(--color-white);
+      font-weight: 800;
+    }
+
+    .admin-tab.active {
+      color: var(--color-white);
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+    }
+
+    .admin-card {
+      padding: var(--space-6);
+    }
+
+    .admin-field {
+      display: grid;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+
+    .admin-field > label,
+    .admin-legend {
+      color: var(--color-text);
+      font-size: var(--text-sm);
+      font-weight: 800;
+    }
+
+    .admin-fieldset {
+      margin: var(--space-5) 0;
+      padding: var(--space-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--card-radius);
+      background: var(--color-bg-light);
+    }
+
+    .admin-array-item {
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--card-radius);
+      background: var(--color-white);
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+    }
+
+    .admin-status {
+      color: var(--color-text-light);
+      font-size: var(--text-sm);
+    }
+
+    .admin-image-preview {
+      width: 112px;
+      height: 84px;
+      object-fit: cover;
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded);
+      background: var(--color-bg-light);
+    }
+
+    .admin-image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .admin-image-card {
+      display: grid;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--card-radius);
+      background: var(--color-white);
+    }
+
+    .admin-image-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: var(--rounded);
+      background: var(--color-bg-light);
+    }
+
+    @media (min-width: 1024px) {
+      .admin-main {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+
+      .admin-tabs {
+        position: sticky;
+        top: calc(var(--nav-height) + var(--space-4));
+        align-self: start;
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section id="login-screen" class="admin-login">
+    <div class="admin-login-card">
+      <span class="logo-mark" style="margin:0 auto var(--space-5);">MC</span>
+      <h1 class="text-3xl mb-4">Administration</h1>
+      <p class="text-light mb-8">Connectez-vous avec GitHub. Seuls les contributeurs du dépôt peuvent accéder à l'éditeur.</p>
+      <a class="btn btn-primary w-full" href="/api/auth/github">Se connecter avec GitHub</a>
+      <p id="login-error" class="admin-status" style="margin-top: var(--space-4); color: var(--color-error);"></p>
+    </div>
+  </section>
+
+  <section id="editor-screen" class="admin-shell hidden">
+    <header class="admin-topbar">
+      <div>
+        <strong>Melkior Clergé</strong>
+        <p class="admin-status" id="session-status">Chargement...</p>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn-outline" id="preview-fr" type="button">Aperçu FR</button>
+        <button class="btn btn-outline" id="preview-en" type="button">Preview EN</button>
+        <button class="btn btn-primary" id="publish" type="button">Publier</button>
+        <button class="btn btn-outline" id="logout" type="button">Déconnexion</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <nav class="admin-tabs" id="admin-tabs" aria-label="Sections admin"></nav>
+      <section class="admin-card">
+        <div class="admin-actions" style="justify-content: space-between; margin-bottom: var(--space-6);">
+          <div>
+            <h2 class="text-2xl" id="section-title">Contenu</h2>
+            <p class="admin-status" id="translation-status"></p>
+          </div>
+          <p class="admin-status" id="save-status"></p>
+        </div>
+        <div id="editor"></div>
+      </section>
+    </main>
+  </section>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
