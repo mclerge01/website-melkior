@@ -746,13 +746,28 @@ p {
   padding-block: var(--space-12) var(--space-8);
 }
 
+.footer-title {
+  margin-bottom: var(--space-8);
+}
+
+.footer-title strong {
+  display: block;
+  color: var(--color-white);
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+}
+
 .footer-grid {
   display: grid;
   gap: var(--space-8);
 }
 
-.footer strong {
-  font-size: var(--text-xl);
+.footer-column-title {
+  color: var(--color-white);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .footer p,
@@ -761,18 +776,11 @@ p {
   color: rgba(255, 255, 255, 0.66);
 }
 
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
+.footer-description {
+  max-width: 32rem;
 }
 
-.footer-nav {
-  display: grid;
-  gap: var(--space-3);
-  align-content: start;
-}
-
+.footer-nav,
 .footer-legal {
   display: grid;
   gap: var(--space-3);
