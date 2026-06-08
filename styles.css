@@ -399,8 +399,10 @@ p {
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  width: fit-content;
   margin-top: var(--space-6);
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .hero-portrait {
@@ -1100,10 +1102,6 @@ p {
     padding-bottom: var(--space-16);
   }
 
-  .hero-title {
-    max-width: 11ch;
-  }
-
   .hero-portrait {
     width: min(100%, 32rem);
     justify-self: center;
@@ -1154,6 +1152,10 @@ p {
 }
 
 @media (max-width: 420px) {
+  .phone-link {
+    width: 100%;
+  }
+
   .hero-actions .btn {
     width: 100%;
   }
