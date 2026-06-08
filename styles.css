@@ -203,13 +203,20 @@ p {
   transition: background-color var(--transition), box-shadow var(--transition), color var(--transition);
 }
 
-.site-nav.scrolled,
-.site-nav:has(.nav-menu.active) {
+.site-nav.scrolled {
   color: var(--color-text);
   background: rgba(255, 255, 255, 0.96);
   box-shadow: var(--shadow-sm);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
+}
+
+.site-nav:has(.nav-menu.active) {
+  color: var(--color-white);
+  background: var(--color-bg-dark);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .nav-inner {
