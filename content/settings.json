@@ -111,27 +111,19 @@
         "items": [
           {
             "title": "Achat de propriété",
-            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
-            "cta_text": "Me contacter",
-            "cta_link": "#contact"
+            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance."
           },
           {
             "title": "Préautorisation",
-            "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux.",
-            "cta_text": "Me contacter",
-            "cta_link": "#contact"
+            "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux."
           },
           {
             "title": "Renouvellement",
-            "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts.",
-            "cta_text": "Me contacter",
-            "cta_link": "#contact"
+            "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts."
           },
           {
             "title": "Refinancement",
-            "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité.",
-            "cta_text": "Me contacter",
-            "cta_link": "#contact"
+            "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité."
           }
         ]
       },
@@ -367,27 +359,19 @@
         "items": [
           {
             "title": "Property purchase",
-            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
-            "cta_text": "Contact me",
-            "cta_link": "#contact"
+            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan."
           },
           {
             "title": "Pre-approval",
-            "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate.",
-            "cta_text": "Contact me",
-            "cta_link": "#contact"
+            "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate."
           },
           {
             "title": "Renewal",
-            "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind.",
-            "cta_text": "Contact me",
-            "cta_link": "#contact"
+            "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind."
           },
           {
             "title": "Refinancing",
-            "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity.",
-            "cta_text": "Contact me",
-            "cta_link": "#contact"
+            "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity."
           }
         ]
       },

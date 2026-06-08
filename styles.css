@@ -299,7 +299,6 @@ p {
 
 .nav-link:hover,
 .language-link:hover,
-.text-link:hover,
 .footer a:hover {
   color: var(--color-accent);
 }
@@ -522,12 +521,6 @@ p {
 .service-card h3,
 .guide-item h3 {
   font-size: var(--text-xl);
-}
-
-.text-link {
-  width: fit-content;
-  color: var(--color-primary);
-  font-weight: 800;
 }
 
 .guide-list {
