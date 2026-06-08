@@ -82,7 +82,7 @@
             <a class="btn btn-primary btn-lg" href="#contact">{{hero.primary_cta}}</a>
             <a class="btn btn-outline btn-lg" href="#calculator">{{hero.secondary_cta}}</a>
           </div>
-          <a class="phone-link" href="tel:{{shared.phone_href}}">{{hero.phone_label}} <strong>{{shared.phone}}</strong></a>
+          <a class="phone-link" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{hero.phone_label}} <strong>{{shared.phone}}</strong></a>
         </div>
         <div class="hero-portrait reveal-on-scroll">
           <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">
@@ -254,7 +254,7 @@
         <p>{{final_cta.description}}</p>
         <div class="hero-actions justify-center">
           <a class="btn btn-accent btn-lg" href="#contact">{{final_cta.primary_cta}}</a>
-          <a class="btn btn-ghost btn-lg" href="tel:{{shared.phone_href}}">{{final_cta.secondary_cta}}</a>
+          <a class="btn btn-ghost btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{final_cta.secondary_cta}}</a>
         </div>
       </div>
     </section>
@@ -267,7 +267,7 @@
           <p class="section-lead">{{contact.subtitle}}</p>
           <div class="contact-info">
             <h3>{{contact.info_heading}}</h3>
-            <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}">{{shared.phone}}</a></p>
+            <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a></p>
             <p><strong>{{contact.email_label}}</strong><a href="mailto:{{shared.email}}">{{shared.email}}</a></p>
             <p><strong>{{contact.address_label}}</strong><a href="https://www.google.com/maps/search/?api=1&query={{shared.office_address}}" target="_blank" rel="noopener">{{shared.office_address}}</a></p>
             <p><strong>{{contact.regions_label}}</strong><span>{{shared.regions}}</span></p>

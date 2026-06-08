@@ -126,6 +126,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function isMobileDialerLikely() {
+    const coarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    return coarsePointer || /Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+  }
+
+  document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+    link.addEventListener("click", async (event) => {
+      if (isMobileDialerLikely()) return;
+
+      event.preventDefault();
+      const phone = link.dataset.phoneNumber || link.textContent.trim();
+      const isEnglish = body.dataset.locale === "en-CA";
+      const message = isEnglish ? `Call Melkior at ${phone}.` : `Appelez Melkior au ${phone}.`;
+
+      try {
+        if (window.navigator.clipboard) await window.navigator.clipboard.writeText(phone);
+      } catch {
+        // Clipboard access is optional; the modal still gives the visitor the number.
+      }
+
+      showModal(true, message);
+    });
+  });
+
   const contactForm = document.getElementById("contact-form");
   if (contactForm) {
     const submit = contactForm.querySelector('button[type="submit"]');
