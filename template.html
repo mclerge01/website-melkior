@@ -151,6 +151,15 @@
           </article>
           {{/each}}
         </div>
+        <div class="section-cta service-cta">
+          <p class="eyebrow">{{final_cta.eyebrow}}</p>
+          <h3>{{final_cta.heading}}</h3>
+          <p>{{final_cta.description}}</p>
+          <div class="hero-actions justify-center">
+            <a class="btn btn-primary btn-lg" href="#contact">{{final_cta.primary_cta}}</a>
+            <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{final_cta.secondary_cta}}</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -245,18 +254,6 @@
       </div>
     </section>
     {{/if}}
-
-    <section class="section final-cta">
-      <div class="container final-cta-inner">
-        <p class="eyebrow eyebrow-light">{{final_cta.eyebrow}}</p>
-        <h2>{{final_cta.heading}}</h2>
-        <p>{{final_cta.description}}</p>
-        <div class="hero-actions justify-center">
-          <a class="btn btn-accent btn-lg" href="#contact">{{final_cta.primary_cta}}</a>
-          <a class="btn btn-ghost btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{final_cta.secondary_cta}}</a>
-        </div>
-      </div>
-    </section>
 
     <section id="contact" class="section bg-light">
       <div class="container contact-grid">
