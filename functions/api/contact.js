@@ -4,6 +4,7 @@ const MESSAGES = {
     name: "Le champ nom est requis.",
     email: "Le champ courriel est requis.",
     emailInvalid: "L'adresse courriel est invalide.",
+    phone: "Le champ telephone est requis.",
     subject: "Le champ sujet est requis.",
     message: "Le champ message est requis.",
     turnstile: "La verification Turnstile est requise.",
@@ -19,6 +20,7 @@ const MESSAGES = {
     name: "Name is required.",
     email: "Email is required.",
     emailInvalid: "Email address is invalid.",
+    phone: "Phone number is required.",
     subject: "Subject is required.",
     message: "Message is required.",
     turnstile: "Turnstile verification is required.",
@@ -143,6 +145,7 @@ export async function onRequestPost(context) {
   if (!name) return errorResponse(msg.name);
   if (!email) return errorResponse(msg.email);
   if (!isValidEmail(email)) return errorResponse(msg.emailInvalid);
+  if (!phone) return errorResponse(msg.phone);
   if (!subject) return errorResponse(msg.subject);
   if (!message) return errorResponse(msg.message);
   if (!turnstileToken) return errorResponse(msg.turnstile, 403);
@@ -176,7 +179,7 @@ export async function onRequestPost(context) {
     `  Locale : ${locale}`,
     `  Nom / Name : ${name}`,
     `  Email : ${email}`,
-    phone ? `  Telephone / Phone : ${phone}` : null,
+    `  Telephone / Phone : ${phone}`,
     `  Sujet / Subject : ${subject}`,
     referral ? `  Source : ${referral}` : null,
     "",

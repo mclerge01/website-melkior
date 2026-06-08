@@ -259,12 +259,164 @@ document.addEventListener("DOMContentLoaded", () => {
   if (contactForm) {
     const submit = contactForm.querySelector('button[type="submit"]');
     const originalText = submit ? submit.textContent : "";
+    const isEnglishForm = contactForm.dataset.locale === "en-CA";
     const messages = {
       sending: contactForm.dataset.sending || "Sending...",
       success: contactForm.dataset.success || "Message sent.",
       error: contactForm.dataset.error || "An error occurred.",
       network: contactForm.dataset.networkError || "Connection error.",
     };
+    const validationMessages = isEnglishForm
+      ? {
+          name: "Enter your full name.",
+          email: "Enter your email address.",
+          emailInvalid: "Enter a valid email address.",
+          phone: "Enter your phone number.",
+          subject: "Select a subject.",
+          message: "Write a short message.",
+          turnstile: "Complete the verification before sending.",
+        }
+      : {
+          name: "Entrez votre nom complet.",
+          email: "Entrez votre courriel.",
+          emailInvalid: "Entrez une adresse courriel valide.",
+          phone: "Entrez votre numéro de téléphone.",
+          subject: "Sélectionnez un sujet.",
+          message: "Écrivez un court message.",
+          turnstile: "Complétez la vérification avant d'envoyer.",
+        };
+    const validationFields = ["name", "email", "phone", "subject", "message"]
+      .map((name) => contactForm.elements[name])
+      .filter(Boolean);
+    const formStatus = document.createElement("p");
+    formStatus.className = "form-status";
+    formStatus.setAttribute("role", "alert");
+    formStatus.hidden = true;
+    if (submit) submit.before(formStatus);
+
+    function getFieldError(field) {
+      const group = field.closest(".form-group");
+      if (!group) return null;
+      let error = group.querySelector(".form-error");
+      if (!error) {
+        error = document.createElement("span");
+        error.className = "form-error";
+        error.id = `${field.name}-error`;
+        error.setAttribute("role", "alert");
+        error.hidden = true;
+        group.append(error);
+      }
+      return error;
+    }
+
+    function setFieldError(field, message) {
+      const group = field.closest(".form-group");
+      const error = getFieldError(field);
+      if (!error) return;
+      group.classList.add("has-error");
+      field.setAttribute("aria-invalid", "true");
+      const describedBy = field.getAttribute("aria-describedby") || "";
+      if (!describedBy.split(/\s+/).includes(error.id)) {
+        field.setAttribute("aria-describedby", `${describedBy} ${error.id}`.trim());
+      }
+      error.textContent = message;
+      error.hidden = false;
+    }
+
+    function clearFieldError(field) {
+      const group = field.closest(".form-group");
+      const error = group ? group.querySelector(".form-error") : null;
+      if (group) group.classList.remove("has-error");
+      field.removeAttribute("aria-invalid");
+      if (error) {
+        const describedBy = (field.getAttribute("aria-describedby") || "")
+          .split(/\s+/)
+          .filter((id) => id && id !== error.id)
+          .join(" ");
+        if (describedBy) field.setAttribute("aria-describedby", describedBy);
+        else field.removeAttribute("aria-describedby");
+        error.textContent = "";
+        error.hidden = true;
+      }
+    }
+
+    function getFieldValidationMessage(field) {
+      const value = field.value.trim();
+      if (field.required && !value) return validationMessages[field.name] || messages.error;
+      if (field.name === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        return validationMessages.emailInvalid;
+      }
+      return "";
+    }
+
+    function validateField(field) {
+      const message = getFieldValidationMessage(field);
+      if (message) {
+        setFieldError(field, message);
+        return false;
+      }
+      clearFieldError(field);
+      return true;
+    }
+
+    function setFormStatus(message) {
+      formStatus.textContent = message || "";
+      formStatus.hidden = !message;
+    }
+
+    function clearInlineErrors() {
+      validationFields.forEach(clearFieldError);
+      setFormStatus("");
+    }
+
+    function validateContactForm() {
+      let firstInvalid = null;
+      setFormStatus("");
+      validationFields.forEach((field) => {
+        if (!validateField(field) && !firstInvalid) firstInvalid = field;
+      });
+      return firstInvalid;
+    }
+
+    function getTurnstileToken() {
+      const turnstileInput = contactForm.querySelector('input[name="cf-turnstile-response"]');
+      if (turnstileInput && turnstileInput.value) return turnstileInput.value;
+      if (window.turnstile && typeof window.turnstile.getResponse === "function") {
+        return window.turnstile.getResponse() || "";
+      }
+      return "";
+    }
+
+    function focusInvalidControl(control) {
+      control.focus({ preventScroll: true });
+      control.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function handleSubmitError(message) {
+      const lower = String(message || "").toLowerCase();
+      let fieldName = "";
+      if (lower.includes("name") || lower.includes("nom")) fieldName = "name";
+      else if (lower.includes("email") || lower.includes("courriel")) fieldName = "email";
+      else if (lower.includes("phone") || lower.includes("telephone") || lower.includes("téléphone")) fieldName = "phone";
+      else if (lower.includes("subject") || lower.includes("sujet")) fieldName = "subject";
+      else if (lower.includes("message")) fieldName = "message";
+
+      if (fieldName && contactForm.elements[fieldName]) {
+        setFieldError(contactForm.elements[fieldName], message);
+        focusInvalidControl(contactForm.elements[fieldName]);
+      } else {
+        setFormStatus(message || messages.error);
+        formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+
+    validationFields.forEach((field) => {
+      const eventName = field.tagName === "SELECT" ? "change" : "input";
+      field.addEventListener(eventName, () => {
+        setFormStatus("");
+        if (field.getAttribute("aria-invalid") === "true") validateField(field);
+      });
+    });
 
     contactForm.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -280,11 +432,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const turnstileInput = contactForm.querySelector('input[name="cf-turnstile-response"]');
-      if (turnstileInput && turnstileInput.value) data.turnstileToken = turnstileInput.value;
-      else if (window.turnstile && typeof window.turnstile.getResponse === "function") {
-        const token = window.turnstile.getResponse();
-        if (token) data.turnstileToken = token;
+      const firstInvalid = validateContactForm();
+      if (firstInvalid) {
+        focusInvalidControl(firstInvalid);
+        return;
+      }
+
+      const token = getTurnstileToken();
+      if (token) data.turnstileToken = token;
+      else {
+        setFormStatus(validationMessages.turnstile);
+        formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
       }
 
       if (submit) {
@@ -302,12 +461,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok && result.success) {
           showModal(true, result.message || messages.success);
           contactForm.reset();
+          clearInlineErrors();
           if (window.turnstile && typeof window.turnstile.reset === "function") window.turnstile.reset();
         } else {
-          showModal(false, result.error || messages.error);
+          handleSubmitError(result.error || messages.error);
         }
       } catch {
-        showModal(false, messages.network);
+        setFormStatus(messages.network);
+        formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
       } finally {
         if (submit) {
           submit.disabled = false;

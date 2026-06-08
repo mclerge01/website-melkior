@@ -106,6 +106,7 @@ p {
   --color-border: #e1e1e1;
   --color-white: #ffffff;
   --color-error: #dc2626;
+  --color-error-light: #fff1f1;
   --color-success: #15803d;
 
   /* Breakpoints */
@@ -875,6 +876,38 @@ p {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: var(--ring-primary);
+}
+
+.input[aria-invalid="true"],
+.select[aria-invalid="true"],
+.textarea[aria-invalid="true"],
+.input[aria-invalid="true"]:focus,
+.select[aria-invalid="true"]:focus,
+.textarea[aria-invalid="true"]:focus {
+  border-color: var(--color-error);
+  box-shadow: var(--ring-error);
+}
+
+.form-error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.form-error[hidden],
+.form-status[hidden] {
+  display: none;
+}
+
+.form-status {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid rgba(220, 38, 38, 0.28);
+  border-radius: var(--rounded);
+  color: var(--color-error);
+  background: var(--color-error-light);
+  font-size: var(--text-sm);
+  font-weight: 700;
 }
 
 .cf-turnstile {
