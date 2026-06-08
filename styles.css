@@ -37,6 +37,23 @@ video {
 a {
   color: inherit;
   text-decoration: none;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.22em;
+  transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
+}
+
+a:not(.btn):hover,
+a:not(.btn):focus-visible {
+  color: var(--color-link-bright);
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
+}
+
+a:not(.btn):focus-visible {
+  outline: 2px solid var(--color-link-bright);
+  outline-offset: 0.25rem;
+  border-radius: var(--rounded-sm);
+  background: var(--color-link-focus-bg);
 }
 
 button,
@@ -78,6 +95,8 @@ p {
   --color-secondary: #007167;
   --color-accent: #dbaa4b;
   --color-accent-dark: #8f641f;
+  --color-link-bright: #ffcf4a;
+  --color-link-focus-bg: rgba(255, 207, 74, 0.16);
   --color-text: #1f2126;
   --color-text-light: #57555c;
   --color-bg: #ffffff;
@@ -297,7 +316,7 @@ p {
 .language-link {
   font-size: var(--text-sm);
   font-weight: 700;
-  transition: color var(--transition);
+  transition: color var(--transition), background-color var(--transition), border-color var(--transition), text-decoration-color var(--transition);
 }
 
 .nav-menu .nav-link {
@@ -306,9 +325,11 @@ p {
 }
 
 .nav-link:hover,
-.language-link:hover,
-.footer a:hover {
-  color: var(--color-accent);
+.nav-link:focus-visible,
+.footer a:hover,
+.footer a:focus-visible {
+  color: var(--color-link-bright);
+  text-decoration-line: underline;
 }
 
 .language-link {
@@ -319,6 +340,15 @@ p {
   min-height: 2.25rem;
   border: 1px solid currentColor;
   border-radius: var(--rounded-full);
+}
+
+.language-link:hover,
+.language-link:focus-visible {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  box-shadow: none;
+  border-color: var(--color-link-bright);
+  background: var(--color-link-bright);
 }
 
 .hamburger {
@@ -404,23 +434,19 @@ p {
 }
 
 .phone-link {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
+  display: inline-block;
   width: fit-content;
   margin-top: var(--space-5);
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.82);
   font-size: var(--text-base);
   font-weight: 600;
 }
 
-.phone-link strong {
-  color: var(--color-white);
-}
-
-.phone-link:hover {
-  color: var(--color-white);
+.phone-link:hover,
+.phone-link:focus-visible {
+  color: var(--color-link-bright);
+  text-decoration-line: underline;
+  text-decoration-color: currentColor;
 }
 
 .hero-portrait {
@@ -541,7 +567,7 @@ p {
 }
 
 .calculator-rate-note a:hover {
-  color: var(--color-secondary);
+  color: var(--color-link-bright);
 }
 
 .calculator-detail-list {
