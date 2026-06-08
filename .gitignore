@@ -1,6 +1,7 @@
 node_modules/
 .dev.vars
 .wrangler/
+.wrangler-dev.*
 .DS_Store
 Thumbs.db
 npm-debug.log*
