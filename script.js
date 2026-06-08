@@ -77,14 +77,34 @@ document.addEventListener("DOMContentLoaded", () => {
   const calculator = document.querySelector(".calculator-card");
   if (calculator) {
     const result = calculator.querySelector("[data-payment-result]");
+    const amountInput = calculator.querySelector("[data-money-input]");
     const formatter = new Intl.NumberFormat(body.dataset.locale || "fr-CA", {
       style: "currency",
       currency: "CAD",
       maximumFractionDigits: 0,
     });
+    const moneyInputFormatter = new Intl.NumberFormat("en-CA", {
+      maximumFractionDigits: 0,
+    });
+
+    function parseMoneyInput(value) {
+      return Number(String(value || "").replace(/[^\d]/g, "")) || 0;
+    }
+
+    function formatMoneyInput(input) {
+      if (!input) return;
+      const amount = parseMoneyInput(input.value);
+      input.value = amount ? `${moneyInputFormatter.format(amount)}$` : "";
+    }
+
+    function showRawMoneyInput(input) {
+      if (!input) return;
+      const amount = parseMoneyInput(input.value);
+      input.value = amount ? String(amount) : "";
+    }
 
     function calculatePayment() {
-      const amount = Number(calculator.elements.amount.value) || 0;
+      const amount = parseMoneyInput(calculator.elements.amount.value);
       const annualRate = Number(calculator.elements.rate.value) || 0;
       const years = Number(calculator.elements.years.value) || 0;
       const frequency = calculator.elements.frequency.value;
@@ -102,7 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
       result.textContent = formatter.format(Number.isFinite(payment) ? payment : 0);
     }
 
-    calculator.querySelectorAll("input, select").forEach((input) => input.addEventListener("input", calculatePayment));
+    if (amountInput) {
+      formatMoneyInput(amountInput);
+      amountInput.addEventListener("focus", () => showRawMoneyInput(amountInput));
+      amountInput.addEventListener("blur", () => formatMoneyInput(amountInput));
+    }
+    calculator.querySelectorAll("input, select").forEach((input) => {
+      input.addEventListener("input", calculatePayment);
+    });
     calculatePayment();
   }
 
