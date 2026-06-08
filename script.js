@@ -79,6 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const result = calculator.querySelector("[data-payment-result]");
     const amountInput = calculator.querySelector("[data-money-input]");
     const percentInput = calculator.querySelector("[data-percent-input]");
+    const yearsInput = calculator.querySelector("[data-years-input]");
+    const isCalculatorEnglish = body.dataset.locale === "en-CA";
     const formatter = new Intl.NumberFormat(body.dataset.locale || "fr-CA", {
       style: "currency",
       currency: "CAD",
@@ -120,10 +122,38 @@ document.addEventListener("DOMContentLoaded", () => {
       input.value = value ? String(value) : "";
     }
 
+    function parseYearsInput(value) {
+      return Number(String(value || "").replace(/[^\d]/g, "")) || 0;
+    }
+
+    function formatYearsInput(input) {
+      if (!input) return;
+      const years = parseYearsInput(input.value);
+      if (!years) {
+        input.value = "";
+        return;
+      }
+      const suffix = isCalculatorEnglish
+        ? years === 1 ? "year" : "years"
+        : years === 1 ? "année" : "années";
+      input.value = `${years} ${suffix}`;
+    }
+
+    function showRawYearsInput(input) {
+      if (!input) return;
+      const years = parseYearsInput(input.value);
+      input.value = years ? String(years) : "";
+    }
+
+    function sanitizeYearsInput(input) {
+      if (!input) return;
+      input.value = input.value.replace(/[^\d]/g, "");
+    }
+
     function calculatePayment() {
       const amount = parseMoneyInput(calculator.elements.amount.value);
       const annualRate = parsePercentInput(calculator.elements.rate.value);
-      const years = Number(calculator.elements.years.value) || 0;
+      const years = parseYearsInput(calculator.elements.years.value);
       const frequency = calculator.elements.frequency.value;
       const months = Math.max(years * 12, 1);
       const monthlyRate = annualRate / 100 / 12;
@@ -148,6 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
       formatPercentInput(percentInput);
       percentInput.addEventListener("focus", () => showRawPercentInput(percentInput));
       percentInput.addEventListener("blur", () => formatPercentInput(percentInput));
+    }
+    if (yearsInput) {
+      formatYearsInput(yearsInput);
+      yearsInput.addEventListener("focus", () => showRawYearsInput(yearsInput));
+      yearsInput.addEventListener("input", () => sanitizeYearsInput(yearsInput));
+      yearsInput.addEventListener("blur", () => formatYearsInput(yearsInput));
     }
     calculator.querySelectorAll("input, select").forEach((input) => {
       input.addEventListener("input", calculatePayment);
