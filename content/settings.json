@@ -8,18 +8,18 @@
     ]
   },
   "theme": {
-    "primary": "#5a2138",
-    "primary_dark": "#2a0e1a",
-    "primary_light": "#f3e7ed",
-    "secondary": "#0f4d45",
-    "accent": "#c6a15b",
-    "accent_dark": "#8d6a2f",
-    "text": "#181818",
-    "text_light": "#646a70",
+    "primary": "#790025",
+    "primary_dark": "#3c0012",
+    "primary_light": "#fff1f3",
+    "secondary": "#007167",
+    "accent": "#dbaa4b",
+    "accent_dark": "#8f641f",
+    "text": "#1f2126",
+    "text_light": "#57555c",
     "bg": "#ffffff",
-    "bg_light": "#f6f7f4",
-    "bg_dark": "#181014",
-    "border": "#e2e2de"
+    "bg_light": "#f3f5f9",
+    "bg_dark": "#002521",
+    "border": "#e1e1e1"
   },
   "shared": {
     "phone": "(514) 836-6736",

@@ -40,7 +40,7 @@ function write(path, content) {
 function themeStyle(theme) {
   return Object.entries(theme || {})
     .map(([key, value]) => `      --color-${key.replace(/_/g, "-")}: ${value};`)
-    .join("\n");
+    .join(" ");
 }
 
 function prepareLocaleData(settings, locale, page = "home") {
