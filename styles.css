@@ -138,7 +138,7 @@ p {
   --nav-height: 4.5rem;
   --section-y: 5rem;
   --section-y-md: 6rem;
-  --hero-min-h: 100svh;
+  --hero-min-h: min(100svh, 760px);
   --card-radius: 0.5rem;
   --input-height: 3rem;
   --textarea-min-h: 8rem;
@@ -343,6 +343,7 @@ p {
   position: relative;
   min-height: var(--hero-min-h);
   padding-top: calc(var(--nav-height) + var(--space-16));
+  padding-bottom: var(--space-12);
   overflow: hidden;
   color: var(--color-white);
   background:
@@ -989,6 +990,11 @@ p {
   .hero-grid {
     grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr);
     gap: var(--space-12);
+  }
+
+  .hero {
+    padding-top: calc(var(--nav-height) + var(--space-12));
+    padding-bottom: var(--space-16);
   }
 
   .hero-portrait {
