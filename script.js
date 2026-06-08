@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeMenu() {
       hamburger.classList.remove("active");
       navMenu.classList.remove("active");
+      if (nav) nav.classList.remove("menu-open");
       hamburger.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
     }
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function openMenu() {
       hamburger.classList.add("active");
       navMenu.classList.add("active");
+      if (nav) nav.classList.add("menu-open");
       hamburger.setAttribute("aria-expanded", "true");
       document.body.style.overflow = "hidden";
     }
