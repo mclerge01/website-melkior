@@ -932,9 +932,16 @@ p {
 }
 
 .footer-nav,
-.footer-legal {
+.footer-legal,
+.footer-language {
   display: grid;
   gap: var(--space-3);
+  align-content: start;
+}
+
+.footer-admin-column {
+  display: grid;
+  gap: var(--space-8);
   align-content: start;
 }
 

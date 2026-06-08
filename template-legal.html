@@ -72,14 +72,19 @@
         <a href="{{nav_guide_href}}">{{nav.guide}}</a>
         <a href="{{nav_about_href}}">{{nav.about}}</a>
         <a href="{{nav_contact_href}}">{{nav.contact}}</a>
-        <a href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.label}}</a>
       </nav>
-      <nav class="footer-legal" aria-label="{{footer.admin_heading}}">
-        <h2 class="footer-column-title">{{footer.admin_heading}}</h2>
-        <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
-        <a href="{{legal_path}}">{{footer.legal_label}}</a>
-        <a href="{{admin_path}}">{{footer.admin_label}}</a>
-      </nav>
+      <div class="footer-admin-column">
+        <nav class="footer-legal" aria-label="{{footer.admin_heading}}">
+          <h2 class="footer-column-title">{{footer.admin_heading}}</h2>
+          <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
+          <a href="{{legal_path}}">{{footer.legal_label}}</a>
+          <a href="{{admin_path}}">{{footer.admin_label}}</a>
+        </nav>
+        <nav class="footer-language" aria-label="{{footer.language_heading}}">
+          <h2 class="footer-column-title">{{footer.language_heading}}</h2>
+          <a href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.label}}</a>
+        </nav>
+      </div>
     </div>
     <div class="container footer-bottom">
       <div>{{shared.regions}}</div>
