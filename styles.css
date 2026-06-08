@@ -1000,10 +1000,13 @@ p {
 .fixed { position: fixed; }
 .top-0 { top: 0; }
 .w-full { width: 100%; }
+.min-h-screen { min-height: 100svh; }
 .hidden { display: none !important; }
 .overflow-hidden { overflow: hidden; }
 .grid { display: grid; }
 .flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1 1 auto; }
 .flex-wrap { flex-wrap: wrap; }
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }

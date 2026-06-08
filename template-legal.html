@@ -23,7 +23,7 @@
     }
   </style>
 </head>
-<body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
+<body class="min-h-screen flex flex-col" data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
   <header class="site-nav scrolled fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
       <a class="site-logo" href="/{{locale_slug}}/">
@@ -37,7 +37,7 @@
       </nav>
     </div>
   </header>
-  <main class="legal-page section">
+  <main class="legal-page section flex-1">
     <article class="container legal-content">
       <p class="eyebrow">{{header.site_name}}</p>
       <h1>{{page_title}}</h1>
@@ -46,8 +46,32 @@
     </article>
   </main>
   <footer class="footer bg-dark text-white">
+    <div class="container footer-title">
+      <strong>{{footer.business_name}}</strong>
+    </div>
+    <div class="container footer-grid">
+      <div class="footer-description">
+        <h2 class="footer-column-title">{{footer.description_heading}}</h2>
+        <p>{{footer.description}}</p>
+      </div>
+      <nav class="footer-nav" aria-label="{{footer.pages_heading}}">
+        <h2 class="footer-column-title">{{footer.pages_heading}}</h2>
+        <a href="{{nav_calculator_href}}">{{nav.calculator}}</a>
+        <a href="{{nav_services_href}}">{{nav.services}}</a>
+        <a href="{{nav_guide_href}}">{{nav.guide}}</a>
+        <a href="{{nav_about_href}}">{{nav.about}}</a>
+        <a href="{{nav_contact_href}}">{{nav.contact}}</a>
+        <a href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.label}}</a>
+      </nav>
+      <nav class="footer-legal" aria-label="{{footer.admin_heading}}">
+        <h2 class="footer-column-title">{{footer.admin_heading}}</h2>
+        <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
+        <a href="{{legal_path}}">{{footer.legal_label}}</a>
+        <a href="{{admin_path}}">{{footer.admin_label}}</a>
+      </nav>
+    </div>
     <div class="container footer-bottom">
-      <a href="/{{locale_slug}}/">{{header.site_name}}</a>
+      <div>{{shared.regions}}</div>
       <p>© {{currentYear}} {{footer.business_name}}. {{footer.copyright}}</p>
     </div>
   </footer>

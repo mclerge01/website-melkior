@@ -1,3 +1,4 @@
+import { execFileSync } from "child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -41,6 +42,41 @@ function themeStyle(theme) {
   return Object.entries(theme || {})
     .map(([key, value]) => `      --color-${key.replace(/_/g, "-")}: ${value};`)
     .join(" ");
+}
+
+function gitOutput(args) {
+  try {
+    return execFileSync("git", args, {
+      cwd: ROOT,
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return "";
+  }
+}
+
+function pageDate(generatedPath) {
+  const relatedFiles = ["content/settings.json", "template-legal.html", generatedPath];
+  const dirty = gitOutput(["status", "--porcelain", "--", ...relatedFiles]);
+  if (dirty) return new Date();
+
+  const isoDate = gitOutput(["log", "-1", "--format=%cI", "--", generatedPath]);
+  const date = isoDate ? new Date(isoDate) : new Date();
+  return Number.isNaN(date.getTime()) ? new Date() : date;
+}
+
+function formatPageUpdated(locale, fallback, generatedPath) {
+  const match = fallback.match(/^([^:]+)(\s*:\s*)/);
+  const prefix = match ? match[1].trim() : locale.startsWith("en") ? "Last updated" : "Dernière mise à jour";
+  const separator = locale.startsWith("fr") ? " : " : ": ";
+  const formattedDate = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(pageDate(generatedPath));
+
+  return `${prefix}${separator}${formattedDate}`;
 }
 
 function prepareLocaleData(settings, locale, page = "home") {
@@ -120,21 +156,23 @@ for (const locale of settings.site.locales) {
   const homeData = prepareLocaleData(settings, locale, "home");
   write(`${LOCALES[locale].slug}/index.html`, render(template, homeData));
 
+  const privacyPath = `${LOCALES[locale].privacyPath.slice(1)}index.html`;
   const privacyData = {
     ...prepareLocaleData(settings, locale, "privacy"),
     page_title: homeData.privacy_page.title,
-    page_updated: homeData.privacy_page.updated,
+    page_updated: formatPageUpdated(locale, homeData.privacy_page.updated, privacyPath),
     page_body: homeData.privacy_page.body,
   };
-  write(`${LOCALES[locale].privacyPath.slice(1)}index.html`, render(legalTemplate, privacyData));
+  write(privacyPath, render(legalTemplate, privacyData));
 
+  const legalPath = `${LOCALES[locale].legalPath.slice(1)}index.html`;
   const legalData = {
     ...prepareLocaleData(settings, locale, "legal"),
     page_title: homeData.legal_page.title,
-    page_updated: homeData.legal_page.updated,
+    page_updated: formatPageUpdated(locale, homeData.legal_page.updated, legalPath),
     page_body: homeData.legal_page.body,
   };
-  write(`${LOCALES[locale].legalPath.slice(1)}index.html`, render(legalTemplate, legalData));
+  write(legalPath, render(legalTemplate, legalData));
 }
 
 write("index.html", `<!DOCTYPE html>
