@@ -1255,6 +1255,14 @@ p {
     align-items: start;
   }
 
+  .calculator-detail-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .calculator-detail {
+    padding: var(--space-3);
+  }
+
   .contact-form {
     gap: var(--space-4);
     padding: var(--space-5);
