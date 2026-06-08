@@ -1133,6 +1133,8 @@ p {
     grid-template-columns: 1.2fr 1fr 1fr;
   }
 
+  .lg\:h-full { height: 100%; }
+  .lg\:items-stretch { align-items: stretch; }
   .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
