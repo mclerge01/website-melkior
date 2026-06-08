@@ -93,6 +93,7 @@ p {
   --color-primary-dark: #3c0012;
   --color-primary-light: #fff1f3;
   --color-secondary: #007167;
+  --color-secondary-light: #e8f5f3;
   --color-accent: #dbaa4b;
   --color-accent-dark: #8f641f;
   --color-link-bright: #ffcf4a;
@@ -828,7 +829,7 @@ p {
 
 .consultation-note {
   margin-top: var(--space-5);
-  background: var(--color-primary-light);
+  background: var(--color-secondary-light);
 }
 
 .consultation-note h3 {
