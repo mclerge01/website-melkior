@@ -59,9 +59,9 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
+        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="nav-link" href="#services">{{nav.services}}</a>
         <a class="nav-link" href="#guide">{{nav.guide}}</a>
-        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="nav-link" href="#about">{{nav.about}}</a>
         {{#if testimonials.has_items}}<a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>{{/if}}
         {{#if media.has_items}}<a class="nav-link" href="#media">{{nav.media}}</a>{{/if}}
@@ -331,8 +331,9 @@
         <p>{{footer.description}}</p>
       </div>
       <nav class="footer-nav">
-        <a href="#services">{{nav.services}}</a>
         <a href="#calculator">{{nav.calculator}}</a>
+        <a href="#services">{{nav.services}}</a>
+        <a href="#guide">{{nav.guide}}</a>
         <a href="#about">{{nav.about}}</a>
         <a href="#contact">{{nav.contact}}</a>
         <a href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.label}}</a>
