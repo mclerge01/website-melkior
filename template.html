@@ -137,22 +137,22 @@
       </div>
     </section>
 
-    <section id="services" class="section bg-light">
+    <section id="services" class="section bg-primary-dark text-white">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">{{services.eyebrow}}</p>
+          <p class="eyebrow eyebrow-light">{{services.eyebrow}}</p>
           <h2 class="section-title">{{services.heading}}</h2>
         </div>
         <div class="service-grid">
           {{#each services.items}}
           <article class="service-card reveal-on-scroll">
             <h3>{{title}}</h3>
-            <div class="text-light">{{description}}</div>
+            <div class="text-white-muted">{{description}}</div>
           </article>
           {{/each}}
         </div>
         <div class="section-cta service-cta">
-          <p class="eyebrow">{{final_cta.eyebrow}}</p>
+          <p class="eyebrow eyebrow-light">{{final_cta.eyebrow}}</p>
           <h3>{{final_cta.heading}}</h3>
           <p>{{final_cta.description}}</p>
           <div class="hero-actions justify-center">
