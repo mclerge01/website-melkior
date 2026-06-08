@@ -104,10 +104,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalMessage = document.getElementById("form-modal-message");
   const modalClose = document.getElementById("form-modal-close");
 
-  function showModal(success, message) {
+  function getModalTitle(success) {
+    const isEnglish = body.dataset.locale === "en-CA";
+    if (success) return isEnglish ? "Message sent" : "Message envoyé";
+    return isEnglish ? "Error" : "Erreur";
+  }
+
+  function showModal(success, message, options = {}) {
     if (!modal || !modalIcon || !modalMessage) return;
-    modalIcon.textContent = success ? "OK" : "!";
-    modalIcon.style.color = success ? "var(--color-success)" : "var(--color-error)";
+    modal.classList.toggle("modal-phone", options.variant === "phone");
+    modalIcon.textContent = options.title || getModalTitle(success);
+    modalIcon.style.color = options.titleColor || (success ? "var(--color-success)" : "var(--color-error)");
     modalMessage.textContent = message;
     modal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
@@ -138,7 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const phone = link.dataset.phoneNumber || link.textContent.trim();
       const isEnglish = body.dataset.locale === "en-CA";
-      const message = isEnglish ? `Call Melkior at ${phone}.` : `Appelez Melkior au ${phone}.`;
+      const message = isEnglish
+        ? "Use this number to call Melkior from your phone. It was copied if your browser allows it."
+        : "Utilisez ce numéro pour appeler Melkior depuis votre téléphone. Il a été copié si votre navigateur le permet.";
 
       try {
         if (window.navigator.clipboard) await window.navigator.clipboard.writeText(phone);
@@ -146,7 +155,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Clipboard access is optional; the modal still gives the visitor the number.
       }
 
-      showModal(true, message);
+      showModal(true, message, {
+        title: phone,
+        titleColor: "var(--color-primary)",
+        variant: "phone",
+      });
     });
   });
 

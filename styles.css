@@ -830,6 +830,15 @@ p {
   font-weight: 800;
 }
 
+.modal p {
+  margin-bottom: var(--space-5);
+}
+
+.modal-phone .form-modal-icon {
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+}
+
 .legal-page {
   padding-top: calc(var(--nav-height) + var(--section-y));
 }
