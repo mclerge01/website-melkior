@@ -562,19 +562,8 @@ p {
 }
 
 .timeline {
-  position: relative;
   display: grid;
   margin-block: var(--space-8);
-}
-
-.timeline::before {
-  content: "";
-  position: absolute;
-  top: 0.45rem;
-  bottom: 0.45rem;
-  left: 0.4375rem;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--color-accent), rgba(219, 170, 75, 0.25));
 }
 
 .timeline-item {
@@ -597,6 +586,20 @@ p {
   border-radius: var(--rounded-full);
   background: var(--color-primary-dark);
   box-shadow: 0 0 0 4px rgba(219, 170, 75, 0.12);
+}
+
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  top: 1.175rem;
+  bottom: 0;
+  left: 0.4375rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), rgba(219, 170, 75, 0.25));
+}
+
+.timeline-item:last-child::after {
+  display: none;
 }
 
 .timeline-year {
