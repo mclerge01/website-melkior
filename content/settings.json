@@ -1,0 +1,548 @@
+{
+  "site": {
+    "domain": "https://melkiorclerge.ca",
+    "default_locale": "fr-CA",
+    "locales": [
+      "fr-CA",
+      "en-CA"
+    ]
+  },
+  "theme": {
+    "primary": "#5a2138",
+    "primary_dark": "#2a0e1a",
+    "primary_light": "#f3e7ed",
+    "secondary": "#0f4d45",
+    "accent": "#c6a15b",
+    "accent_dark": "#8d6a2f",
+    "text": "#181818",
+    "text_light": "#646a70",
+    "bg": "#ffffff",
+    "bg_light": "#f6f7f4",
+    "bg_dark": "#181014",
+    "border": "#e2e2de"
+  },
+  "shared": {
+    "phone": "(514) 836-6736",
+    "phone_href": "+15148366736",
+    "email": "consultation@melkiorclerge.ca",
+    "office_address": "6799 boulevard St-Laurent, Montréal, QC, H2S 3C8",
+    "regions": "Montréal, Rive-Sud/Montérégie, Laval/Rive-Nord",
+    "profile_url": "https://www.multi-prets.com/fr/courtier-hypothecaire/melkior-clerge/",
+    "images": {
+      "hero": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+      "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+      "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg"
+    },
+    "social": {
+      "facebook": ""
+    }
+  },
+  "locales": {
+    "fr-CA": {
+      "seo": {
+        "title": "Melkior Clergé | Courtier hypothécaire Multi-Prêts à Montréal",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts à Montréal. Stratégies pour achat, préautorisation, renouvellement, refinancement et consolidation.",
+        "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+        "favicon": "/favicon.svg"
+      },
+      "header": {
+        "site_name": "Melkior Clergé",
+        "credential": "Courtier hypothécaire | Multi-Prêts",
+        "cta_text": "Parler de mon projet",
+        "cta_link": "#contact"
+      },
+      "nav": {
+        "services": "Services",
+        "guide": "Guide",
+        "calculator": "Calculateur",
+        "about": "À propos",
+        "testimonials": "Témoignages",
+        "media": "Médias",
+        "contact": "Contact"
+      },
+      "hero": {
+        "eyebrow": "Courtier hypothécaire | Multi-Prêts",
+        "title": "Votre projet immobilier mérite une stratégie claire.",
+        "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
+        "primary_cta": "Demander une consultation",
+        "secondary_cta": "Calculer mes paiements",
+        "phone_label": "Appeler directement",
+        "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire"
+      },
+      "stats": {
+        "items": [
+          {
+            "value": "2016",
+            "label": "Courtier depuis"
+          },
+          {
+            "value": "20+",
+            "label": "Institutions accessibles"
+          },
+          {
+            "value": "3",
+            "label": "Grandes régions desservies"
+          },
+          {
+            "value": "1",
+            "label": "Stratégie adaptée à votre projet"
+          }
+        ]
+      },
+      "calculator": {
+        "eyebrow": "Calculateur",
+        "heading": "Calculez vos paiements hypothécaires",
+        "description": "Obtenez une estimation rapide de votre mensualité. Les résultats sont indicatifs et ne remplacent pas une analyse personnalisée.",
+        "amount_label": "Montant du prêt",
+        "rate_label": "Taux d'intérêt annuel",
+        "amortization_label": "Amortissement",
+        "frequency_label": "Fréquence",
+        "monthly_label": "Mensuel",
+        "biweekly_label": "Aux deux semaines",
+        "result_label": "Paiement estimé",
+        "cta_text": "Valider ma capacité d'emprunt",
+        "default_amount": "450000",
+        "default_rate": "4.89",
+        "default_years": "25"
+      },
+      "services": {
+        "eyebrow": "Services",
+        "heading": "Comment puis-je vous aider?",
+        "items": [
+          {
+            "title": "Achat de propriété",
+            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
+            "cta_text": "Obtenir ma soumission",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Préautorisation",
+            "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux.",
+            "cta_text": "Planifier ma préautorisation",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Renouvellement",
+            "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts.",
+            "cta_text": "Comparer mes options",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Refinancement",
+            "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité.",
+            "cta_text": "Analyser mon refinancement",
+            "cta_link": "#contact"
+          }
+        ]
+      },
+      "guide": {
+        "eyebrow": "Guide",
+        "heading": "Avancer avec les bons repères",
+        "intro": "Une bonne stratégie hypothécaire commence avant la demande. Ces points sont les plus fréquents dans mes rencontres.",
+        "items": [
+          {
+            "title": "Capacité d'emprunt",
+            "description": "Comprendre le montant maximal est utile, mais choisir un paiement confortable l'est encore plus."
+          },
+          {
+            "title": "Mise de fonds",
+            "description": "Chaque scénario a ses implications: assurance hypothécaire, liquidités restantes, frais de démarrage et marge de manoeuvre."
+          },
+          {
+            "title": "Garantie de taux",
+            "description": "Une préautorisation peut protéger un taux pendant que vous magasinez, selon les conditions du prêteur."
+          }
+        ]
+      },
+      "about": {
+        "eyebrow": "Mon histoire",
+        "title": "Un conseiller patient, organisé et à l'écoute.",
+        "body": "Toujours disponible selon votre horaire, Melkior est un passionné à l'écoute de vos besoins, patient et organisé. Il est votre allié pour trouver une solution qui vous conviendra.\n\nAprès des études en assurances et en services financiers, il a travaillé en règlement de sinistres avant de se tourner vers le courtage hypothécaire en 2015. Courtier hypothécaire depuis 2016 chez Multi-Prêts Hypothèques, il met son expérience au service de stratégies financières concrètes.\n\nSon objectif: vous accompagner pour une préautorisation, un achat, un refinancement, un renouvellement, une consolidation de dettes ou toute question liée à votre capacité d'emprunt.",
+        "image_alt": "Melkior Clergé",
+        "timeline": [
+          {
+            "year": "2010",
+            "title": "Services financiers",
+            "description": "Début d'un parcours professionnel en assurances et services financiers."
+          },
+          {
+            "year": "2015",
+            "title": "Transition vers l'hypothèque",
+            "description": "Un choix naturel pour jumeler relation d'aide, finance et immobilier."
+          },
+          {
+            "year": "Aujourd'hui",
+            "title": "Courtier Multi-Prêts",
+            "description": "Accompagnement rigoureux pour des projets immobiliers et financiers bien structurés."
+          }
+        ],
+        "cta_text": "Discutons de votre projet"
+      },
+      "promo": {
+        "enabled": false,
+        "eyebrow": "À la une",
+        "heading": "Une offre ou un événement à promouvoir",
+        "description": "Cette zone est éditable dans l'administration et demeure cachée tant qu'elle n'est pas activée.",
+        "cta_text": "En savoir plus",
+        "cta_link": "#contact"
+      },
+      "testimonials": {
+        "has_items": false,
+        "eyebrow": "Témoignages",
+        "heading": "La confiance des clients, une priorité.",
+        "items": []
+      },
+      "media": {
+        "has_items": false,
+        "eyebrow": "Médias",
+        "heading": "Dans les médias",
+        "description": "Ajoutez ici des publications, entrevues ou liens sociaux vérifiables.",
+        "items": []
+      },
+      "final_cta": {
+        "eyebrow": "Passez à l'action",
+        "heading": "Votre prochain chapitre immobilier commence ici.",
+        "description": "Un court appel suffit pour comprendre votre situation et identifier les prochaines étapes.",
+        "primary_cta": "Demander une consultation",
+        "secondary_cta": "Appeler maintenant"
+      },
+      "contact": {
+        "heading": "Parlons de votre projet",
+        "subtitle": "Envoyez-moi quelques détails. Je vous répondrai dans les meilleurs délais.",
+        "info_heading": "Coordonnées",
+        "phone_label": "Téléphone",
+        "email_label": "Courriel",
+        "address_label": "Bureau",
+        "regions_label": "Régions desservies",
+        "consultation_heading": "Consultation initiale",
+        "consultation_text": "Aucune obligation. L'objectif est de clarifier vos besoins et les options disponibles.",
+        "form_name_label": "Nom complet",
+        "form_name_placeholder": "Votre nom",
+        "form_email_label": "Courriel",
+        "form_email_placeholder": "votre@courriel.com",
+        "form_phone_label": "Téléphone",
+        "form_phone_placeholder": "(514) 000-0000",
+        "form_subject_label": "Sujet",
+        "form_subject_placeholder": "Sélectionnez un sujet",
+        "form_message_label": "Message",
+        "form_message_placeholder": "Décrivez brièvement votre projet...",
+        "form_referral_label": "Comment m'avez-vous trouve?",
+        "form_referral_placeholder": "Sélectionnez une option",
+        "form_submit": "Envoyer le message",
+        "form_sending": "Envoi en cours...",
+        "form_success": "Votre message a bien été envoyé. Je vous répondrai dans les meilleurs délais.",
+        "form_error": "Une erreur est survenue. Veuillez réessayer.",
+        "form_network_error": "Erreur de connexion. Veuillez réessayer.",
+        "form_close": "Fermer",
+        "subjects": [
+          {
+            "title": "Achat de propriété"
+          },
+          {
+            "title": "Préautorisation"
+          },
+          {
+            "title": "Renouvellement"
+          },
+          {
+            "title": "Refinancement"
+          },
+          {
+            "title": "Consolidation de dettes"
+          },
+          {
+            "title": "Question hypothécaire"
+          }
+        ],
+        "referrals": [
+          {
+            "title": "Recherche internet"
+          },
+          {
+            "title": "Recommandation"
+          },
+          {
+            "title": "Réseaux sociaux"
+          },
+          {
+            "title": "Multi-Prêts"
+          },
+          {
+            "title": "Autre"
+          }
+        ]
+      },
+      "footer": {
+        "business_name": "Melkior Clergé",
+        "description": "Courtier hypothécaire Multi-Prêts dédié à trouver une stratégie claire pour votre projet immobilier.",
+        "privacy_label": "Politique de confidentialité",
+        "legal_label": "Mentions légales",
+        "admin_label": "Administration",
+        "copyright": "Tous droits réservés."
+      },
+      "privacy_page": {
+        "title": "Politique de confidentialité",
+        "updated": "Dernière mise à jour : juin 2026",
+        "body": "## Introduction\n\nCe site présente les services de Melkior Clergé, courtier hypothécaire. La protection des renseignements personnels transmis par le formulaire de contact est importante.\n\n## Renseignements recueillis\n\nLe site recueille uniquement les renseignements fournis volontairement dans le formulaire: nom, courriel, téléphone, sujet et message.\n\n## Utilisation\n\nCes renseignements servent uniquement à répondre à votre demande. Ils sont transmis par courriel à l'adresse professionnelle configurée pour le site.\n\n## Conservation\n\nAucune base de données client n'est conservée par le site. Les messages sont conservés dans la boîte courriel professionnelle selon les pratiques de l'entreprise.\n\n## Vos droits\n\nPour demander l'accès, la rectification ou la suppression des renseignements transmis, utilisez le formulaire de contact du site."
+      },
+      "legal_page": {
+        "title": "Mentions légales",
+        "updated": "Dernière mise à jour : juin 2026",
+        "body": "## Nature du site\n\nCe site présente les services de courtage hypothécaire de Melkior Clergé. Les informations sont fournies à titre général et ne remplacent pas une analyse personnalisée.\n\n## Exactitude\n\nLes taux, conditions et options hypothécaires peuvent changer sans préavis et dépendent de la situation du client, du prêteur et du marché.\n\n## Propriété intellectuelle\n\nLe contenu, les images et la mise en page du site sont protégés par le droit d'auteur.\n\n## Contact\n\nPour toute question relative à ce site, utilisez le formulaire de contact."
+      }
+    },
+    "en-CA": {
+      "seo": {
+        "title": "Melkior Clergé | Multi-Prêts Mortgage Broker in Montreal",
+        "description": "Melkior Clergé, Multi-Prêts mortgage broker in Montreal. Mortgage strategies for purchases, pre-approvals, renewals, refinancing, and debt consolidation.",
+        "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+        "favicon": "/favicon.svg"
+      },
+      "header": {
+        "site_name": "Melkior Clergé",
+        "credential": "Mortgage Broker | Multi-Prêts",
+        "cta_text": "Discuss my project",
+        "cta_link": "#contact"
+      },
+      "nav": {
+        "services": "Services",
+        "guide": "Guide",
+        "calculator": "Calculator",
+        "about": "About",
+        "testimonials": "Testimonials",
+        "media": "Media",
+        "contact": "Contact"
+      },
+      "hero": {
+        "eyebrow": "Mortgage Broker | Multi-Prêts",
+        "title": "Your real estate project deserves a clear mortgage strategy.",
+        "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
+        "primary_cta": "Request a consultation",
+        "secondary_cta": "Calculate payments",
+        "phone_label": "Call directly",
+        "image_alt": "Portrait of Melkior Clergé, mortgage broker"
+      },
+      "stats": {
+        "items": [
+          {
+            "value": "2016",
+            "label": "Mortgage broker since"
+          },
+          {
+            "value": "20+",
+            "label": "Accessible institutions"
+          },
+          {
+            "value": "3",
+            "label": "Major regions served"
+          },
+          {
+            "value": "1",
+            "label": "Strategy tailored to your project"
+          }
+        ]
+      },
+      "calculator": {
+        "eyebrow": "Calculator",
+        "heading": "Calculate your mortgage payments",
+        "description": "Get a quick estimate of your payment. Results are indicative and do not replace a personalized review.",
+        "amount_label": "Loan amount",
+        "rate_label": "Annual interest rate",
+        "amortization_label": "Amortization",
+        "frequency_label": "Frequency",
+        "monthly_label": "Monthly",
+        "biweekly_label": "Biweekly",
+        "result_label": "Estimated payment",
+        "cta_text": "Validate my borrowing capacity",
+        "default_amount": "450000",
+        "default_rate": "4.89",
+        "default_years": "25"
+      },
+      "services": {
+        "eyebrow": "Services",
+        "heading": "How can I help?",
+        "items": [
+          {
+            "title": "Property purchase",
+            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
+            "cta_text": "Get my quote",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Pre-approval",
+            "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate.",
+            "cta_text": "Plan my pre-approval",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Renewal",
+            "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind.",
+            "cta_text": "Compare my options",
+            "cta_link": "#contact"
+          },
+          {
+            "title": "Refinancing",
+            "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity.",
+            "cta_text": "Review my refinance",
+            "cta_link": "#contact"
+          }
+        ]
+      },
+      "guide": {
+        "eyebrow": "Guide",
+        "heading": "Move forward with the right reference points",
+        "intro": "A sound mortgage strategy starts before the application. These are the topics that come up most often.",
+        "items": [
+          {
+            "title": "Borrowing capacity",
+            "description": "Knowing the maximum amount is useful, but choosing a comfortable payment matters even more."
+          },
+          {
+            "title": "Down payment",
+            "description": "Each scenario has implications: mortgage insurance, remaining liquidity, startup costs, and flexibility."
+          },
+          {
+            "title": "Rate hold",
+            "description": "A pre-approval may protect a rate while you shop, depending on lender conditions."
+          }
+        ]
+      },
+      "about": {
+        "eyebrow": "My story",
+        "title": "A patient, organized advisor who listens.",
+        "body": "Available around your schedule, Melkior is passionate, attentive to your needs, patient, and organized. He is your ally in finding a solution that fits.\n\nAfter studying insurance and financial services, he worked in claims adjustment before moving toward mortgage brokerage in 2015. A mortgage broker with Multi-Prêts since 2016, he brings practical financial experience to concrete mortgage strategies.\n\nHis goal: guide you through a pre-approval, purchase, refinance, renewal, debt consolidation, or any question related to borrowing capacity.",
+        "image_alt": "Melkior Clergé",
+        "timeline": [
+          {
+            "year": "2010",
+            "title": "Financial services",
+            "description": "Start of a professional path in insurance and financial services."
+          },
+          {
+            "year": "2015",
+            "title": "Mortgage transition",
+            "description": "A natural move combining client support, finance, and real estate."
+          },
+          {
+            "year": "Today",
+            "title": "Multi-Prêts broker",
+            "description": "Structured guidance for well-planned real estate and financial projects."
+          }
+        ],
+        "cta_text": "Let's discuss your project"
+      },
+      "promo": {
+        "enabled": false,
+        "eyebrow": "Featured",
+        "heading": "A promotion or event can go here",
+        "description": "This area is editable in the admin and remains hidden until enabled.",
+        "cta_text": "Learn more",
+        "cta_link": "#contact"
+      },
+      "testimonials": {
+        "has_items": false,
+        "eyebrow": "Testimonials",
+        "heading": "Client trust comes first.",
+        "items": []
+      },
+      "media": {
+        "has_items": false,
+        "eyebrow": "Media",
+        "heading": "In the media",
+        "description": "Add verified publications, interviews, or social links here.",
+        "items": []
+      },
+      "final_cta": {
+        "eyebrow": "Take action",
+        "heading": "Your next real estate chapter starts here.",
+        "description": "A short call is enough to understand your situation and identify the next steps.",
+        "primary_cta": "Request a consultation",
+        "secondary_cta": "Call now"
+      },
+      "contact": {
+        "heading": "Let's talk about your project",
+        "subtitle": "Send me a few details. I will get back to you as soon as possible.",
+        "info_heading": "Contact details",
+        "phone_label": "Phone",
+        "email_label": "Email",
+        "address_label": "Office",
+        "regions_label": "Regions served",
+        "consultation_heading": "Initial consultation",
+        "consultation_text": "No obligation. The goal is to clarify your needs and the options available.",
+        "form_name_label": "Full name",
+        "form_name_placeholder": "Your name",
+        "form_email_label": "Email",
+        "form_email_placeholder": "you@email.com",
+        "form_phone_label": "Phone",
+        "form_phone_placeholder": "(514) 000-0000",
+        "form_subject_label": "Subject",
+        "form_subject_placeholder": "Select a subject",
+        "form_message_label": "Message",
+        "form_message_placeholder": "Briefly describe your project...",
+        "form_referral_label": "How did you find me?",
+        "form_referral_placeholder": "Select an option",
+        "form_submit": "Send message",
+        "form_sending": "Sending...",
+        "form_success": "Your message has been sent. I will reply as soon as possible.",
+        "form_error": "An error occurred. Please try again.",
+        "form_network_error": "Connection error. Please try again.",
+        "form_close": "Close",
+        "subjects": [
+          {
+            "title": "Property purchase"
+          },
+          {
+            "title": "Pre-approval"
+          },
+          {
+            "title": "Renewal"
+          },
+          {
+            "title": "Refinancing"
+          },
+          {
+            "title": "Debt consolidation"
+          },
+          {
+            "title": "Mortgage question"
+          }
+        ],
+        "referrals": [
+          {
+            "title": "Internet search"
+          },
+          {
+            "title": "Referral"
+          },
+          {
+            "title": "Social media"
+          },
+          {
+            "title": "Multi-Prêts"
+          },
+          {
+            "title": "Other"
+          }
+        ]
+      },
+      "footer": {
+        "business_name": "Melkior Clergé",
+        "description": "Multi-Prêts mortgage broker dedicated to finding a clear strategy for your real estate project.",
+        "privacy_label": "Privacy Policy",
+        "legal_label": "Legal Notice",
+        "admin_label": "Administration",
+        "copyright": "All rights reserved."
+      },
+      "privacy_page": {
+        "title": "Privacy Policy",
+        "updated": "Last updated: June 2026",
+        "body": "## Introduction\n\nThis website presents the services of Melkior Clergé, mortgage broker. Protecting the personal information submitted through the contact form matters.\n\n## Information collected\n\nThe site collects only information voluntarily provided through the form: name, email, phone, subject, and message.\n\n## Use\n\nThis information is used only to respond to your request. It is sent by email to the professional address configured for the site.\n\n## Réténtion\n\nThe website does not keep a client database. Messages are retained in the professional email inbox according to the business's practices.\n\n## Your rights\n\nTo request access, correction, or deletion of submitted information, use the website contact form."
+      },
+      "legal_page": {
+        "title": "Legal Notice",
+        "updated": "Last updated: June 2026",
+        "body": "## Nature of the website\n\nThis website presents the mortgage brokerage services of Melkior Clergé. Information is provided for general purposes and does not replace a personalized review.\n\n## Accuracy\n\nRates, conditions, and mortgage options may change without notice and depend on the client situation, lender, and market.\n\n## Intellectual property\n\nThe content, images, and layout of the site are protected by copyright.\n\n## Contact\n\nFor questions about this website, use the contact form."
+      }
+    }
+  }
+}

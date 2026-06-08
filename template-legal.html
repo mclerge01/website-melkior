@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{html_lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{page_title}} | {{header.site_name}}</title>
+  <meta name="description" content="{{seo.description}}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{canonical_url}}">
+  <link rel="alternate" hreflang="fr" href="{{alternate_fr}}">
+  <link rel="alternate" hreflang="fr-CA" href="{{alternate_fr}}">
+  <link rel="alternate" hreflang="en" href="{{alternate_en}}">
+  <link rel="alternate" hreflang="en-CA" href="{{alternate_en}}">
+  <link rel="alternate" hreflang="x-default" href="{{x_default}}">
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    :root {
+{{theme_style}}
+    }
+  </style>
+</head>
+<body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
+  <header class="site-nav scrolled fixed top-0 w-full" id="site-nav">
+    <div class="container nav-inner">
+      <a class="site-logo" href="/{{locale_slug}}/">
+        <span class="logo-mark">MC</span>
+        <span><strong>{{header.site_name}}</strong><small>{{header.credential}}</small></span>
+      </a>
+      <nav class="nav-menu legal-nav">
+        <a class="nav-link" href="/{{locale_slug}}/#services">{{nav.services}}</a>
+        <a class="nav-link" href="/{{locale_slug}}/#contact">{{nav.contact}}</a>
+        <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
+      </nav>
+    </div>
+  </header>
+  <main class="legal-page section">
+    <article class="container legal-content">
+      <p class="eyebrow">{{header.site_name}}</p>
+      <h1>{{page_title}}</h1>
+      <p class="text-light">{{page_updated}}</p>
+      <div class="rich-text">{{page_body}}</div>
+    </article>
+  </main>
+  <footer class="footer bg-dark text-white">
+    <div class="container footer-bottom">
+      <a href="/{{locale_slug}}/">{{header.site_name}}</a>
+      <p>© {{currentYear}} {{footer.business_name}}. {{footer.copyright}}</p>
+    </div>
+  </footer>
+  <script src="/script.js"></script>
+</body>
+</html>

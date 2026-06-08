@@ -1,0 +1,5 @@
+compatibility_date = "2026-04-27"
+
+[[services]]
+binding = "EMAIL_WORKER"
+service = "email-sender"

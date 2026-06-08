@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="{{html_lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.title}}</title>
+  <meta name="description" content="{{seo.description}}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{canonical_url}}">
+  <link rel="alternate" hreflang="fr" href="{{alternate_fr}}">
+  <link rel="alternate" hreflang="fr-CA" href="{{alternate_fr}}">
+  <link rel="alternate" hreflang="en" href="{{alternate_en}}">
+  <link rel="alternate" hreflang="en-CA" href="{{alternate_en}}">
+  <link rel="alternate" hreflang="x-default" href="{{x_default}}">
+  {{#if seo.favicon}}<link rel="icon" href="{{seo.favicon}}">{{/if}}
+  <meta property="og:title" content="{{seo.title}}">
+  <meta property="og:description" content="{{seo.description}}">
+  <meta property="og:image" content="{{seo.og_image}}">
+  <meta property="og:url" content="{{canonical_url}}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{{html_lang}}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{seo.title}}">
+  <meta name="twitter:description" content="{{seo.description}}">
+  <meta name="twitter:image" content="{{seo.og_image}}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    :root {
+{{theme_style}}
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "{{header.site_name}}",
+    "description": "{{seo.description}}",
+    "telephone": "{{shared.phone}}",
+    "email": "{{shared.email}}",
+    "address": "{{shared.office_address}}",
+    "url": "{{canonical_url}}"
+  }
+  </script>
+</head>
+<body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
+  <header class="site-nav fixed top-0 w-full" id="site-nav">
+    <div class="container nav-inner">
+      <a class="site-logo" href="/{{locale_slug}}/" aria-label="{{header.site_name}}">
+        <span class="logo-mark">MC</span>
+        <span>
+          <strong>{{header.site_name}}</strong>
+          <small>{{header.credential}}</small>
+        </span>
+      </a>
+      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" aria-label="Navigation">
+        <a class="nav-link" href="#services">{{nav.services}}</a>
+        <a class="nav-link" href="#guide">{{nav.guide}}</a>
+        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
+        <a class="nav-link" href="#about">{{nav.about}}</a>
+        {{#if testimonials.has_items}}<a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>{{/if}}
+        {{#if media.has_items}}<a class="nav-link" href="#media">{{nav.media}}</a>{{/if}}
+        <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
+        <a class="btn btn-primary nav-cta" href="#contact">{{header.cta_text}}</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero section">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal-on-scroll">
+          <p class="eyebrow">{{hero.eyebrow}}</p>
+          <h1 class="hero-title">{{hero.title}}</h1>
+          <p class="hero-subtitle">{{hero.subtitle}}</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="#contact">{{hero.primary_cta}}</a>
+            <a class="btn btn-outline btn-lg" href="#calculator">{{hero.secondary_cta}}</a>
+          </div>
+          <a class="phone-link" href="tel:{{shared.phone_href}}">{{hero.phone_label}} <strong>{{shared.phone}}</strong></a>
+        </div>
+        <div class="hero-portrait reveal-on-scroll">
+          <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-band" aria-label="Highlights">
+      <div class="container stats-grid">
+        {{#each stats.items}}
+        <div class="stat-item">
+          <strong>{{value}}</strong>
+          <span>{{label}}</span>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section id="calculator" class="section calculator-section">
+      <div class="container calculator-grid">
+        <div>
+          <p class="eyebrow">{{calculator.eyebrow}}</p>
+          <h2 class="section-title">{{calculator.heading}}</h2>
+          <p class="section-lead">{{calculator.description}}</p>
+        </div>
+        <form class="calculator-card" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
+          <label class="form-group">
+            <span class="form-label">{{calculator.amount_label}}</span>
+            <input class="input" type="number" min="0" step="1000" name="amount" value="{{calculator.default_amount}}">
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.rate_label}}</span>
+            <input class="input" type="number" min="0" step="0.01" name="rate" value="{{calculator.default_rate}}">
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.amortization_label}}</span>
+            <input class="input" type="number" min="1" max="35" step="1" name="years" value="{{calculator.default_years}}">
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.frequency_label}}</span>
+            <select class="select" name="frequency">
+              <option value="monthly">{{calculator.monthly_label}}</option>
+              <option value="biweekly">{{calculator.biweekly_label}}</option>
+            </select>
+          </label>
+          <div class="calculator-result">
+            <span>{{calculator.result_label}}</span>
+            <strong data-payment-result>$0</strong>
+          </div>
+          <a class="btn btn-primary w-full" href="#contact">{{calculator.cta_text}}</a>
+        </form>
+      </div>
+    </section>
+
+    <section id="services" class="section bg-light">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">{{services.eyebrow}}</p>
+          <h2 class="section-title">{{services.heading}}</h2>
+        </div>
+        <div class="service-grid">
+          {{#each services.items}}
+          <article class="service-card reveal-on-scroll">
+            <h3>{{title}}</h3>
+            <div class="text-light">{{description}}</div>
+            <a href="{{cta_link}}" class="text-link">{{cta_text}}</a>
+          </article>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <section id="guide" class="section">
+      <div class="container guide-grid">
+        <div>
+          <p class="eyebrow">{{guide.eyebrow}}</p>
+          <h2 class="section-title">{{guide.heading}}</h2>
+          <p class="section-lead">{{guide.intro}}</p>
+        </div>
+        <div class="guide-list">
+          {{#each guide.items}}
+          <article class="guide-item">
+            <h3>{{title}}</h3>
+            <div class="text-light">{{description}}</div>
+          </article>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section about-section bg-dark text-white">
+      <div class="container about-grid">
+        <div class="about-image">
+          <img src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
+        </div>
+        <div>
+          <p class="eyebrow eyebrow-light">{{about.eyebrow}}</p>
+          <h2 class="section-title">{{about.title}}</h2>
+          <div class="about-body">{{about.body}}</div>
+          <div class="timeline">
+            {{#each about.timeline}}
+            <article class="timeline-item">
+              <span>{{year}}</span>
+              <h3>{{title}}</h3>
+              <div>{{description}}</div>
+            </article>
+            {{/each}}
+          </div>
+          <a class="btn btn-accent" href="#contact">{{about.cta_text}}</a>
+        </div>
+      </div>
+    </section>
+
+    {{#if promo.enabled}}
+    <section class="section promo-section">
+      <div class="container promo-band">
+        <p class="eyebrow">{{promo.eyebrow}}</p>
+        <h2>{{promo.heading}}</h2>
+        <p>{{promo.description}}</p>
+        <a class="btn btn-primary" href="{{promo.cta_link}}">{{promo.cta_text}}</a>
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if testimonials.has_items}}
+    <section id="testimonials" class="section bg-light">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">{{testimonials.eyebrow}}</p>
+          <h2 class="section-title">{{testimonials.heading}}</h2>
+        </div>
+        <div class="testimonial-grid">
+          {{#each testimonials.items}}
+          <article class="testimonial-card">
+            <p>{{quote}}</p>
+            <strong>{{name}}</strong>
+            <span>{{context}}</span>
+          </article>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+    {{/if}}
+
+    {{#if media.has_items}}
+    <section id="media" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">{{media.eyebrow}}</p>
+          <h2 class="section-title">{{media.heading}}</h2>
+          <p class="section-lead">{{media.description}}</p>
+        </div>
+        <div class="media-grid">
+          {{#each media.items}}
+          <a class="media-card" href="{{url}}" target="_blank" rel="noopener">
+            <span>{{type}}</span>
+            <strong>{{title}}</strong>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+    {{/if}}
+
+    <section class="section final-cta">
+      <div class="container final-cta-inner">
+        <p class="eyebrow eyebrow-light">{{final_cta.eyebrow}}</p>
+        <h2>{{final_cta.heading}}</h2>
+        <p>{{final_cta.description}}</p>
+        <div class="hero-actions justify-center">
+          <a class="btn btn-accent btn-lg" href="#contact">{{final_cta.primary_cta}}</a>
+          <a class="btn btn-ghost btn-lg" href="tel:{{shared.phone_href}}">{{final_cta.secondary_cta}}</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section bg-light">
+      <div class="container contact-grid">
+        <div>
+          <p class="eyebrow">{{nav.contact}}</p>
+          <h2 class="section-title">{{contact.heading}}</h2>
+          <p class="section-lead">{{contact.subtitle}}</p>
+          <div class="contact-info">
+            <h3>{{contact.info_heading}}</h3>
+            <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}">{{shared.phone}}</a></p>
+            <p><strong>{{contact.email_label}}</strong><a href="mailto:{{shared.email}}">{{shared.email}}</a></p>
+            <p><strong>{{contact.address_label}}</strong><a href="https://www.google.com/maps/search/?api=1&query={{shared.office_address}}" target="_blank" rel="noopener">{{shared.office_address}}</a></p>
+            <p><strong>{{contact.regions_label}}</strong><span>{{shared.regions}}</span></p>
+          </div>
+          <div class="consultation-note">
+            <h3>{{contact.consultation_heading}}</h3>
+            <p>{{contact.consultation_text}}</p>
+          </div>
+        </div>
+        <form id="contact-form" class="contact-form" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">
+          <input type="hidden" name="locale" value="{{locale}}">
+          <div class="form-group hidden">
+            <label for="bot-field">Do not fill</label>
+            <input type="text" name="bot_field" id="bot-field" tabindex="-1" autocomplete="off">
+          </div>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_name_label}} *</span>
+            <input class="input" type="text" name="name" autocomplete="name" placeholder="{{contact.form_name_placeholder}}" required>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_email_label}} *</span>
+            <input class="input" type="email" name="email" autocomplete="email" placeholder="{{contact.form_email_placeholder}}" required>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_phone_label}}</span>
+            <input class="input" type="tel" name="phone" autocomplete="tel" placeholder="{{contact.form_phone_placeholder}}">
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_subject_label}} *</span>
+            <select class="select" name="subject" required>
+              <option value="">{{contact.form_subject_placeholder}}</option>
+              {{#each contact.subjects}}
+              <option value="{{title}}">{{title}}</option>
+              {{/each}}
+            </select>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_referral_label}}</span>
+            <select class="select" name="referral">
+              <option value="">{{contact.form_referral_placeholder}}</option>
+              {{#each contact.referrals}}
+              <option value="{{title}}">{{title}}</option>
+              {{/each}}
+            </select>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{contact.form_message_label}} *</span>
+            <textarea class="textarea" name="message" rows="6" placeholder="{{contact.form_message_placeholder}}" required></textarea>
+          </label>
+          <div class="cf-turnstile" data-sitekey="{{turnstile_sitekey}}"></div>
+          <button class="btn btn-primary w-full" type="submit">{{contact.form_submit}}</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer bg-dark text-white">
+    <div class="container footer-grid">
+      <div>
+        <strong>{{footer.business_name}}</strong>
+        <p>{{footer.description}}</p>
+      </div>
+      <nav class="footer-links">
+        <a href="#services">{{nav.services}}</a>
+        <a href="#calculator">{{nav.calculator}}</a>
+        <a href="#about">{{nav.about}}</a>
+        <a href="#contact">{{nav.contact}}</a>
+        <a href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.label}}</a>
+      </nav>
+      <div class="footer-links footer-legal">
+        <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
+        <a href="{{legal_path}}">{{footer.legal_label}}</a>
+        <a href="{{admin_path}}">{{footer.admin_label}}</a>
+        <a href="mailto:{{shared.email}}">{{shared.email}}</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>{{shared.regions}}</div>
+      <p>© {{currentYear}} {{footer.business_name}}. {{footer.copyright}}</p>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop hidden" id="form-modal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div id="form-modal-icon" class="form-modal-icon"></div>
+      <p id="form-modal-message"></p>
+      <button class="btn btn-primary w-full" id="form-modal-close">{{contact.form_close}}</button>
+    </div>
+  </div>
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="/script.js"></script>
+</body>
+</html>
