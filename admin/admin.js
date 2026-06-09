@@ -352,6 +352,7 @@ let currentUser = "";
 let activeView = "content";
 let activeLocale = "fr-CA";
 let activeSeoLocale = "fr-CA";
+let activeListEditor = null;
 let toastTimer = null;
 let pendingImages = [];
 const pendingImagePreviews = new Map();
@@ -882,10 +883,11 @@ function initMarkdownEditor(group, path) {
 
 function renderList(path, list) {
   const wrapper = document.createElement("div");
-  wrapper.className = "admin-field-full";
+  wrapper.className = "admin-list-editor admin-field-full";
+  wrapper.dataset.listPath = path;
 
   const header = document.createElement("div");
-  header.className = "admin-list-header";
+  header.className = "admin-list-header admin-list-toolbar";
   const copy = document.createElement("div");
   const title = document.createElement("h3");
   const items = Array.isArray(getPath(path)) ? getPath(path) : [];
@@ -894,34 +896,26 @@ function renderList(path, list) {
   count.className = "admin-status";
   count.textContent = `${items.length} élément${items.length > 1 ? "s" : ""}`;
   copy.append(title, count);
-  const add = document.createElement("button");
-  add.type = "button";
-  add.className = "btn btn-outline";
-  add.textContent = "Ajouter";
-  add.addEventListener("click", () => {
-    items.push(emptyItemForList(list));
-    setPath(path, items);
-    renderActiveView();
-  });
-  header.append(copy, add);
+  header.appendChild(copy);
   wrapper.appendChild(header);
 
   const listEl = document.createElement("div");
+  listEl.className = "admin-list-items";
   items.forEach((item, index) => listEl.appendChild(renderListItem(path, list, item, index, items.length)));
   wrapper.appendChild(listEl);
 
-  if (!items.length) {
-    const empty = document.createElement("button");
-    empty.type = "button";
-    empty.className = "admin-add-btn";
-    empty.textContent = `Ajouter ${list.label.toLowerCase()}`;
-    empty.addEventListener("click", () => {
-      items.push(emptyItemForList(list));
-      setPath(path, items);
-      renderActiveView();
-    });
-    wrapper.appendChild(empty);
-  }
+  const add = document.createElement("button");
+  add.type = "button";
+  add.className = "admin-add-btn";
+  add.innerHTML = `${adminIcon("plus")}<span>Ajouter ${list.label.toLowerCase()}</span>`;
+  add.addEventListener("click", () => {
+    const nextIndex = items.length;
+    items.push(emptyItemForList(list));
+    setPath(path, items);
+    activeListEditor = { path, index: nextIndex };
+    renderActiveView();
+  });
+  wrapper.appendChild(add);
 
   return wrapper;
 }
@@ -929,50 +923,103 @@ function renderList(path, list) {
 function renderListItem(path, list, item, index, total) {
   const itemEl = document.createElement("article");
   itemEl.className = "admin-list-item";
+  itemEl.dataset.index = String(index);
+  const editing = isListItemEditing(path, index);
+  itemEl.draggable = !editing;
+  if (!editing) initListDragReorder(itemEl, path, index);
 
-  const header = document.createElement("div");
-  header.className = "admin-list-header";
-  const title = document.createElement("div");
+  const handle = document.createElement("button");
+  handle.type = "button";
+  handle.className = "admin-drag-handle";
+  handle.title = "Glisser ou utiliser les flèches pour réordonner";
+  handle.setAttribute("aria-label", "Réordonner cet élément");
+  handle.innerHTML = adminIcon("drag");
+  handle.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp" && index > 0) {
+      event.preventDefault();
+      moveListItem(path, index, index - 1);
+    }
+    if (event.key === "ArrowDown" && index < total - 1) {
+      event.preventDefault();
+      moveListItem(path, index, index + 1);
+    }
+  });
+
+  const summary = listItemSummary(item, index);
+  const body = document.createElement("div");
+  body.className = "admin-list-item-body";
+  const title = document.createElement("p");
   title.className = "admin-list-item-title";
-  title.textContent = listItemTitle(item, index);
+  title.textContent = summary.title;
+  body.appendChild(title);
+  if (summary.description) {
+    const description = document.createElement("p");
+    description.className = "admin-list-item-desc";
+    description.textContent = summary.description;
+    body.appendChild(description);
+  }
 
   const actions = document.createElement("div");
   actions.className = "admin-list-actions";
   actions.append(
-    listAction("↑", "Monter", index === 0, () => moveListItem(path, index, index - 1)),
-    listAction("↓", "Descendre", index === total - 1, () => moveListItem(path, index, index + 1)),
-    listAction("Supprimer", "Supprimer", false, () => removeListItem(path, index))
+    listAction("edit", editing ? "Fermer" : "Modifier", false, () => toggleListEditor(path, index)),
+    listAction("trash", "Supprimer", false, () => removeListItem(path, index), "danger")
   );
-  header.append(title, actions);
-  itemEl.appendChild(header);
+  itemEl.append(handle, body, actions);
 
-  const panel = document.createElement("div");
-  panel.className = "admin-edit-panel";
-  const grid = document.createElement("div");
-  grid.className = "admin-field-grid";
-  for (const field of list.fields || []) {
-    grid.appendChild(renderField(`${path}.${index}.${field.key}`, field));
+  if (editing) {
+    const panel = document.createElement("div");
+    panel.className = "admin-edit-panel admin-list-edit-panel";
+    const grid = document.createElement("div");
+    grid.className = "admin-field-grid";
+    for (const field of list.fields || []) {
+      grid.appendChild(renderField(`${path}.${index}.${field.key}`, field));
+    }
+    panel.appendChild(grid);
+    itemEl.appendChild(panel);
   }
-  panel.appendChild(grid);
-  itemEl.appendChild(panel);
 
   return itemEl;
 }
 
-function listAction(text, label, disabled, handler) {
+function listAction(icon, label, disabled, handler, variant = "") {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = text.length <= 2 ? "admin-btn-icon" : "btn btn-outline";
-  button.textContent = text;
+  button.className = `admin-btn-icon${variant ? ` ${variant}` : ""}`;
+  button.innerHTML = adminIcon(icon);
   button.title = label;
+  button.setAttribute("aria-label", label);
   button.disabled = disabled;
   button.addEventListener("click", handler);
   return button;
 }
 
+function toggleListEditor(path, index) {
+  activeListEditor = isListItemEditing(path, index) ? null : { path, index };
+  renderActiveView();
+}
+
+function isListItemEditing(path, index) {
+  return activeListEditor?.path === path && activeListEditor.index === index;
+}
+
+function listItemSummary(item, index) {
+  if (!item || typeof item !== "object") {
+    return { title: `Élément ${index + 1}`, description: "" };
+  }
+  const titleKeys = ["title", "question", "name", "value", "label"];
+  const descriptionKeys = ["description", "answer", "quote", "subtitle", "message", "text", "label", "context"];
+  const titleKey = titleKeys.find((key) => String(item[key] || "").trim());
+  const title = titleKey ? String(item[titleKey]).trim() : `Élément ${index + 1}`;
+  const descriptionKey = descriptionKeys.find((key) => key !== titleKey && String(item[key] || "").trim());
+  return {
+    title,
+    description: descriptionKey ? String(item[descriptionKey]).trim() : "",
+  };
+}
+
 function listItemTitle(item, index) {
-  if (!item || typeof item !== "object") return `Élément ${index + 1}`;
-  return item.title || item.question || item.name || item.value || item.label || `Élément ${index + 1}`;
+  return listItemSummary(item, index).title;
 }
 
 function emptyItemForList(list) {
@@ -989,6 +1036,9 @@ function moveListItem(path, from, to) {
   const [item] = items.splice(from, 1);
   items.splice(to, 0, item);
   setPath(path, items);
+  if (activeListEditor?.path === path) {
+    activeListEditor = activeListEditor.index === from ? { path, index: to } : null;
+  }
   renderActiveView();
 }
 
@@ -998,7 +1048,60 @@ function removeListItem(path, index) {
   if (!confirm("Supprimer cet élément?")) return;
   items.splice(index, 1);
   setPath(path, items);
+  if (activeListEditor?.path === path) activeListEditor = null;
   renderActiveView();
+}
+
+function initListDragReorder(itemEl, path, index) {
+  itemEl.addEventListener("dragstart", (event) => {
+    itemEl.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", String(index));
+  });
+
+  itemEl.addEventListener("dragend", () => {
+    itemEl.classList.remove("dragging");
+    clearListDragState(itemEl);
+  });
+
+  itemEl.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    const rect = itemEl.getBoundingClientRect();
+    const before = event.clientY < rect.top + rect.height / 2;
+    clearListDragState(itemEl);
+    itemEl.classList.add(before ? "drag-over" : "drag-over-below");
+  });
+
+  itemEl.addEventListener("dragleave", () => itemEl.classList.remove("drag-over", "drag-over-below"));
+
+  itemEl.addEventListener("drop", (event) => {
+    event.preventDefault();
+    const from = Number(event.dataTransfer.getData("text/plain"));
+    if (!Number.isInteger(from) || from === index) return;
+    const before = itemEl.classList.contains("drag-over");
+    itemEl.classList.remove("drag-over", "drag-over-below");
+    let to = index;
+    if (!before && from < index) to = index;
+    else if (!before) to = index + 1;
+    else if (from < index) to = index - 1;
+    moveListItem(path, from, to);
+  });
+}
+
+function clearListDragState(itemEl) {
+  itemEl.closest(".admin-list-items")?.querySelectorAll(".admin-list-item").forEach((item) => {
+    item.classList.remove("drag-over", "drag-over-below");
+  });
+}
+
+function adminIcon(name) {
+  const icons = {
+    plus: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+    drag: '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>',
+    edit: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+    trash: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>',
+  };
+  return icons[name] || "";
 }
 
 function getTranslationSummary() {
