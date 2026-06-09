@@ -179,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const count = items.length;
       if (!count) return;
 
+      if (track.scrollLeft !== 0) track.scrollLeft = 0;
       activeIndex = ((index % count) + count) % count;
       const previousIndex = count > 2 ? (activeIndex - 1 + count) % count : -1;
       const nextIndex = count > 1 ? (activeIndex + 1) % count : -1;
@@ -193,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         item.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
         item.setAttribute("aria-hidden", String(!isActive));
       });
+      if (track.scrollLeft !== 0) track.scrollLeft = 0;
     }
 
     function setControlsState() {
