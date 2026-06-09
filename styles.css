@@ -1160,16 +1160,36 @@ p {
 }
 
 .testimonial-carousel {
+  --testimonial-card-width: min(100%, 48rem);
+  --testimonial-peek-offset: clamp(18rem, 44vw, 34rem);
+  position: relative;
   display: grid;
-  gap: var(--space-5);
-  max-width: 980px;
+  max-width: min(100%, 72rem);
   margin-inline: auto;
-  overflow: hidden;
-  padding-block: var(--space-2);
+  overflow: visible;
+  padding: var(--space-3) clamp(2.75rem, 6vw, 5rem) var(--space-8);
 }
 
 .testimonial-controls {
-  justify-content: center;
+  position: absolute;
+  inset: 50% 0 auto;
+  z-index: 6;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.testimonial-controls .carousel-control {
+  pointer-events: auto;
+  box-shadow: var(--shadow);
+}
+
+.testimonial-carousel.is-showcase .testimonial-showcase {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  max-width: none;
+  overflow: hidden;
 }
 
 .testimonial-card {
@@ -1178,6 +1198,47 @@ p {
   padding: var(--space-8);
   text-align: center;
   scroll-snap-align: start;
+}
+
+.testimonial-carousel.is-showcase .testimonial-card {
+  grid-area: 1 / 1;
+  justify-self: center;
+  z-index: 1;
+  width: var(--testimonial-card-width);
+  min-height: 16rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0) scale(0.86);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    filter 0.45s ease;
+}
+
+.testimonial-carousel.is-showcase .testimonial-card.is-active {
+  z-index: 4;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.testimonial-carousel.is-showcase .testimonial-card.is-prev,
+.testimonial-carousel.is-showcase .testimonial-card.is-next {
+  z-index: 2;
+  opacity: 0.36;
+  filter: saturate(0.82);
+}
+
+.testimonial-carousel.is-showcase .testimonial-card.is-prev {
+  transform: translate3d(calc(var(--testimonial-peek-offset) * -1), 0, 0) scale(0.88);
+}
+
+.testimonial-carousel.is-showcase .testimonial-card.is-next {
+  transform: translate3d(var(--testimonial-peek-offset), 0, 0) scale(0.88);
+}
+
+.testimonial-carousel.is-showcase .testimonial-card.is-hidden {
+  visibility: hidden;
 }
 
 .testimonial-section .testimonial-card {
@@ -1953,10 +2014,6 @@ p {
 
   .teaser-action {
     grid-column: auto;
-  }
-
-  .testimonial-showcase {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .contact-action-grid {

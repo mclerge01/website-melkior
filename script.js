@@ -122,6 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const mode = carousel.dataset.carouselMode || "page";
     let timer = null;
     let paused = false;
+    let activeIndex = 0;
+
+    function getItems() {
+      return Array.from(track.children);
+    }
 
     function uniquePositions(positions) {
       const normalized = positions.map((position) => Math.max(0, Math.round(position)));
@@ -129,11 +134,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getPages() {
+      if (mode === "showcase") {
+        return getItems().map((_, index) => index);
+      }
+
       const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
       if (maxScroll <= 2) return [0];
 
       if (mode === "item") {
-        const itemPages = Array.from(track.children).map((child) => Math.min(child.offsetLeft, maxScroll));
+        const itemPages = getItems().map((child) => Math.min(child.offsetLeft, maxScroll));
         return uniquePositions(itemPages);
       }
 
@@ -147,10 +156,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function currentPageIndex(pages = getPages()) {
+      if (mode === "showcase") return activeIndex;
+
       const scrollLeft = track.scrollLeft;
       return pages.reduce((closestIndex, page, index) => {
         return Math.abs(page - scrollLeft) < Math.abs(pages[closestIndex] - scrollLeft) ? index : closestIndex;
       }, 0);
+    }
+
+    function updateShowcase(index = activeIndex) {
+      if (mode !== "showcase") return;
+      const items = getItems();
+      const count = items.length;
+      if (!count) return;
+
+      activeIndex = ((index % count) + count) % count;
+      const previousIndex = count > 2 ? (activeIndex - 1 + count) % count : -1;
+      const nextIndex = count > 1 ? (activeIndex + 1) % count : -1;
+
+      items.forEach((item, itemIndex) => {
+        const isActive = itemIndex === activeIndex;
+        const isPrevious = itemIndex === previousIndex;
+        const isNext = itemIndex === nextIndex;
+        item.classList.toggle("is-active", isActive);
+        item.classList.toggle("is-prev", isPrevious);
+        item.classList.toggle("is-next", isNext);
+        item.classList.toggle("is-hidden", !isActive && !isPrevious && !isNext);
+        item.setAttribute("aria-hidden", String(!isActive));
+      });
     }
 
     function setControlsState() {
@@ -166,6 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       const normalizedIndex = (index + pages.length) % pages.length;
+      if (mode === "showcase") {
+        updateShowcase(normalizedIndex);
+        setControlsState();
+        return;
+      }
+
       track.scrollTo({ left: pages[normalizedIndex], behavior });
       setControlsState();
     }
@@ -227,8 +266,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    track.addEventListener("scroll", setControlsState, { passive: true });
+    if (mode !== "showcase") {
+      track.addEventListener("scroll", setControlsState, { passive: true });
+    }
+
     window.addEventListener("resize", () => {
+      if (mode === "showcase") {
+        updateShowcase(activeIndex);
+        resetAuto();
+        return;
+      }
+
       const index = currentPageIndex();
       goToPage(index, "auto");
       resetAuto();
@@ -237,8 +285,10 @@ document.addEventListener("DOMContentLoaded", () => {
     reducedMotion.addEventListener?.("change", resetAuto);
 
     carousel.classList.add("is-paged");
+    if (mode === "showcase") carousel.classList.add("is-showcase");
     carousel.dataset.carouselReady = "true";
     setControlsState();
+    updateShowcase(0);
     startAuto();
   }
 
