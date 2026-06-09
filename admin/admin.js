@@ -704,8 +704,15 @@ function renderField(path, field) {
 function inferFieldType(path, value) {
   if (typeof value === "boolean") return "toggle";
   if (/(\.|_)(image|photo|favicon|og)$/i.test(path)) return "image";
+  if (isCompactFieldPath(path)) return "text";
   if (String(value || "").length > 140 || /body|description|subtitle|message|intro|text|caption|quote/i.test(path)) return "textarea";
   return "text";
+}
+
+function isCompactFieldPath(path) {
+  const key = String(path || "").split(".").pop() || "";
+  return /(^|_)(button|cta|link)_(label|text)$/i.test(key)
+    || /(^|_)(alt|button|cta|email|eyebrow|handle|href|label|link|name|phone|title|url)$/i.test(key);
 }
 
 function renderTextInput(group, path, value, type) {
