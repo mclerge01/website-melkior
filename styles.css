@@ -42,14 +42,14 @@ a {
   transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
 }
 
-a:not(.btn):hover,
-a:not(.btn):focus-visible {
+a:not(.btn):not(.site-logo):hover,
+a:not(.btn):not(.site-logo):focus-visible {
   color: var(--color-link-bright);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
-a:not(.btn):focus-visible {
+a:not(.btn):not(.site-logo):focus-visible {
   outline: 2px solid var(--color-link-bright);
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
@@ -266,6 +266,18 @@ p {
   align-items: center;
   gap: var(--space-3);
   min-width: 0;
+}
+
+.site-logo:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-logo:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 0.25rem;
+  border-radius: var(--rounded-sm);
+  text-decoration: none;
 }
 
 .site-logo strong,
