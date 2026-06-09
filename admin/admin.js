@@ -45,6 +45,8 @@ const SHARED_FIELDS = [
   { key: "office_address", label: "Adresse du bureau", type: "text", full: true },
   { key: "regions", label: "Régions desservies", type: "text", full: true },
   { key: "profile_url", label: "Profil Multi-Prêts", type: "text", full: true },
+  { key: "social.linkedin", label: "Profil LinkedIn", type: "text", full: true },
+  { key: "social.instagram", label: "Profil Instagram", type: "text", full: true },
 ];
 
 const SHARED_IMAGE_FIELDS = [

@@ -42,14 +42,14 @@ a {
   transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
 }
 
-a:not(.btn):not(.site-logo):hover,
-a:not(.btn):not(.site-logo):focus-visible {
+a:not(.btn):not(.site-logo):not(.icon-button):hover,
+a:not(.btn):not(.site-logo):not(.icon-button):focus-visible {
   color: var(--color-link-bright);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
-a:not(.btn):not(.site-logo):focus-visible {
+a:not(.btn):not(.site-logo):not(.icon-button):focus-visible {
   outline: 2px solid var(--color-link-bright);
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
@@ -961,13 +961,15 @@ p {
 .about-socials {
   position: absolute;
   z-index: 2;
-  right: var(--space-6);
+  left: 50%;
   bottom: calc(var(--space-6) * -1);
   display: flex;
+  justify-content: center;
   gap: var(--space-3);
+  transform: translateX(-50%);
 }
 
-.about-socials a {
+.icon-button {
   display: grid;
   width: 3rem;
   height: 3rem;
@@ -977,7 +979,40 @@ p {
   color: var(--color-primary-dark);
   background: var(--color-accent);
   font-weight: 900;
+  text-decoration: none;
   box-shadow: var(--shadow);
+  transition:
+    color var(--transition),
+    background-color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  border-color: var(--color-accent);
+  background: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--color-link-bright);
+  outline-offset: 0.25rem;
+}
+
+.icon-button svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: currentColor;
+}
+
+.icon-button-label {
+  font-size: var(--text-sm);
+  line-height: 1;
 }
 
 .about-body {
