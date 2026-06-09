@@ -226,28 +226,29 @@
           <h2 class="section-title">{{media.heading}}</h2>
           <p class="section-lead">{{media.description}}</p>
         </div>
-        <a class="featured-media reveal-on-scroll reveal-scale" href="{{media.featured_url}}">
-          <img src="{{media.featured_image}}" alt="{{media.featured_title}}" loading="lazy">
-          <span class="play-button" aria-hidden="true"></span>
-        </a>
-        <p class="media-caption">{{media.featured_caption}}</p>
         <div class="media-rail-heading">
           <div>
             <strong>{{media.account_label}}</strong>
-            <span>{{media.account_handle}}</span>
+            <a href="{{media.profile_url}}" target="_blank" rel="noopener">{{media.account_handle}}</a>
           </div>
-          <div class="media-controls" aria-hidden="true">
-            <span></span><span></span>
+          <div class="media-controls">
+            <button class="media-control" type="button" data-carousel-prev aria-label="{{media.prev_label}}">‹</button>
+            <button class="media-control" type="button" data-carousel-next aria-label="{{media.next_label}}">›</button>
           </div>
         </div>
-        <div class="media-grid reveal-stagger">
+        <div class="media-carousel reveal-on-scroll" data-scroll-carousel>
+          <div class="media-grid" data-scroll-track>
 {{#each media.items}}
-          <a class="media-card reveal-on-scroll" href="{{url}}" target="_blank" rel="noopener">
-            <img src="{{image}}" alt="{{title}}" loading="lazy">
-            <span>{{type}}</span>
-            <strong>{{title}}</strong>
-          </a>
+            <article class="media-card">
+              <iframe src="{{embed_url}}" title="{{title}}" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
+              <div class="media-card-link">
+                <span>{{type}}</span>
+                <strong>{{title}}</strong>
+              </div>
+              <a class="media-card-hit" href="{{url}}" target="_blank" rel="noopener" aria-label="{{title}}"></a>
+            </article>
 {{/each}}
+          </div>
         </div>
       </div>
     </section>

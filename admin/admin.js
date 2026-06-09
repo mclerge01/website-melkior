@@ -53,10 +53,6 @@ const SHARED_IMAGE_FIELDS = [
   { key: "portrait", label: "Portrait À propos", type: "image" },
   { key: "og", label: "Image de partage par défaut", type: "image" },
   { key: "multi_prets_logo", label: "Logo Multi-Prêts", type: "image" },
-  { key: "media_featured", label: "Média principal", type: "image" },
-  { key: "media_post_1", label: "Publication 1", type: "image" },
-  { key: "media_post_2", label: "Publication 2", type: "image" },
-  { key: "media_post_3", label: "Publication 3", type: "image" },
 ];
 
 const CONTENT_SECTIONS = [
@@ -209,10 +205,9 @@ const CONTENT_SECTIONS = [
       { key: "description", label: "Description", type: "textarea", full: true },
       { key: "account_label", label: "Libellé du compte" },
       { key: "account_handle", label: "Identifiant" },
-      { key: "featured_title", label: "Titre du média principal" },
-      { key: "featured_caption", label: "Légende", type: "textarea", full: true },
-      { key: "featured_url", label: "Lien du média principal" },
-      { key: "featured_image", label: "Image du média principal", type: "image", full: true },
+      { key: "profile_url", label: "Lien du profil Instagram", full: true },
+      { key: "prev_label", label: "Libellé bouton précédent" },
+      { key: "next_label", label: "Libellé bouton suivant" },
     ],
     lists: [
       {
@@ -221,8 +216,7 @@ const CONTENT_SECTIONS = [
         fields: [
           { key: "title", label: "Titre" },
           { key: "type", label: "Type" },
-          { key: "url", label: "Lien" },
-          { key: "image", label: "Image", type: "image", full: true },
+          { key: "url", label: "Lien Instagram", full: true },
         ],
       },
     ],

@@ -33,11 +33,7 @@
       "hero": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
-      "multi_prets_logo": "https://placehold.co/220x88/ffffff/007167/png?text=Multi-Prets",
-      "media_featured": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
-      "media_post_1": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1",
-      "media_post_2": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2",
-      "media_post_3": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
+      "multi_prets_logo": "https://placehold.co/220x88/ffffff/007167/png?text=Multi-Prets"
     },
     "social": {
       "facebook": ""
@@ -225,31 +221,27 @@
         "has_items": true,
         "eyebrow": "Médias",
         "heading": "Dans les *médias*",
-        "description": "Ajoutez ici des publications, entrevues ou liens sociaux vérifiables. Les visuels ci-dessous sont des placeholders clairs.",
+        "description": "Aperçu de publications Instagram de Melkior. Ouvrez une publication pour la consulter directement sur Instagram.",
         "account_label": "Sur Instagram",
-        "account_handle": "@melkiorclerge",
-        "featured_title": "Vidéo à ajouter",
-        "featured_caption": "Remplacez ce placeholder par une entrevue, une capsule-conseil ou un contenu social vérifié.",
-        "featured_url": "#contact",
-        "featured_image": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
+        "account_handle": "@mr.hypotheque",
+        "profile_url": "https://www.instagram.com/mr.hypotheque/",
+        "prev_label": "Publication précédente",
+        "next_label": "Publication suivante",
         "items": [
           {
-            "type": "Placeholder",
-            "title": "Publication à ajouter",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1"
-          },
-          {
-            "type": "Placeholder",
+            "type": "Reel Instagram",
             "title": "Conseil hypothécaire",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2"
+            "url": "https://www.instagram.com/reel/C5G-s7OgN5C/"
           },
           {
-            "type": "Placeholder",
-            "title": "Capsule client",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
+            "type": "Reel Instagram",
+            "title": "Consolidation de dettes",
+            "url": "https://www.instagram.com/reel/C5FccNus2iF/"
+          },
+          {
+            "type": "Publication Instagram",
+            "title": "Conseil Multi-Prêts",
+            "url": "https://www.instagram.com/p/C4ivabALcSj/"
           }
         ]
       },
@@ -530,31 +522,27 @@
         "has_items": true,
         "eyebrow": "Media",
         "heading": "In the *media*",
-        "description": "Add verified posts, interviews, or social links here. The visuals below are clear placeholders.",
+        "description": "Preview Melkior's Instagram posts. Open a post to view it directly on Instagram.",
         "account_label": "On Instagram",
-        "account_handle": "@melkiorclerge",
-        "featured_title": "Video to add",
-        "featured_caption": "Replace this placeholder with an interview, advice clip, or verified social post.",
-        "featured_url": "#contact",
-        "featured_image": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
+        "account_handle": "@mr.hypotheque",
+        "profile_url": "https://www.instagram.com/mr.hypotheque/",
+        "prev_label": "Previous post",
+        "next_label": "Next post",
         "items": [
           {
-            "type": "Placeholder",
-            "title": "Post to add",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1"
-          },
-          {
-            "type": "Placeholder",
+            "type": "Instagram reel",
             "title": "Mortgage advice",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2"
+            "url": "https://www.instagram.com/reel/C5G-s7OgN5C/"
           },
           {
-            "type": "Placeholder",
-            "title": "Client clip",
-            "url": "#contact",
-            "image": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
+            "type": "Instagram reel",
+            "title": "Debt consolidation",
+            "url": "https://www.instagram.com/reel/C5FccNus2iF/"
+          },
+          {
+            "type": "Instagram post",
+            "title": "Multi-Prêts advice",
+            "url": "https://www.instagram.com/p/C4ivabALcSj/"
           }
         ]
       },

@@ -53,6 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", syncCarouselDistance, { passive: true });
   });
 
+  document.querySelectorAll("[data-scroll-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector("[data-scroll-track]");
+    const section = carousel.closest("section");
+    const prev = section ? section.querySelector("[data-carousel-prev]") : null;
+    const next = section ? section.querySelector("[data-carousel-next]") : null;
+    if (!track || (!prev && !next)) return;
+
+    function scrollCarousel(direction) {
+      const card = track.querySelector(".media-card");
+      const gap = parseFloat(window.getComputedStyle(track).columnGap || "0");
+      const amount = card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.85;
+      track.scrollBy({ left: direction * amount, behavior: "smooth" });
+    }
+
+    if (prev) prev.addEventListener("click", () => scrollCarousel(-1));
+    if (next) next.addEventListener("click", () => scrollCarousel(1));
+  });
+
   if (hamburger && navMenu) {
     function closeMenu() {
       hamburger.classList.remove("active");
