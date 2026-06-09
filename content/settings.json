@@ -67,6 +67,13 @@
         "media": "Médias",
         "contact": "Contact"
       },
+      "popup": {
+        "enabled": false,
+        "title": "Annonce importante",
+        "message": "Ajoutez ici une annonce temporaire à afficher aux visiteurs à leur première visite.",
+        "image": "",
+        "dismiss_label": "Fermer"
+      },
       "hero": {
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
         "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
@@ -377,6 +384,13 @@
         "testimonials": "Testimonials",
         "media": "Media",
         "contact": "Contact"
+      },
+      "popup": {
+        "enabled": false,
+        "title": "Important notice",
+        "message": "Add a temporary announcement here to show visitors on their first visit.",
+        "image": "",
+        "dismiss_label": "Close"
       },
       "hero": {
         "eyebrow": "Mortgage Broker | Multi-Prêts",

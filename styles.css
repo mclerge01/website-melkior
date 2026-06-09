@@ -1644,6 +1644,37 @@ p {
   margin-bottom: var(--space-5);
 }
 
+.site-popup-modal {
+  text-align: left;
+}
+
+.site-popup-modal h2 {
+  margin-bottom: var(--space-3);
+  color: var(--color-primary);
+  font-size: var(--text-2xl);
+}
+
+.site-popup-image {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: var(--space-4);
+  object-fit: cover;
+  border-radius: var(--rounded-lg);
+}
+
+.site-popup-message {
+  margin-bottom: var(--space-5);
+  color: var(--color-text-light);
+}
+
+.site-popup-message :where(p, ul, ol) {
+  margin-bottom: var(--space-3);
+}
+
+.site-popup-message :where(ul, ol) {
+  padding-left: var(--space-5);
+}
+
 .modal-phone .form-modal-icon {
   display: grid;
   justify-items: center;

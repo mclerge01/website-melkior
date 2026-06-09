@@ -45,7 +45,7 @@
   }
   </script>
 </head>
-<body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}">
+<body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}" data-popup-enabled="{{popup.enabled}}">
   <header class="site-nav fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
       <a class="site-logo" href="/{{locale_slug}}/" aria-label="{{header.site_name}}">
@@ -454,6 +454,19 @@
       <button class="btn btn-primary w-full" id="form-modal-close">{{contact.form_close}}</button>
     </div>
   </div>
+
+{{#if popup.enabled}}
+  <div class="modal-backdrop hidden" id="site-popup" role="dialog" aria-modal="true" aria-labelledby="site-popup-title">
+    <div class="modal site-popup-modal">
+{{#if popup.image}}
+      <img class="site-popup-image" src="{{popup.image}}" alt="" loading="lazy">
+{{/if}}
+      <h2 id="site-popup-title">{{popup.title}}</h2>
+      <div class="site-popup-message">{{popup.message}}</div>
+      <button class="btn btn-primary w-full" id="site-popup-close">{{popup.dismiss_label}}</button>
+    </div>
+  </div>
+{{/if}}
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="/script.js"></script>

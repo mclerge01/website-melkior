@@ -246,6 +246,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const sitePopup = document.getElementById("site-popup");
+  const sitePopupClose = document.getElementById("site-popup-close");
+  const popupStorageKey = `melkior_popup_seen_${body.dataset.locale || "default"}`;
+
+  function closeSitePopup() {
+    if (!sitePopup) return;
+    sitePopup.classList.add("hidden");
+    body.classList.remove("overflow-hidden");
+    try {
+      sessionStorage.setItem(popupStorageKey, "1");
+    } catch {
+      // Session storage is optional; closing the popup should still work.
+    }
+  }
+
+  if (sitePopup) {
+    let popupSeen = false;
+    try {
+      popupSeen = sessionStorage.getItem(popupStorageKey) === "1";
+    } catch {
+      popupSeen = false;
+    }
+
+    if (!popupSeen) {
+      window.setTimeout(() => {
+        sitePopup.classList.remove("hidden");
+        body.classList.add("overflow-hidden");
+        if (sitePopupClose) sitePopupClose.focus({ preventScroll: true });
+      }, 650);
+    }
+
+    if (sitePopupClose) sitePopupClose.addEventListener("click", closeSitePopup);
+    sitePopup.addEventListener("click", (event) => {
+      if (event.target === sitePopup) closeSitePopup();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !sitePopup.classList.contains("hidden")) closeSitePopup();
+    });
+  }
+
   function isMobileDialerLikely() {
     const coarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
     return coarsePointer || /Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent);
