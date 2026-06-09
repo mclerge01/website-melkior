@@ -29,10 +29,16 @@
     "regions": "Montréal, Rive-Sud/Montérégie, Laval/Rive-Nord",
     "profile_url": "https://www.multi-prets.com/fr/courtier-hypothecaire/melkior-clerge/",
     "images": {
-      "hero_background": "/assets/images/hero-background.svg",
+      "hero_background": "https://placehold.co/1920x1280/0a1413/152c29/png",
       "hero": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
-      "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg"
+      "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+      "multi_prets_logo": "https://placehold.co/220x88/ffffff/007167/png?text=Multi-Prets",
+      "promo_logo": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
+      "media_featured": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
+      "media_post_1": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1",
+      "media_post_2": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2",
+      "media_post_3": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
     },
     "social": {
       "facebook": ""
@@ -63,7 +69,7 @@
       },
       "hero": {
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
-        "title": "Votre projet immobilier mérite une stratégie claire.",
+        "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
         "primary_cta": "Consultation gratuite",
         "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire"
@@ -124,23 +130,27 @@
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "Services hypothécaires",
+        "heading": "Comment puis-je *vous aider?*",
         "items": [
           {
             "title": "Achat de propriété",
-            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance."
+            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
+            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
           },
           {
             "title": "Préautorisation",
-            "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux."
+            "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux.",
+            "icon_path": "M12 2L3 5.5V11.5C3 17.05 6.84 22.24 12 23C17.16 22.24 21 17.05 21 11.5V5.5L12 2M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"
           },
           {
             "title": "Renouvellement",
-            "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts."
+            "description": "Avant d'accepter l'offre de votre institution, comparez le marché. Je magasine les conditions pour défendre vos intérêts.",
+            "icon_path": "M12 6V3L8 7L12 11V8C14.21 8 16 9.79 16 12C16 12.68 15.83 13.32 15.53 13.88L17 15.35C17.63 14.4 18 13.25 18 12C18 8.69 15.31 6 12 6M6.47 10.12L5 8.65C4.37 9.6 4 10.75 4 12C4 15.31 6.69 18 10 18V21L14 17L10 13V16C7.79 16 6 14.21 6 12C6 11.32 6.17 10.68 6.47 10.12Z"
           },
           {
             "title": "Refinancement",
-            "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité."
+            "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité.",
+            "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
         ]
       },
@@ -187,32 +197,75 @@
         ]
       },
       "promo": {
-        "enabled": false,
-        "eyebrow": "À la une",
-        "heading": "Une offre ou un événement à promouvoir",
-        "description": "Cette zone est éditable dans l'administration et demeure cachée tant qu'elle n'est pas activée.",
-        "cta_text": "En savoir plus",
-        "cta_link": "#contact"
+        "enabled": true,
+        "eyebrow": "Avantage client",
+        "heading": "Club Privilège",
+        "description": "Un espace promo prêt pour vos concours, avantages clients ou offres saisonnières. Remplacez cette image par le visuel officiel dès qu’il est disponible.",
+        "cta_text": "Me contacter",
+        "cta_link": "#contact",
+        "image": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
+        "helper": "Image et lien à remplacer dans l’administration."
       },
       "testimonials": {
-        "has_items": false,
+        "has_items": true,
         "eyebrow": "Témoignages",
-        "heading": "La confiance des clients, une priorité.",
-        "items": []
+        "heading": "La confiance des clients, *une priorité.*",
+        "google_badge": "Avis Google",
+        "google_rating": "Avis à ajouter",
+        "google_url": "#contact",
+        "items": [
+          {
+            "initials": "AA",
+            "name": "Avis à ajouter",
+            "context": "Client vérifié",
+            "quote": "Ajoutez ici un vrai témoignage client lorsque Melkior aura approuvé le contenu à publier."
+          },
+          {
+            "initials": "MP",
+            "name": "Multi-Prêts",
+            "context": "Expérience client",
+            "quote": "Cet espace est prêt pour mettre en valeur la satisfaction des clients sans inventer d’avis."
+          }
+        ]
       },
       "media": {
-        "has_items": false,
+        "has_items": true,
         "eyebrow": "Médias",
-        "heading": "Dans les médias",
-        "description": "Ajoutez ici des publications, entrevues ou liens sociaux vérifiables.",
-        "items": []
+        "heading": "Dans les *médias*",
+        "description": "Ajoutez ici des publications, entrevues ou liens sociaux vérifiables. Les visuels ci-dessous sont des placeholders clairs.",
+        "account_label": "Sur Instagram",
+        "account_handle": "@melkiorclerge",
+        "featured_title": "Vidéo à ajouter",
+        "featured_caption": "Remplacez ce placeholder par une entrevue, une capsule-conseil ou un contenu social vérifié.",
+        "featured_url": "#contact",
+        "featured_image": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
+        "items": [
+          {
+            "type": "Placeholder",
+            "title": "Publication à ajouter",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1"
+          },
+          {
+            "type": "Placeholder",
+            "title": "Conseil hypothécaire",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2"
+          },
+          {
+            "type": "Placeholder",
+            "title": "Capsule client",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
+          }
+        ]
       },
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
-        "heading": "Prêt à comparer vos options hypothécaires?",
-        "description": "Envoyez votre demande ou appelez Melkior pour clarifier vos prochaines étapes.",
-        "primary_cta": "Me contacter",
-        "secondary_cta": "Appeler Melkior"
+        "heading": "Votre prochain chapitre *immobilier* commence ici.",
+        "description": "Réservez une consultation gratuite ou appelez directement Melkior.",
+        "primary_cta": "Consultation gratuite",
+        "secondary_cta": "Appelez directement pour clarifier vos prochaines étapes."
       },
       "contact": {
         "heading": "Consultation hypothécaire",
@@ -327,7 +380,7 @@
       },
       "hero": {
         "eyebrow": "Mortgage Broker | Multi-Prêts",
-        "title": "Your real estate project deserves a clear mortgage strategy.",
+        "title": "Your real estate **project** *deserves a clear strategy.*",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
         "primary_cta": "Get a free consultation",
         "image_alt": "Portrait of Melkior Clergé, mortgage broker"
@@ -388,23 +441,27 @@
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "Mortgage services",
+        "heading": "How can I *help you?*",
         "items": [
           {
             "title": "Property purchase",
-            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan."
+            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
+            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
           },
           {
             "title": "Pre-approval",
-            "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate."
+            "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate.",
+            "icon_path": "M12 2L3 5.5V11.5C3 17.05 6.84 22.24 12 23C17.16 22.24 21 17.05 21 11.5V5.5L12 2M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"
           },
           {
             "title": "Renewal",
-            "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind."
+            "description": "Before accepting your institution's offer, compare the market. I shop conditions with your interests in mind.",
+            "icon_path": "M12 6V3L8 7L12 11V8C14.21 8 16 9.79 16 12C16 12.68 15.83 13.32 15.53 13.88L17 15.35C17.63 14.4 18 13.25 18 12C18 8.69 15.31 6 12 6M6.47 10.12L5 8.65C4.37 9.6 4 10.75 4 12C4 15.31 6.69 18 10 18V21L14 17L10 13V16C7.79 16 6 14.21 6 12C6 11.32 6.17 10.68 6.47 10.12Z"
           },
           {
             "title": "Refinancing",
-            "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity."
+            "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity.",
+            "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
         ]
       },
@@ -451,32 +508,75 @@
         ]
       },
       "promo": {
-        "enabled": false,
-        "eyebrow": "Featured",
-        "heading": "A promotion or event can go here",
-        "description": "This area is editable in the admin and remains hidden until enabled.",
-        "cta_text": "Learn more",
-        "cta_link": "#contact"
+        "enabled": true,
+        "eyebrow": "Client perk",
+        "heading": "Privilege Club",
+        "description": "A polished promo area ready for contests, client perks, or seasonal offers. Replace this placeholder with the official visual when available.",
+        "cta_text": "Contact me",
+        "cta_link": "#contact",
+        "image": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
+        "helper": "Replace this image and link in the admin."
       },
       "testimonials": {
-        "has_items": false,
+        "has_items": true,
         "eyebrow": "Testimonials",
-        "heading": "Client trust comes first.",
-        "items": []
+        "heading": "Client trust, *front and center.*",
+        "google_badge": "Google Reviews",
+        "google_rating": "Reviews to add",
+        "google_url": "#contact",
+        "items": [
+          {
+            "initials": "AR",
+            "name": "Review to add",
+            "context": "Verified client",
+            "quote": "Add a real approved client testimonial here when Melkior has content ready to publish."
+          },
+          {
+            "initials": "MP",
+            "name": "Multi-Prêts",
+            "context": "Client experience",
+            "quote": "This section is ready to showcase client satisfaction without inventing reviews."
+          }
+        ]
       },
       "media": {
-        "has_items": false,
+        "has_items": true,
         "eyebrow": "Media",
-        "heading": "In the media",
-        "description": "Add verified publications, interviews, or social links here.",
-        "items": []
+        "heading": "In the *media*",
+        "description": "Add verified posts, interviews, or social links here. The visuals below are clear placeholders.",
+        "account_label": "On Instagram",
+        "account_handle": "@melkiorclerge",
+        "featured_title": "Video to add",
+        "featured_caption": "Replace this placeholder with an interview, advice clip, or verified social post.",
+        "featured_url": "#contact",
+        "featured_image": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
+        "items": [
+          {
+            "type": "Placeholder",
+            "title": "Post to add",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1"
+          },
+          {
+            "type": "Placeholder",
+            "title": "Mortgage advice",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2"
+          },
+          {
+            "type": "Placeholder",
+            "title": "Client clip",
+            "url": "#contact",
+            "image": "https://placehold.co/640x800/007167/ffffff/png?text=Publication+3"
+          }
+        ]
       },
       "final_cta": {
         "eyebrow": "Mortgage consultation",
-        "heading": "Ready to compare your mortgage options?",
-        "description": "Send your request or call Melkior to clarify your next steps.",
-        "primary_cta": "Contact me",
-        "secondary_cta": "Call Melkior"
+        "heading": "Your next real estate *chapter* starts here.",
+        "description": "Book a free consultation or call Melkior directly.",
+        "primary_cta": "Free consultation",
+        "secondary_cta": "Call directly to clarify your next steps."
       },
       "contact": {
         "heading": "Mortgage consultation",

@@ -32,17 +32,19 @@
           <strong>{{header.site_name}}</strong>
           <small>{{header.credential}}</small>
         </span>
+        <span class="logo-divider" aria-hidden="true"></span>
+        <img class="network-logo" src="{{shared.images.multi_prets_logo}}" alt="Multi-Prêts">
       </a>
       <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
-        <a class="nav-link" href="{{nav_calculator_href}}">{{nav.calculator}}</a>
         <a class="nav-link" href="{{nav_services_href}}">{{nav.services}}</a>
         <a class="nav-link" href="{{nav_guide_href}}">{{nav.guide}}</a>
         <a class="nav-link" href="{{nav_about_href}}">{{nav.about}}</a>
         {{#if testimonials.has_items}}<a class="nav-link" href="{{nav_testimonials_href}}">{{nav.testimonials}}</a>{{/if}}
         {{#if media.has_items}}<a class="nav-link" href="{{nav_media_href}}">{{nav.media}}</a>{{/if}}
+        <a class="nav-link" href="{{nav_calculator_href}}">{{nav.calculator}}</a>
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="{{nav_contact_href}}">{{header.cta_text}}</a>
       </nav>

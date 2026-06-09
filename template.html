@@ -54,6 +54,8 @@
           <strong>{{header.site_name}}</strong>
           <small>{{header.credential}}</small>
         </span>
+        <span class="logo-divider" aria-hidden="true"></span>
+        <img class="network-logo" src="{{shared.images.multi_prets_logo}}" alt="Multi-Prêts">
       </a>
       <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -80,24 +82,48 @@
           <h1 class="hero-title">{{hero.title}}</h1>
           <p class="hero-subtitle">{{hero.subtitle}}</p>
           <div class="hero-actions">
-            <a class="btn btn-primary btn-lg" href="#contact">{{hero.primary_cta}}</a>
-            <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a>
+            <a class="btn btn-primary btn-lg" href="#contact">
+              <span>{{hero.primary_cta}}</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4L10.6 5.4L16.2 11H4V13H16.2L10.6 18.6L12 20L20 12L12 4Z"></path></svg>
+            </a>
+            <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">
+              <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 15.5C18.8 15.5 17.5 15.3 16.4 14.9H16.1C15.8 14.9 15.6 15 15.4 15.2L13.2 17.4C10.4 15.9 8 13.6 6.6 10.8L8.8 8.6C9.1 8.3 9.2 7.9 9 7.6C8.7 6.5 8.5 5.2 8.5 4C8.5 3.5 8 3 7.5 3H4C3.5 3 3 3.5 3 4C3 13.4 10.6 21 20 21C20.5 21 21 20.5 21 20V16.5C21 16 20.5 15.5 20 15.5M5 5H6.5C6.6 5.9 6.8 6.8 7 7.6L5.8 8.8C5.4 7.6 5.1 6.3 5 5M19 19C17.7 18.9 16.4 18.6 15.2 18.2L16.4 17C17.2 17.2 18.1 17.4 19 17.4V19M15 12H17A5 5 0 0 0 12 7V9A3 3 0 0 1 15 12M19 12H21C21 7 16.97 3 12 3V5C15.86 5 19 8.13 19 12Z"></path></svg>
+              <span>{{shared.phone}}</span>
+            </a>
           </div>
         </div>
         <div class="hero-portrait reveal-on-scroll reveal-from-right">
           <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">
         </div>
       </div>
+      <a class="scroll-cue" href="#services" aria-label="Scroll to services"><span></span></a>
     </section>
 
     <section class="stats-band" aria-label="Highlights">
       <div class="container stats-grid reveal-stagger">
-        {{#each stats.items}}
+{{#each stats.items}}
         <div class="stat-item reveal-on-scroll reveal-scale">
           <strong>{{value}}</strong>
           <span>{{label}}</span>
         </div>
-        {{/each}}
+{{/each}}
+      </div>
+    </section>
+
+    <section class="teaser-section" aria-label="{{calculator.heading}}">
+      <div class="container">
+        <a class="calculator-teaser reveal-on-scroll reveal-scale" href="#calculator">
+          <span class="teaser-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M7 2H17A2 2 0 0 1 19 4V20A2 2 0 0 1 17 22H7A2 2 0 0 1 5 20V4A2 2 0 0 1 7 2M7 4V8H17V4H7M8 11V13H10V11H8M12 11V13H14V11H12M16 11V13H18V11H16M8 15V17H10V15H8M12 15V17H14V15H12M16 15V19H18V15H16M8 19H14V19H8Z"></path>
+            </svg>
+          </span>
+          <span>
+            <strong>{{calculator.heading}}</strong>
+            <small>{{calculator.description}}</small>
+          </span>
+          <span class="teaser-action">{{nav.calculator}}</span>
+        </a>
       </div>
     </section>
 
@@ -108,20 +134,15 @@
           <h2 class="section-title">{{services.heading}}</h2>
         </div>
         <div class="service-grid reveal-stagger">
-          {{#each services.items}}
+{{#each services.items}}
           <article class="service-card reveal-on-scroll">
+            <span class="service-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="{{icon_path}}"></path></svg>
+            </span>
             <h3>{{title}}</h3>
             <div class="text-white-muted">{{description}}</div>
           </article>
-          {{/each}}
-        </div>
-        <div class="section-cta service-cta reveal-on-scroll reveal-scale">
-          <h3>{{final_cta.heading}}</h3>
-          <p>{{final_cta.description}}</p>
-          <div class="hero-actions justify-center">
-            <a class="btn btn-accent btn-lg" href="#contact">{{final_cta.primary_cta}}</a>
-            <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{final_cta.secondary_cta}}</a>
-          </div>
+{{/each}}
         </div>
       </div>
     </section>
@@ -134,12 +155,12 @@
           <p class="section-lead">{{guide.intro}}</p>
         </div>
         <div class="guide-list reveal-stagger">
-          {{#each guide.items}}
+{{#each guide.items}}
           <article class="guide-item reveal-on-scroll">
             <h3>{{title}}</h3>
             <div class="text-light">{{description}}</div>
           </article>
-          {{/each}}
+{{/each}}
         </div>
       </div>
     </section>
@@ -147,75 +168,107 @@
     <section id="about" class="section about-section bg-dark text-white">
       <div class="container about-grid lg:items-stretch">
         <div class="about-image lg:h-full reveal-on-scroll reveal-from-left">
-          <img class="lg:h-full" src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
+          <div class="about-image-frame">
+            <img class="lg:h-full" src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
+          </div>
+          <div class="about-socials" aria-label="Profil professionnel">
+            <a href="{{shared.profile_url}}" target="_blank" rel="noopener">MP</a>
+          </div>
         </div>
         <div class="reveal-on-scroll reveal-from-right">
           <p class="eyebrow eyebrow-light">{{about.eyebrow}}</p>
           <h2 class="section-title">{{about.title}}</h2>
           <div class="about-body">{{about.body}}</div>
           <div class="timeline reveal-stagger">
-            {{#each about.timeline}}
+{{#each about.timeline}}
             <article class="timeline-item reveal-on-scroll">
               <span class="timeline-year">{{year}}</span>
               <h3>{{title}}</h3>
               <div>{{description}}</div>
             </article>
-            {{/each}}
+{{/each}}
           </div>
         </div>
       </div>
     </section>
 
-    {{#if promo.enabled}}
+{{#if promo.enabled}}
     <section class="section promo-section">
       <div class="container promo-band reveal-on-scroll reveal-scale">
-        <p class="eyebrow">{{promo.eyebrow}}</p>
+        <img class="promo-logo" src="{{promo.image}}" alt="{{promo.heading}}" loading="lazy">
+        <div class="ornament" aria-hidden="true"></div>
+        <p class="eyebrow eyebrow-light">{{promo.eyebrow}}</p>
         <h2>{{promo.heading}}</h2>
         <p>{{promo.description}}</p>
-        <a class="btn btn-primary" href="{{promo.cta_link}}">{{promo.cta_text}}</a>
+        <a class="btn btn-accent" href="{{promo.cta_link}}">{{promo.cta_text}}</a>
+        <small>{{promo.helper}}</small>
       </div>
     </section>
-    {{/if}}
+{{/if}}
 
-    {{#if testimonials.has_items}}
-    <section id="testimonials" class="section bg-light">
+{{#if testimonials.has_items}}
+    <section id="testimonials" class="section testimonial-section bg-light">
       <div class="container">
+        <a class="google-badge reveal-on-scroll" href="{{testimonials.google_url}}">
+          <span>G</span>
+          <strong>{{testimonials.google_badge}}</strong>
+          <small>{{testimonials.google_rating}}</small>
+        </a>
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{testimonials.eyebrow}}</p>
           <h2 class="section-title">{{testimonials.heading}}</h2>
         </div>
-        <div class="testimonial-grid reveal-stagger">
-          {{#each testimonials.items}}
+        <div class="testimonial-showcase reveal-stagger">
+{{#each testimonials.items}}
           <article class="testimonial-card reveal-on-scroll">
+            <div class="testimonial-stars" aria-hidden="true">*****</div>
             <p>{{quote}}</p>
-            <strong>{{name}}</strong>
-            <span>{{context}}</span>
+            <div class="testimonial-person">
+              <span>{{initials}}</span>
+              <strong>{{name}}</strong>
+              <small>{{context}}</small>
+            </div>
           </article>
-          {{/each}}
+{{/each}}
         </div>
       </div>
     </section>
-    {{/if}}
+{{/if}}
 
-    {{#if media.has_items}}
-    <section id="media" class="section">
+{{#if media.has_items}}
+    <section id="media" class="section media-section">
       <div class="container">
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{media.eyebrow}}</p>
           <h2 class="section-title">{{media.heading}}</h2>
           <p class="section-lead">{{media.description}}</p>
         </div>
+        <a class="featured-media reveal-on-scroll reveal-scale" href="{{media.featured_url}}">
+          <img src="{{media.featured_image}}" alt="{{media.featured_title}}" loading="lazy">
+          <span class="play-button" aria-hidden="true"></span>
+        </a>
+        <p class="media-caption">{{media.featured_caption}}</p>
+        <div class="media-rail-heading">
+          <div>
+            <strong>{{media.account_label}}</strong>
+            <span>{{media.account_handle}}</span>
+          </div>
+          <div class="media-controls" aria-hidden="true">
+            <span></span><span></span>
+          </div>
+        </div>
         <div class="media-grid reveal-stagger">
-          {{#each media.items}}
+{{#each media.items}}
           <a class="media-card reveal-on-scroll" href="{{url}}" target="_blank" rel="noopener">
+            <img src="{{image}}" alt="{{title}}" loading="lazy">
             <span>{{type}}</span>
             <strong>{{title}}</strong>
           </a>
-          {{/each}}
+{{/each}}
         </div>
       </div>
     </section>
-    {{/if}}
+{{/if}}
 
     <section id="calculator" class="section calculator-section">
       <div class="container calculator-grid">
@@ -268,7 +321,31 @@
       </div>
     </section>
 
-    <section id="contact" class="section bg-light">
+    <section id="contact" class="contact-section">
+      <div class="contact-action bg-dark text-white">
+        <div class="container contact-action-inner reveal-on-scroll">
+          <p class="eyebrow eyebrow-light">{{final_cta.eyebrow}}</p>
+          <h2 class="section-title">{{final_cta.heading}}</h2>
+          <p>{{final_cta.description}}</p>
+          <div class="contact-action-grid">
+            <a class="action-card" href="#contact-form">
+              <span class="teaser-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><path d="M19 3H18V1H16V3H8V1H6V3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M19 19H5V9H19V19Z"></path></svg>
+              </span>
+              <strong>{{final_cta.primary_cta}}</strong>
+              <small>{{final_cta.description}}</small>
+            </a>
+            <a class="action-card" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">
+              <span class="teaser-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><path d="M20 15.5C18.8 15.5 17.5 15.3 16.4 14.9H16.1C15.8 14.9 15.6 15 15.4 15.2L13.2 17.4C10.4 15.9 8 13.6 6.6 10.8L8.8 8.6C9.1 8.3 9.2 7.9 9 7.6C8.7 6.5 8.5 5.2 8.5 4C8.5 3.5 8 3 7.5 3H4C3.5 3 3 3.5 3 4C3 13.4 10.6 21 20 21C20.5 21 21 20.5 21 20V16.5C21 16 20.5 15.5 20 15.5Z"></path></svg>
+              </span>
+              <strong>{{shared.phone}}</strong>
+              <small>{{final_cta.secondary_cta}}</small>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="section bg-light">
       <div class="container contact-grid">
         <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{nav.contact}}</p>
@@ -308,18 +385,18 @@
             <span class="form-label">{{contact.form_subject_label}} *</span>
             <select class="select" name="subject" required>
               <option value="">{{contact.form_subject_placeholder}}</option>
-              {{#each contact.subjects}}
+{{#each contact.subjects}}
               <option value="{{title}}">{{title}}</option>
-              {{/each}}
+{{/each}}
             </select>
           </label>
           <label class="form-group">
             <span class="form-label">{{contact.form_referral_label}}</span>
             <select class="select" name="referral">
               <option value="">{{contact.form_referral_placeholder}}</option>
-              {{#each contact.referrals}}
+{{#each contact.referrals}}
               <option value="{{title}}">{{title}}</option>
-              {{/each}}
+{{/each}}
             </select>
           </label>
           <label class="form-group">
@@ -329,6 +406,7 @@
           <div class="cf-turnstile" data-sitekey="{{turnstile_sitekey}}"></div>
           <button class="btn btn-primary w-full" type="submit">{{contact.form_submit}}</button>
         </form>
+      </div>
       </div>
     </section>
   </main>
