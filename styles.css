@@ -1316,6 +1316,10 @@ p {
     align-items: start;
   }
 
+  .calculator-grid {
+    align-items: center;
+  }
+
   .calculator-detail-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
