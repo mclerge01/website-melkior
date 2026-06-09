@@ -192,44 +192,27 @@
       </div>
     </section>
 
-{{#if promo.enabled}}
-    <section class="section promo-section">
-      <div class="container promo-band reveal-on-scroll reveal-scale">
-        <img class="promo-logo" src="{{promo.image}}" alt="{{promo.heading}}" loading="lazy">
-        <div class="ornament" aria-hidden="true"></div>
-        <p class="eyebrow eyebrow-light">{{promo.eyebrow}}</p>
-        <h2>{{promo.heading}}</h2>
-        <p>{{promo.description}}</p>
-        <a class="btn btn-accent" href="{{promo.cta_link}}">{{promo.cta_text}}</a>
-        <small>{{promo.helper}}</small>
-      </div>
-    </section>
-{{/if}}
-
 {{#if testimonials.has_items}}
-    <section id="testimonials" class="section testimonial-section bg-light">
+    <section id="testimonials" class="section testimonial-section">
       <div class="container">
-        <a class="google-badge reveal-on-scroll" href="{{testimonials.google_url}}">
-          <span>G</span>
-          <strong>{{testimonials.google_badge}}</strong>
-          <small>{{testimonials.google_rating}}</small>
-        </a>
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{testimonials.eyebrow}}</p>
           <h2 class="section-title">{{testimonials.heading}}</h2>
         </div>
-        <div class="testimonial-showcase reveal-stagger">
+        <div class="testimonial-carousel reveal-on-scroll" data-testimonial-carousel>
+          <div class="testimonial-track testimonial-showcase">
 {{#each testimonials.items}}
-          <article class="testimonial-card reveal-on-scroll">
-            <div class="testimonial-stars" aria-hidden="true">*****</div>
-            <p>{{quote}}</p>
-            <div class="testimonial-person">
-              <span>{{initials}}</span>
-              <strong>{{name}}</strong>
-              <small>{{context}}</small>
-            </div>
-          </article>
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-hidden="true">*****</div>
+              <p>{{quote}}</p>
+              <div class="testimonial-person">
+                <span>{{initials}}</span>
+                <strong>{{name}}</strong>
+                <small>{{context}}</small>
+              </div>
+            </article>
 {{/each}}
+          </div>
         </div>
       </div>
     </section>

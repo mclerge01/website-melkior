@@ -34,7 +34,6 @@
       "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "multi_prets_logo": "https://placehold.co/220x88/ffffff/007167/png?text=Multi-Prets",
-      "promo_logo": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
       "media_featured": "https://placehold.co/1280x720/111111/dbaa4b/png?text=Vid%C3%A9o+%C3%A0+ajouter",
       "media_post_1": "https://placehold.co/640x800/1f2126/ffffff/png?text=Publication+1",
       "media_post_2": "https://placehold.co/640x800/790025/ffffff/png?text=Publication+2",
@@ -203,23 +202,10 @@
           }
         ]
       },
-      "promo": {
-        "enabled": true,
-        "eyebrow": "Avantage client",
-        "heading": "Club Privilège",
-        "description": "Un espace promo prêt pour vos concours, avantages clients ou offres saisonnières. Remplacez cette image par le visuel officiel dès qu’il est disponible.",
-        "cta_text": "Me contacter",
-        "cta_link": "#contact",
-        "image": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
-        "helper": "Image et lien à remplacer dans l’administration."
-      },
       "testimonials": {
         "has_items": true,
         "eyebrow": "Témoignages",
         "heading": "La confiance des clients, *une priorité.*",
-        "google_badge": "Avis Google",
-        "google_rating": "Avis à ajouter",
-        "google_url": "#contact",
         "items": [
           {
             "initials": "AA",
@@ -521,23 +507,10 @@
           }
         ]
       },
-      "promo": {
-        "enabled": true,
-        "eyebrow": "Client perk",
-        "heading": "Privilege Club",
-        "description": "A polished promo area ready for contests, client perks, or seasonal offers. Replace this placeholder with the official visual when available.",
-        "cta_text": "Contact me",
-        "cta_link": "#contact",
-        "image": "https://placehold.co/420x260/0a0a0a/dbaa4b/png?text=Club+Privil%C3%A8ge",
-        "helper": "Replace this image and link in the admin."
-      },
       "testimonials": {
         "has_items": true,
         "eyebrow": "Testimonials",
         "heading": "Client trust, *front and center.*",
-        "google_badge": "Google Reviews",
-        "google_rating": "Reviews to add",
-        "google_url": "#contact",
         "items": [
           {
             "initials": "AR",

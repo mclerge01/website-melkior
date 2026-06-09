@@ -64,15 +64,15 @@ Implementation notes:
 - The timeline uses a single vertical line with a fade-out, circular markers, gold dates, and date hairlines.
 - The current-year replacement still happens dynamically when JavaScript is available.
 
-## Promo
+## Promo Reference
 
 Joey's Club Privilege area is a standalone black feature, not a generic card. It uses a centered promo graphic, a small gold divider, sparse glow/particle energy, a concise message, and a gold action.
 
 Implementation notes:
 
-- Melkior now renders a polished promo placeholder with a clear placehold.co visual.
-- The section is black with subtle gold glows and an ornament.
-- Final content and link should be replaced in admin when official material exists.
+- Melkior does not currently render this section because there is no confirmed equivalent offer.
+- The dark and gold atmosphere was moved into the testimonial carousel instead.
+- If an official offer exists later, add it back as a real content section rather than a placeholder.
 
 ## Testimonials
 

@@ -53,7 +53,6 @@ const SHARED_IMAGE_FIELDS = [
   { key: "portrait", label: "Portrait À propos", type: "image" },
   { key: "og", label: "Image de partage par défaut", type: "image" },
   { key: "multi_prets_logo", label: "Logo Multi-Prêts", type: "image" },
-  { key: "promo_logo", label: "Image promotionnelle", type: "image" },
   { key: "media_featured", label: "Média principal", type: "image" },
   { key: "media_post_1", label: "Publication 1", type: "image" },
   { key: "media_post_2", label: "Publication 2", type: "image" },
@@ -180,29 +179,12 @@ const CONTENT_SECTIONS = [
     ],
   },
   {
-    key: "promo",
-    label: "Promotion",
-    fields: [
-      { key: "enabled", label: "Afficher la section", type: "toggle" },
-      { key: "eyebrow", label: "Surtitre" },
-      { key: "heading", label: "Titre" },
-      { key: "description", label: "Description", type: "textarea", full: true },
-      { key: "cta_text", label: "Bouton" },
-      { key: "cta_link", label: "Lien du bouton" },
-      { key: "image", label: "Image", type: "image", full: true },
-      { key: "helper", label: "Mention d’aide", type: "textarea", full: true },
-    ],
-  },
-  {
     key: "testimonials",
     label: "Témoignages",
     fields: [
       { key: "has_items", label: "Afficher la section", type: "toggle" },
       { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre", type: "markdown", full: true },
-      { key: "google_badge", label: "Badge Google" },
-      { key: "google_rating", label: "Texte du badge" },
-      { key: "google_url", label: "Lien Google" },
     ],
     lists: [
       {

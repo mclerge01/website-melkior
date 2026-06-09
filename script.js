@@ -27,6 +27,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document.querySelectorAll("[data-testimonial-carousel]").forEach((carousel) => {
+    const track = carousel.querySelector(".testimonial-track");
+    if (!track) return;
+    const originals = Array.from(track.children);
+    if (originals.length < 2) return;
+
+    originals.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.append(clone);
+    });
+
+    function syncCarouselDistance() {
+      const firstClone = track.children[originals.length];
+      if (!firstClone) return;
+      const shift = firstClone.offsetLeft;
+      if (!shift) return;
+      track.style.setProperty("--testimonial-shift", `-${shift}px`);
+      track.style.setProperty("--testimonial-duration", `${Math.max(24, originals.length * 12)}s`);
+    }
+
+    carousel.classList.add("is-looping");
+    window.requestAnimationFrame(syncCarouselDistance);
+    window.addEventListener("resize", syncCarouselDistance, { passive: true });
+  });
+
   if (hamburger && navMenu) {
     function closeMenu() {
       hamburger.classList.remove("active");

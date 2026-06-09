@@ -1063,80 +1063,6 @@ p {
   color: rgba(255, 255, 255, 0.68);
 }
 
-.promo-section {
-  position: relative;
-  overflow: hidden;
-  color: var(--color-white);
-  background: #070707;
-}
-
-.promo-section::before,
-.promo-section::after {
-  content: "";
-  position: absolute;
-  border-radius: var(--rounded-full);
-  background: rgba(219, 170, 75, 0.18);
-  pointer-events: none;
-}
-
-.promo-section::before {
-  width: 14rem;
-  height: 14rem;
-  top: 12%;
-  left: 8%;
-  filter: blur(5rem);
-}
-
-.promo-section::after {
-  width: 11rem;
-  height: 11rem;
-  right: 12%;
-  bottom: 18%;
-  filter: blur(4rem);
-}
-
-.promo-band {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  justify-items: center;
-  padding: var(--space-16) var(--space-6);
-  text-align: center;
-}
-
-.promo-logo {
-  width: min(100%, 22rem);
-  margin-bottom: var(--space-8);
-  border-radius: var(--card-radius);
-  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
-}
-
-.ornament {
-  width: 3.25rem;
-  height: 1px;
-  margin-bottom: var(--space-6);
-  background: var(--color-accent);
-}
-
-.promo-band h2 {
-  font-size: var(--text-4xl);
-}
-
-.promo-band p {
-  max-width: 54rem;
-  margin: var(--space-4) auto 0;
-}
-
-.promo-band .btn {
-  margin-top: var(--space-8);
-}
-
-.promo-band small {
-  margin-top: var(--space-4);
-  color: rgba(255, 255, 255, 0.56);
-}
-
-.testimonial-grid,
 .media-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1146,6 +1072,11 @@ p {
 .testimonial-section {
   position: relative;
   overflow: hidden;
+  color: var(--color-white);
+  background:
+    radial-gradient(circle at 14% 18%, rgba(219, 170, 75, 0.16), transparent 22rem),
+    radial-gradient(circle at 86% 74%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    #070707;
 }
 
 .testimonial-section::before {
@@ -1153,44 +1084,39 @@ p {
   position: absolute;
   top: 2rem;
   left: 5vw;
-  color: rgba(219, 170, 75, 0.1);
+  z-index: 0;
+  color: rgba(219, 170, 75, 0.14);
   font-family: var(--font-serif);
   font-size: 14rem;
   line-height: 1;
+  pointer-events: none;
 }
 
-.google-badge {
-  display: flex;
-  width: fit-content;
-  align-items: center;
-  gap: var(--space-3);
-  margin: calc(var(--space-16) * -1) auto var(--space-10);
-  padding: var(--space-3) var(--space-5);
-  border: 1px solid var(--color-border);
+.testimonial-section::after {
+  content: "";
+  position: absolute;
+  right: 10%;
+  bottom: 14%;
+  z-index: 0;
+  width: 13rem;
+  height: 13rem;
   border-radius: var(--rounded-full);
-  color: var(--color-text);
-  background: var(--color-white);
-  box-shadow: var(--shadow);
+  background: rgba(219, 170, 75, 0.14);
+  filter: blur(5rem);
+  pointer-events: none;
 }
 
-.google-badge span {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border-radius: var(--rounded-full);
+.testimonial-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-section .section-title {
   color: var(--color-white);
-  background: var(--color-primary);
-  font-weight: 900;
 }
 
-.google-badge strong,
-.google-badge small {
-  display: block;
-}
-
-.google-badge small {
-  color: var(--color-text-light);
+.testimonial-section .section-title em {
+  color: var(--color-accent);
 }
 
 .testimonial-showcase {
@@ -1200,10 +1126,52 @@ p {
   margin-inline: auto;
 }
 
+.testimonial-carousel {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.testimonial-carousel.is-looping {
+  overflow: hidden;
+  padding-block: var(--space-2);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.testimonial-carousel.is-looping .testimonial-track {
+  display: flex;
+  width: max-content;
+  max-width: none;
+  margin-inline: 0;
+  animation: testimonial-loop var(--testimonial-duration, 30s) linear infinite;
+  will-change: transform;
+}
+
+.testimonial-carousel.is-looping:hover .testimonial-track,
+.testimonial-carousel.is-looping:focus-within .testimonial-track {
+  animation-play-state: paused;
+}
+
+.testimonial-carousel.is-looping .testimonial-card {
+  flex: 0 0 min(82vw, 30rem);
+}
+
+@keyframes testimonial-loop {
+  to {
+    transform: translate3d(var(--testimonial-shift, -50%), 0, 0);
+  }
+}
+
 .testimonial-card {
   position: relative;
   padding: var(--space-8);
   text-align: center;
+}
+
+.testimonial-section .testimonial-card {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.24);
 }
 
 .testimonial-card p {
@@ -1214,10 +1182,18 @@ p {
   line-height: 1.35;
 }
 
+.testimonial-section .testimonial-card p {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .testimonial-stars {
   margin-bottom: var(--space-5);
   color: var(--color-accent-dark);
   letter-spacing: 0.12em;
+}
+
+.testimonial-section .testimonial-stars {
+  color: var(--color-accent);
 }
 
 .testimonial-person {
@@ -1238,6 +1214,11 @@ p {
   font-weight: 900;
 }
 
+.testimonial-section .testimonial-person span {
+  color: var(--color-primary-dark);
+  background: var(--color-accent);
+}
+
 .testimonial-person strong,
 .testimonial-person small {
   display: block;
@@ -1245,6 +1226,10 @@ p {
 
 .testimonial-person small {
   color: var(--color-text-light);
+}
+
+.testimonial-section .testimonial-person small {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .media-section {
@@ -1890,6 +1875,23 @@ p {
     transform: none;
     transition: none;
   }
+
+  .testimonial-carousel.is-looping {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .testimonial-carousel.is-looping .testimonial-track {
+    display: grid;
+    width: auto;
+    animation: none;
+    transform: none;
+  }
+
+  .testimonial-carousel.is-looping .testimonial-card[aria-hidden="true"] {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1915,8 +1917,7 @@ p {
     border-right: 0;
   }
 
-  .service-grid,
-  .testimonial-grid {
+  .service-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2042,10 +2043,6 @@ p {
 
   .service-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .promo-band {
-    padding-inline: var(--space-12);
   }
 
   .footer-grid {
