@@ -136,6 +136,23 @@ npm run build
 
 Then commit both the source content and generated HTML.
 
+## Admin Image Uploads
+
+The admin panel stores uploaded images in GitHub under:
+
+```text
+assets/images/
+```
+
+The normal admin flow matches `styaud/website-audrey-s`: choosing an image prepares a local preview and queues the file; clicking **Publier** uploads the queued images to GitHub before saving `content/settings.json`.
+
+Image handling rules:
+
+- JPG, PNG, WebP, AVIF, BMP, and other browser-decodable raster images are resized if needed and converted to WebP in the browser before upload.
+- SVG and ICO files are preserved.
+- The server still validates every upload before committing to GitHub: safe file name, allowed extension, size limit, image signature, and unsafe SVG markup rejection.
+- SVG uploads reject scripts, event handlers, external references, `foreignObject`, embedded images, and similar active content.
+
 ## Admin Login
 
 The admin area uses GitHub OAuth.

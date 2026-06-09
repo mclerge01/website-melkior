@@ -353,6 +353,8 @@ let activeView = "content";
 let activeLocale = "fr-CA";
 let activeSeoLocale = "fr-CA";
 let toastTimer = null;
+let pendingImages = [];
+const pendingImagePreviews = new Map();
 
 const loginScreen = document.getElementById("login-screen");
 const editorScreen = document.getElementById("editor-screen");
@@ -463,6 +465,8 @@ function labelFromKey(key) {
 
 function resolveImageSrc(path) {
   if (!path) return "/favicon.svg";
+  const pendingPreview = pendingImagePreviews.get(path) || pendingImagePreviews.get(String(path).replace(/^\/+/, ""));
+  if (pendingPreview) return pendingPreview;
   if (/^(https?:|data:|\/)/i.test(path)) return path;
   return `/${path}`;
 }
@@ -794,20 +798,32 @@ function renderImageInput(group, path, value) {
   file.addEventListener("change", async () => {
     if (!file.files?.[0]) return;
     try {
-      setStatus("saving", "Téléversement de l’image...", file.files[0].name);
-      const uploaded = await uploadImage(file.files[0]);
-      const nextPath = `/${uploaded.path}`;
+      setStatus("saving", "Preparation de l'image...", file.files[0].name);
+      const upload = await prepareImageUpload(file.files[0]);
+      const nextPath = `/${upload.path}`;
+      pendingImages = pendingImages.filter((item) => item.path !== upload.path);
+      pendingImages.push(upload);
+      if (upload.previewUrl) {
+        pendingImagePreviews.set(nextPath, upload.previewUrl);
+        pendingImagePreviews.set(upload.path, upload.previewUrl);
+      }
       setPath(path, nextPath);
       input.value = nextPath;
-      preview.src = nextPath;
-      showToast("Image téléversée. Publiez le contenu pour enregistrer la référence.");
+      preview.src = upload.previewUrl || nextPath;
+      setStatus("saving", "Modifications non publiees", "L'image sera envoyee sur GitHub au moment de publier.");
+      showToast("Image preparee. Cliquez sur Publier pour l'envoyer sur GitHub.");
     } catch (error) {
       showToast(error.message, "error");
       setStatus("error", "Erreur d’image", error.message);
+    } finally {
+      file.value = "";
     }
   });
   upload.appendChild(file);
-  controls.append(input, upload);
+  const hint = document.createElement("p");
+  hint.className = "admin-hint";
+  hint.textContent = "JPG, PNG et autres images raster sont convertis en WebP. SVG et ICO sont conserves apres validation. L'envoi se fait avec Publier.";
+  controls.append(input, upload, hint);
   wrapper.append(preview, controls);
   group.appendChild(wrapper);
 }
@@ -1023,8 +1039,7 @@ function cleanFileName(name) {
   return `${safe || "image"}-${Date.now().toString(36)}.${ext}`;
 }
 
-async function uploadImage(file) {
-  const upload = await prepareImageUpload(file);
+async function commitImageUpload(upload) {
   return apiJson(API.image, {
     method: "PUT",
     csrf: true,
@@ -1036,18 +1051,24 @@ async function prepareImageUpload(file) {
   const isSvg = file.type === "image/svg+xml" || /\.svg$/i.test(file.name);
   const isIco = /(?:image\/x-icon|image\/vnd\.microsoft\.icon)/i.test(file.type) || /\.ico$/i.test(file.name);
   if (isSvg || isIco) {
+    const name = cleanFileName(file.name);
     return {
-      name: cleanFileName(file.name),
+      name,
+      path: `assets/images/${name}`,
       contentBase64: await fileToBase64(file),
+      previewUrl: URL.createObjectURL(file),
     };
   }
 
   const dot = file.name.lastIndexOf(".");
   const baseName = dot > 0 ? file.name.slice(0, dot) : file.name;
   const contentBase64 = await compressToWebP(file);
+  const name = cleanFileName(`${baseName}.webp`);
   return {
-    name: cleanFileName(`${baseName}.webp`),
+    name,
+    path: `assets/images/${name}`,
     contentBase64,
+    previewUrl: `data:image/webp;base64,${contentBase64}`,
   };
 }
 
@@ -1144,6 +1165,8 @@ async function loadContent() {
   contentSha = data.sha;
   activeLocale = content.site?.default_locale || "fr-CA";
   activeSeoLocale = activeLocale;
+  pendingImages = [];
+  pendingImagePreviews.clear();
   applyColorTheme();
 }
 
@@ -1178,6 +1201,13 @@ async function publish() {
   if (!(await showPublishConfirmation())) return;
   try {
     setStatus("saving", "Publication en cours...", "Écriture dans GitHub...");
+    for (const image of pendingImages) {
+      setStatus("saving", "Televersement de l'image...", image.name);
+      await commitImageUpload(image);
+    }
+    pendingImages = [];
+    pendingImagePreviews.clear();
+
     const data = await apiJson(API.content, {
       method: "PUT",
       csrf: true,
