@@ -59,12 +59,12 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
-        <a class="nav-link" href="#calculator">Calculateur</a>
         <a class="nav-link" href="#services">Services</a>
         <a class="nav-link" href="#guide">Guide</a>
         <a class="nav-link" href="#about">À propos</a>
         
         
+        <a class="nav-link" href="#calculator">Calculateur</a>
         <a class="language-link" href="/en/" data-locale-target="en-CA">EN</a>
         <a class="btn btn-primary nav-cta" href="#contact">Me contacter</a>
       </nav>
@@ -113,67 +113,6 @@
           <span>Stratégie adaptée à votre projet</span>
         </div>
         
-      </div>
-    </section>
-
-    <section id="calculator" class="section calculator-section">
-      <div class="container calculator-grid">
-        <div>
-          <p class="eyebrow">Calculateur</p>
-          <h2 class="section-title">Calculez vos paiements hypothécaires</h2>
-          <p class="section-lead">Obtenez une estimation rapide de votre mensualité. Les résultats sont indicatifs et ne remplacent pas une analyse personnalisée.</p>
-          <div class="calculator-info">
-            <div class="calculator-rate-note">
-              <strong>Taux du jour</strong>
-              <p>Multi-Prêts publie des taux indicatifs, mais le taux applicable dépend du montant emprunté, de votre profil, des garanties et des conditions du prêteur.</p>
-              <a href="https://www.multi-prets.com/fr/courtier-hypothecaire-melkior-clerge/options-hypothecaires/nos-taux/" target="_blank" rel="noopener">Voir les taux Multi-Prêts</a>
-            </div>
-            <div class="calculator-detail-list">
-              
-              <div class="calculator-detail">
-                <strong>À ajuster</strong>
-                <p>Modifiez le taux, l'amortissement et la fréquence pour comparer différents scénarios de paiement.</p>
-              </div>
-              
-              <div class="calculator-detail">
-                <strong>À prévoir</strong>
-                <p>Le paiement ne tient pas compte des taxes, assurances, frais de condo ou frais de démarrage.</p>
-              </div>
-              
-              <div class="calculator-detail">
-                <strong>À valider</strong>
-                <p>Melkior peut confirmer le taux, les conditions et la stratégie qui conviennent à votre dossier.</p>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-        <form class="calculator-card" data-monthly-label="Mensuel (12/an)" data-biweekly-label="Aux deux semaines (26/an)">
-          <label class="form-group">
-            <span class="form-label">Montant du prêt</span>
-            <input class="input" type="text" inputmode="numeric" name="amount" value="450000" data-money-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">Taux d'intérêt annuel</span>
-            <input class="input" type="text" inputmode="decimal" name="rate" value="4.89" data-percent-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">Amortissement</span>
-            <input class="input" type="text" inputmode="numeric" name="years" value="25" data-years-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">Fréquence</span>
-            <select class="select" name="frequency">
-              <option value="monthly">Mensuel (12/an)</option>
-              <option value="biweekly">Aux deux semaines (26/an)</option>
-            </select>
-          </label>
-          <div class="calculator-result">
-            <span>Paiement estimé</span>
-            <strong data-payment-result>$0</strong>
-          </div>
-          <a class="btn btn-primary w-full" href="#contact">Me contacter</a>
-        </form>
       </div>
     </section>
 
@@ -298,6 +237,67 @@
 
     
 
+    <section id="calculator" class="section calculator-section">
+      <div class="container calculator-grid">
+        <div>
+          <p class="eyebrow">Calculateur</p>
+          <h2 class="section-title">Calculez vos paiements hypothécaires</h2>
+          <p class="section-lead">Obtenez une estimation rapide de votre mensualité. Les résultats sont indicatifs et ne remplacent pas une analyse personnalisée.</p>
+          <div class="calculator-info">
+            <div class="calculator-rate-note">
+              <strong>Taux du jour</strong>
+              <p>Multi-Prêts publie des taux indicatifs, mais le taux applicable dépend du montant emprunté, de votre profil, des garanties et des conditions du prêteur.</p>
+              <a href="https://www.multi-prets.com/fr/courtier-hypothecaire-melkior-clerge/options-hypothecaires/nos-taux/" target="_blank" rel="noopener">Voir les taux Multi-Prêts</a>
+            </div>
+            <div class="calculator-detail-list">
+
+              <div class="calculator-detail">
+                <strong>À ajuster</strong>
+                <p>Modifiez le taux, l'amortissement et la fréquence pour comparer différents scénarios de paiement.</p>
+              </div>
+
+              <div class="calculator-detail">
+                <strong>À prévoir</strong>
+                <p>Le paiement ne tient pas compte des taxes, assurances, frais de condo ou frais de démarrage.</p>
+              </div>
+
+              <div class="calculator-detail">
+                <strong>À valider</strong>
+                <p>Melkior peut confirmer le taux, les conditions et la stratégie qui conviennent à votre dossier.</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <form class="calculator-card" data-monthly-label="Mensuel (12/an)" data-biweekly-label="Aux deux semaines (26/an)">
+          <label class="form-group">
+            <span class="form-label">Montant du prêt</span>
+            <input class="input" type="text" inputmode="numeric" name="amount" value="450000" data-money-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">Taux d'intérêt annuel</span>
+            <input class="input" type="text" inputmode="decimal" name="rate" value="4.89" data-percent-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">Amortissement</span>
+            <input class="input" type="text" inputmode="numeric" name="years" value="25" data-years-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">Fréquence</span>
+            <select class="select" name="frequency">
+              <option value="monthly">Mensuel (12/an)</option>
+              <option value="biweekly">Aux deux semaines (26/an)</option>
+            </select>
+          </label>
+          <div class="calculator-result">
+            <span>Paiement estimé</span>
+            <strong data-payment-result>$0</strong>
+          </div>
+          <a class="btn btn-primary w-full" href="#contact">Me contacter</a>
+        </form>
+      </div>
+    </section>
+
     <section id="contact" class="section bg-light">
       <div class="container contact-grid">
         <div>
@@ -392,10 +392,10 @@
       </div>
       <nav class="footer-nav" aria-label="Navigation">
         <h2 class="footer-column-title">Navigation</h2>
-        <a href="#calculator">Calculateur</a>
         <a href="#services">Services</a>
         <a href="#guide">Guide</a>
         <a href="#about">À propos</a>
+        <a href="#calculator">Calculateur</a>
         <a href="#contact">Contact</a>
       </nav>
       <div class="footer-admin-column">

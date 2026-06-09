@@ -506,7 +506,7 @@ p {
 
 .stats-band {
   color: var(--color-white);
-  background: var(--color-primary-dark);
+  background: var(--color-bg-dark);
 }
 
 .stats-grid {

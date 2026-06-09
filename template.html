@@ -59,12 +59,12 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
-        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="nav-link" href="#services">{{nav.services}}</a>
         <a class="nav-link" href="#guide">{{nav.guide}}</a>
         <a class="nav-link" href="#about">{{nav.about}}</a>
         {{#if testimonials.has_items}}<a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>{{/if}}
         {{#if media.has_items}}<a class="nav-link" href="#media">{{nav.media}}</a>{{/if}}
+        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="#contact">{{header.cta_text}}</a>
       </nav>
@@ -98,57 +98,6 @@
           <span>{{label}}</span>
         </div>
         {{/each}}
-      </div>
-    </section>
-
-    <section id="calculator" class="section calculator-section">
-      <div class="container calculator-grid">
-        <div>
-          <p class="eyebrow">{{calculator.eyebrow}}</p>
-          <h2 class="section-title">{{calculator.heading}}</h2>
-          <p class="section-lead">{{calculator.description}}</p>
-          <div class="calculator-info">
-            <div class="calculator-rate-note">
-              <strong>{{calculator.rate_note_title}}</strong>
-              <p>{{calculator.rate_note}}</p>
-              <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
-            </div>
-            <div class="calculator-detail-list">
-              {{#each calculator.details}}
-              <div class="calculator-detail">
-                <strong>{{title}}</strong>
-                <p>{{description}}</p>
-              </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-        <form class="calculator-card" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
-          <label class="form-group">
-            <span class="form-label">{{calculator.amount_label}}</span>
-            <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.rate_label}}</span>
-            <input class="input" type="text" inputmode="decimal" name="rate" value="{{calculator.default_rate}}" data-percent-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.amortization_label}}</span>
-            <input class="input" type="text" inputmode="numeric" name="years" value="{{calculator.default_years}}" data-years-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.frequency_label}}</span>
-            <select class="select" name="frequency">
-              <option value="monthly">{{calculator.monthly_label}}</option>
-              <option value="biweekly">{{calculator.biweekly_label}}</option>
-            </select>
-          </label>
-          <div class="calculator-result">
-            <span>{{calculator.result_label}}</span>
-            <strong data-payment-result>$0</strong>
-          </div>
-          <a class="btn btn-primary w-full" href="#contact">{{calculator.cta_text}}</a>
-        </form>
       </div>
     </section>
 
@@ -268,6 +217,57 @@
     </section>
     {{/if}}
 
+    <section id="calculator" class="section calculator-section">
+      <div class="container calculator-grid">
+        <div>
+          <p class="eyebrow">{{calculator.eyebrow}}</p>
+          <h2 class="section-title">{{calculator.heading}}</h2>
+          <p class="section-lead">{{calculator.description}}</p>
+          <div class="calculator-info">
+            <div class="calculator-rate-note">
+              <strong>{{calculator.rate_note_title}}</strong>
+              <p>{{calculator.rate_note}}</p>
+              <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
+            </div>
+            <div class="calculator-detail-list">
+{{#each calculator.details}}
+              <div class="calculator-detail">
+                <strong>{{title}}</strong>
+                <p>{{description}}</p>
+              </div>
+{{/each}}
+            </div>
+          </div>
+        </div>
+        <form class="calculator-card" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
+          <label class="form-group">
+            <span class="form-label">{{calculator.amount_label}}</span>
+            <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.rate_label}}</span>
+            <input class="input" type="text" inputmode="decimal" name="rate" value="{{calculator.default_rate}}" data-percent-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.amortization_label}}</span>
+            <input class="input" type="text" inputmode="numeric" name="years" value="{{calculator.default_years}}" data-years-input>
+          </label>
+          <label class="form-group">
+            <span class="form-label">{{calculator.frequency_label}}</span>
+            <select class="select" name="frequency">
+              <option value="monthly">{{calculator.monthly_label}}</option>
+              <option value="biweekly">{{calculator.biweekly_label}}</option>
+            </select>
+          </label>
+          <div class="calculator-result">
+            <span>{{calculator.result_label}}</span>
+            <strong data-payment-result>$0</strong>
+          </div>
+          <a class="btn btn-primary w-full" href="#contact">{{calculator.cta_text}}</a>
+        </form>
+      </div>
+    </section>
+
     <section id="contact" class="section bg-light">
       <div class="container contact-grid">
         <div>
@@ -344,10 +344,10 @@
       </div>
       <nav class="footer-nav" aria-label="{{footer.pages_heading}}">
         <h2 class="footer-column-title">{{footer.pages_heading}}</h2>
-        <a href="#calculator">{{nav.calculator}}</a>
         <a href="#services">{{nav.services}}</a>
         <a href="#guide">{{nav.guide}}</a>
         <a href="#about">{{nav.about}}</a>
+        <a href="#calculator">{{nav.calculator}}</a>
         <a href="#contact">{{nav.contact}}</a>
       </nav>
       <div class="footer-admin-column">
