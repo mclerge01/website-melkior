@@ -372,7 +372,11 @@ const publishModal = document.getElementById("publish-modal");
 function showLogin(error = "") {
   loginScreen.classList.remove("hidden");
   editorScreen.classList.add("hidden");
-  if (error) loginError.textContent = loginErrorMessage(error);
+  const code = error || "login_required";
+  const isDefault = code === "login_required";
+  loginError.textContent = loginErrorMessage(code);
+  loginError.classList.toggle("text-error", !isDefault);
+  loginError.classList.toggle("text-light", isDefault);
 }
 
 function showEditor() {

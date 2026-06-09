@@ -144,6 +144,15 @@
       margin-top: var(--space-6);
     }
 
+    .admin-login-return {
+      display: inline-block;
+      margin-top: var(--space-8);
+    }
+
+    .admin-login-message {
+      min-height: 1.25rem;
+    }
+
     .admin-card,
     .admin-section-card {
       padding: var(--space-6);
@@ -580,9 +589,9 @@
       <span class="logo-mark mx-auto mb-5">MC</span>
       <h1 class="text-3xl mb-4">Administration</h1>
       <p class="text-light mb-8">Connectez-vous avec GitHub. Seuls les contributeurs du dépôt peuvent accéder à l’éditeur.</p>
-      <a class="btn btn-primary w-full" href="/api/auth/github">Se connecter avec GitHub</a>
-      <a class="text-link mt-5" href="/fr/">Retour au site</a>
-      <p id="login-error" class="admin-status mt-4 text-error"></p>
+      <a class="btn btn-primary w-full" href="/api/auth/github">Connexion</a>
+      <p id="login-error" class="admin-status admin-login-message mt-4 text-light"></p>
+      <a class="text-link admin-login-return" href="/fr/">Retour au site</a>
     </div>
   </section>
 
