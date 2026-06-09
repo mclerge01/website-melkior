@@ -730,8 +730,10 @@ function renderTextarea(group, path, value, markdown) {
   textarea.rows = markdown ? 8 : 4;
   textarea.value = value ?? "";
   textarea.addEventListener("input", () => setPath(path, textarea.value));
-  if (markdown) group.appendChild(createMarkdownToolbar(textarea));
   group.appendChild(textarea);
+  if (markdown) {
+    requestAnimationFrame(() => initMarkdownEditor(group, path));
+  }
 }
 
 function renderToggle(group, path, value) {
@@ -839,49 +841,43 @@ function renderImageInput(group, path, value) {
   group.appendChild(wrapper);
 }
 
-function createMarkdownToolbar(textarea) {
-  const toolbar = document.createElement("span");
-  toolbar.className = "admin-markdown-toolbar";
-  const actions = [
-    ["B", "bold"],
-    ["I", "italic"],
-    ["Lien", "link"],
-    ["• Liste", "ul"],
-    ["1. Liste", "ol"],
-    ["Citation", "quote"],
-  ];
-  for (const [label, action] of actions) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = label;
-    button.addEventListener("click", () => applyMarkdownAction(textarea, action));
-    toolbar.appendChild(button);
-  }
-  return toolbar;
-}
+function initMarkdownEditor(group, path) {
+  if (typeof EasyMDE === "undefined") return null;
+  const textarea = group.querySelector("textarea");
+  if (!textarea || textarea.dataset.easyMdeReady === "true") return null;
 
-function applyMarkdownAction(textarea, action) {
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const selected = textarea.value.slice(start, end) || placeholderForAction(action);
-  let next = selected;
+  textarea.dataset.easyMdeReady = "true";
+  const editor = new EasyMDE({
+    element: textarea,
+    spellChecker: false,
+    autoDownloadFontAwesome: false,
+    forceSync: true,
+    status: false,
+    minHeight: "10rem",
+    toolbar: [
+      "bold",
+      "italic",
+      "strikethrough",
+      "code",
+      "|",
+      "heading-1",
+      "heading-2",
+      "heading-3",
+      "|",
+      "unordered-list",
+      "ordered-list",
+      "quote",
+      "|",
+      "link",
+      "|",
+      "preview",
+      "|",
+      "guide",
+    ],
+  });
 
-  if (action === "bold") next = `**${selected}**`;
-  else if (action === "italic") next = `*${selected}*`;
-  else if (action === "link") next = `[${selected}](https://example.com)`;
-  else if (action === "ul") next = selected.split(/\r?\n/).map((line) => `- ${line}`).join("\n");
-  else if (action === "ol") next = selected.split(/\r?\n/).map((line, index) => `${index + 1}. ${line}`).join("\n");
-  else if (action === "quote") next = selected.split(/\r?\n/).map((line) => `> ${line}`).join("\n");
-
-  textarea.setRangeText(next, start, end, "select");
-  textarea.focus();
-  textarea.dispatchEvent(new Event("input", { bubbles: true }));
-}
-
-function placeholderForAction(action) {
-  if (action === "link") return "texte du lien";
-  if (action === "ul" || action === "ol") return "élément";
-  return "texte";
+  editor.codemirror.on("change", () => setPath(path, editor.value()));
+  return editor;
 }
 
 function renderList(path, list) {

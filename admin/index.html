@@ -9,6 +9,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css"
+    integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI"
+    crossorigin="anonymous"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/easymde@2.21.0/dist/easymde.min.css"
+    integrity="sha384-ZoLYv3S+AsZX+zhbN1D1+WPpc8f+DmLfxfgw+qn0Nq8wJPOYQQXEW5ZrRhcGozlG"
+    crossorigin="anonymous"
+  >
   <link rel="stylesheet" href="/styles.css">
   <style>
     .admin-login {
@@ -253,18 +265,6 @@
       background: var(--color-primary);
     }
 
-    .admin-markdown-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-1);
-      padding: var(--space-2);
-      border: 1px solid var(--color-border);
-      border-bottom: 0;
-      border-radius: var(--rounded-lg) var(--rounded-lg) 0 0;
-      background: var(--color-bg-light);
-    }
-
-    .admin-markdown-toolbar button,
     .admin-btn-icon {
       display: inline-flex;
       align-items: center;
@@ -282,15 +282,59 @@
       cursor: pointer;
     }
 
-    .admin-markdown-toolbar button:hover,
     .admin-btn-icon:hover {
       border-color: var(--color-primary);
       color: var(--color-primary);
     }
 
-    .admin-markdown-toolbar + .textarea {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+    .admin-field .EasyMDEContainer {
+      min-width: 0;
+    }
+
+    .EasyMDEContainer .CodeMirror {
+      min-height: 10rem;
+      border-color: var(--color-border);
+      border-radius: 0 0 var(--rounded-lg) var(--rounded-lg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+
+    .EasyMDEContainer .CodeMirror-focused {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(155, 0, 46, 0.15);
+    }
+
+    .EasyMDEContainer .editor-toolbar {
+      border-color: var(--color-border);
+      border-radius: var(--rounded-lg) var(--rounded-lg) 0 0;
+      background: var(--color-bg-light);
+    }
+
+    .EasyMDEContainer .editor-toolbar button {
+      color: var(--color-text) !important;
+    }
+
+    .EasyMDEContainer .editor-toolbar button:hover,
+    .EasyMDEContainer .editor-toolbar button.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+      color: var(--color-primary) !important;
+    }
+
+    .EasyMDEContainer .editor-preview,
+    .EasyMDEContainer .editor-preview-side {
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+
+    .EasyMDEContainer .editor-toolbar.fullscreen,
+    .EasyMDEContainer .CodeMirror-fullscreen,
+    .EasyMDEContainer .editor-preview-side {
+      z-index: 80;
     }
 
     .admin-toggle-row,
@@ -649,6 +693,11 @@
 
   <div id="toast" class="admin-toast" role="status" aria-live="polite"></div>
 
+  <script
+    src="https://cdn.jsdelivr.net/npm/easymde@2.21.0/dist/easymde.min.js"
+    integrity="sha384-mTM6vzy+/UiHrMBClNGViM9qEv0/26iCGqpJKhSzdnjrxbKjO3vkT62ujXQ8B5iv"
+    crossorigin="anonymous"
+  ></script>
   <script src="/admin/admin.js"></script>
 </body>
 </html>

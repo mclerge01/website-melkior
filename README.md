@@ -14,8 +14,9 @@ The site is intentionally small and framework-free: static HTML generated from J
 - Cloudflare Email Routing Worker for sending contact emails
 - Instagram Graph API for the latest Instagram media feed
 - GitHub OAuth for admin login
+- EasyMDE for admin-only Markdown editing
 
-No frontend framework, no Tailwind package, and no browser-side libraries are used.
+No frontend framework or Tailwind package is used. The public website has no browser-side libraries; the admin panel loads pinned EasyMDE assets for Markdown editing.
 
 ## Project Structure
 
