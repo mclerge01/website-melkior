@@ -92,17 +92,23 @@ document.addEventListener("DOMContentLoaded", () => {
           cache: "no-store",
         });
         const payload = await response.json();
-        if (!response.ok || payload.success === false) throw new Error("Instagram feed unavailable");
+        if (!response.ok || payload.success === false) {
+          const error = new Error("Instagram feed unavailable");
+          error.code = payload.code || "";
+          throw error;
+        }
         const items = Array.isArray(payload.items) ? payload.items : [];
         feed.replaceChildren(...items.map((item) => createInstagramCard(item, feed)));
         if (status) {
           status.textContent = items.length ? "" : (feed.dataset.emptyLabel || "");
           status.hidden = Boolean(items.length);
         }
-      } catch {
+      } catch (error) {
         feed.replaceChildren();
         if (status) {
-          status.textContent = feed.dataset.errorLabel || "";
+          status.textContent = error?.code === "not_configured"
+            ? (feed.dataset.configErrorLabel || feed.dataset.emptyLabel || feed.dataset.errorLabel || "")
+            : (feed.dataset.errorLabel || "");
           status.hidden = false;
         }
       }
@@ -188,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setControlsState() {
       const disabled = getPages().length <= 1;
+      carousel.classList.toggle("has-carousel-pages", !disabled);
       if (prev) prev.disabled = disabled;
       if (next) next.disabled = disabled;
     }

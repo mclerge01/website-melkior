@@ -1368,9 +1368,13 @@ p {
 }
 
 .media-carousel {
-  overflow: hidden;
-  margin-inline: calc(var(--container-padding) * -1);
-  padding-inline: var(--container-padding);
+  --media-card-width: min(100%, 30rem);
+  --media-peek-offset: clamp(15rem, 36vw, 28rem);
+  position: relative;
+  max-width: min(100%, 72rem);
+  margin-inline: auto;
+  overflow: visible;
+  padding: var(--space-3) clamp(2.75rem, 6vw, 5rem) var(--space-8);
 }
 
 .media-status {
@@ -1459,6 +1463,75 @@ p {
 .media-card {
   flex: 0 0 min(28rem, 88vw);
   scroll-snap-align: start;
+}
+
+.media-carousel.is-showcase .media-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+.media-carousel.is-showcase .media-controls {
+  position: absolute;
+  inset: 50% 0 auto;
+  z-index: 6;
+  justify-content: space-between;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.media-carousel.is-showcase .media-control {
+  pointer-events: auto;
+  box-shadow: var(--shadow);
+}
+
+.media-carousel:not(.has-carousel-pages) .media-controls {
+  display: none;
+}
+
+.media-carousel.is-showcase .media-card {
+  grid-area: 1 / 1;
+  justify-self: center;
+  z-index: 1;
+  width: var(--media-card-width);
+  min-height: 37rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0) scale(0.86);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    filter 0.45s ease,
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.media-carousel.is-showcase .media-card.is-active {
+  z-index: 4;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.media-carousel.is-showcase .media-card.is-prev,
+.media-carousel.is-showcase .media-card.is-next {
+  z-index: 2;
+  opacity: 0.34;
+  filter: saturate(0.82);
+}
+
+.media-carousel.is-showcase .media-card.is-prev {
+  transform: translate3d(calc(var(--media-peek-offset) * -1), 0, 0) scale(0.88);
+}
+
+.media-carousel.is-showcase .media-card.is-next {
+  transform: translate3d(var(--media-peek-offset), 0, 0) scale(0.88);
+}
+
+.media-carousel.is-showcase .media-card.is-hidden {
+  visibility: hidden;
 }
 
 .contact-section {

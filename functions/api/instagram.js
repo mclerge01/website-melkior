@@ -67,6 +67,7 @@ async function fetchInstagramMedia(request, env) {
     return jsonResponse({
       success: false,
       items: [],
+      code: "not_configured",
       error: "Instagram API is not configured.",
     }, 503, { "Cache-Control": "no-store" });
   }
@@ -96,6 +97,7 @@ async function fetchInstagramMedia(request, env) {
     return jsonResponse({
       success: false,
       items: [],
+      code: "api_request_failed",
       error: "Instagram API request failed.",
     }, 502, { "Cache-Control": "no-store" });
   }
@@ -121,6 +123,7 @@ export async function onRequestGet(context) {
     return jsonResponse({
       success: false,
       items: [],
+      code: "server_error",
       error: "Unable to load Instagram media.",
     }, 500, { "Cache-Control": "no-store" });
   }
