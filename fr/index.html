@@ -285,15 +285,39 @@
           <p class="eyebrow">Témoignages</p>
           <h2 class="section-title">La confiance des clients, <em>une priorité.</em></h2>
         </div>
-        <div class="testimonial-carousel reveal-on-scroll" data-testimonial-carousel>
-          <div class="testimonial-track testimonial-showcase">
+        <div class="testimonial-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="item" data-carousel-interval="7000">
+          <div class="carousel-controls testimonial-controls">
+            <button class="carousel-control" type="button" data-carousel-prev aria-label="Témoignage précédent">‹</button>
+            <button class="carousel-control" type="button" data-carousel-next aria-label="Témoignage suivant">›</button>
+          </div>
+          <div class="testimonial-track testimonial-showcase" data-carousel-track>
 
             <article class="testimonial-card">
               <div class="testimonial-stars" aria-hidden="true">*****</div>
               <p>Ajoutez ici un vrai témoignage client lorsque Melkior aura approuvé le contenu à publier.</p>
               <div class="testimonial-person">
                 <span>AA</span>
-                <strong>Avis à ajouter</strong>
+                <strong>Avis à ajouter 1</strong>
+                <small>Client vérifié</small>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-hidden="true">*****</div>
+              <p>Remplacez ce texte par un avis Google ou un commentaire client validé avant publication.</p>
+              <div class="testimonial-person">
+                <span>AV</span>
+                <strong>Avis à ajouter 2</strong>
+                <small>Client vérifié</small>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-hidden="true">*****</div>
+              <p>Utilisez cette carte pour un témoignage court qui explique le contexte du projet et l’accompagnement reçu.</p>
+              <div class="testimonial-person">
+                <span>AC</span>
+                <strong>Avis à ajouter 3</strong>
                 <small>Client vérifié</small>
               </div>
             </article>
@@ -303,7 +327,7 @@
               <p>Cet espace est prêt pour mettre en valeur la satisfaction des clients sans inventer d’avis.</p>
               <div class="testimonial-person">
                 <span>MP</span>
-                <strong>Multi-Prêts</strong>
+                <strong>Avis à ajouter 4</strong>
                 <small>Expérience client</small>
               </div>
             </article>
@@ -327,41 +351,14 @@
             <strong>Sur Instagram</strong>
             <a href="https://www.instagram.com/mr.hypotheque/" target="_blank" rel="noopener">@mr.hypotheque</a>
           </div>
-          <div class="media-controls">
-            <button class="media-control" type="button" data-carousel-prev aria-label="Publication précédente">‹</button>
-            <button class="media-control" type="button" data-carousel-next aria-label="Publication suivante">›</button>
+          <div class="carousel-controls media-controls">
+            <button class="carousel-control media-control" type="button" data-carousel-prev aria-label="Publication précédente">‹</button>
+            <button class="carousel-control media-control" type="button" data-carousel-next aria-label="Publication suivante">›</button>
           </div>
         </div>
-        <div class="media-carousel reveal-on-scroll" data-scroll-carousel>
-          <div class="media-grid" data-scroll-track>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/reel/C5G-s7OgN5C/embed/" title="Conseil hypothécaire" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Reel Instagram</span>
-                <strong>Conseil hypothécaire</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/reel/C5G-s7OgN5C/" target="_blank" rel="noopener" aria-label="Conseil hypothécaire"></a>
-            </article>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/reel/C5FccNus2iF/embed/" title="Consolidation de dettes" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Reel Instagram</span>
-                <strong>Consolidation de dettes</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/reel/C5FccNus2iF/" target="_blank" rel="noopener" aria-label="Consolidation de dettes"></a>
-            </article>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/p/C4ivabALcSj/embed/" title="Conseil Multi-Prêts" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Publication Instagram</span>
-                <strong>Conseil Multi-Prêts</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/p/C4ivabALcSj/" target="_blank" rel="noopener" aria-label="Conseil Multi-Prêts"></a>
-            </article>
-
+        <div class="media-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="page" data-carousel-interval="7000">
+          <p class="media-status" data-instagram-status>Chargement des dernières publications Instagram...</p>
+          <div class="media-grid" data-carousel-track data-instagram-feed data-instagram-limit="6" data-loading-label="Chargement des dernières publications Instagram..." data-empty-label="Les publications Instagram seront affichées dès que l’API est configurée." data-error-label="Impossible de charger les publications Instagram pour le moment." data-link-label="Ouvrir sur Instagram">
           </div>
         </div>
       </div>

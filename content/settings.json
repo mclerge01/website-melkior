@@ -204,16 +204,30 @@
         "has_items": true,
         "eyebrow": "Témoignages",
         "heading": "La confiance des clients, *une priorité.*",
+        "prev_label": "Témoignage précédent",
+        "next_label": "Témoignage suivant",
         "items": [
           {
             "initials": "AA",
-            "name": "Avis à ajouter",
+            "name": "Avis à ajouter 1",
             "context": "Client vérifié",
             "quote": "Ajoutez ici un vrai témoignage client lorsque Melkior aura approuvé le contenu à publier."
           },
           {
+            "initials": "AV",
+            "name": "Avis à ajouter 2",
+            "context": "Client vérifié",
+            "quote": "Remplacez ce texte par un avis Google ou un commentaire client validé avant publication."
+          },
+          {
+            "initials": "AC",
+            "name": "Avis à ajouter 3",
+            "context": "Client vérifié",
+            "quote": "Utilisez cette carte pour un témoignage court qui explique le contexte du projet et l’accompagnement reçu."
+          },
+          {
             "initials": "MP",
-            "name": "Multi-Prêts",
+            "name": "Avis à ajouter 4",
             "context": "Expérience client",
             "quote": "Cet espace est prêt pour mettre en valeur la satisfaction des clients sans inventer d’avis."
           }
@@ -227,25 +241,13 @@
         "account_label": "Sur Instagram",
         "account_handle": "@mr.hypotheque",
         "profile_url": "https://www.instagram.com/mr.hypotheque/",
+        "max_items": 6,
+        "loading_label": "Chargement des dernières publications Instagram...",
+        "empty_label": "Les publications Instagram seront affichées dès que l’API est configurée.",
+        "error_label": "Impossible de charger les publications Instagram pour le moment.",
+        "link_label": "Ouvrir sur Instagram",
         "prev_label": "Publication précédente",
-        "next_label": "Publication suivante",
-        "items": [
-          {
-            "type": "Reel Instagram",
-            "title": "Conseil hypothécaire",
-            "url": "https://www.instagram.com/reel/C5G-s7OgN5C/"
-          },
-          {
-            "type": "Reel Instagram",
-            "title": "Consolidation de dettes",
-            "url": "https://www.instagram.com/reel/C5FccNus2iF/"
-          },
-          {
-            "type": "Publication Instagram",
-            "title": "Conseil Multi-Prêts",
-            "url": "https://www.instagram.com/p/C4ivabALcSj/"
-          }
-        ]
+        "next_label": "Publication suivante"
       },
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
@@ -505,16 +507,30 @@
         "has_items": true,
         "eyebrow": "Testimonials",
         "heading": "Client trust, *front and center.*",
+        "prev_label": "Previous testimonial",
+        "next_label": "Next testimonial",
         "items": [
           {
             "initials": "AR",
-            "name": "Review to add",
+            "name": "Review to add 1",
             "context": "Verified client",
             "quote": "Add a real approved client testimonial here when Melkior has content ready to publish."
           },
           {
+            "initials": "CR",
+            "name": "Review to add 2",
+            "context": "Verified client",
+            "quote": "Replace this text with a Google review or approved client comment before publishing."
+          },
+          {
+            "initials": "VR",
+            "name": "Review to add 3",
+            "context": "Verified client",
+            "quote": "Use this card for a short testimonial that explains the client context and support received."
+          },
+          {
             "initials": "MP",
-            "name": "Multi-Prêts",
+            "name": "Review to add 4",
             "context": "Client experience",
             "quote": "This section is ready to showcase client satisfaction without inventing reviews."
           }
@@ -528,25 +544,13 @@
         "account_label": "On Instagram",
         "account_handle": "@mr.hypotheque",
         "profile_url": "https://www.instagram.com/mr.hypotheque/",
+        "max_items": 6,
+        "loading_label": "Loading the latest Instagram posts...",
+        "empty_label": "Instagram posts will appear once the API is configured.",
+        "error_label": "Unable to load Instagram posts right now.",
+        "link_label": "Open on Instagram",
         "prev_label": "Previous post",
-        "next_label": "Next post",
-        "items": [
-          {
-            "type": "Instagram reel",
-            "title": "Mortgage advice",
-            "url": "https://www.instagram.com/reel/C5G-s7OgN5C/"
-          },
-          {
-            "type": "Instagram reel",
-            "title": "Debt consolidation",
-            "url": "https://www.instagram.com/reel/C5FccNus2iF/"
-          },
-          {
-            "type": "Instagram post",
-            "title": "Multi-Prêts advice",
-            "url": "https://www.instagram.com/p/C4ivabALcSj/"
-          }
-        ]
+        "next_label": "Next post"
       },
       "final_cta": {
         "eyebrow": "Mortgage consultation",

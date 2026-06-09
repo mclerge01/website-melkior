@@ -183,6 +183,8 @@ const CONTENT_SECTIONS = [
       { key: "has_items", label: "Afficher la section", type: "toggle" },
       { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre", type: "markdown", full: true },
+      { key: "prev_label", label: "Libellé bouton précédent" },
+      { key: "next_label", label: "Libellé bouton suivant" },
     ],
     lists: [
       {
@@ -208,19 +210,13 @@ const CONTENT_SECTIONS = [
       { key: "account_label", label: "Libellé du compte" },
       { key: "account_handle", label: "Identifiant" },
       { key: "profile_url", label: "Lien du profil Instagram", full: true },
+      { key: "max_items", label: "Nombre de publications", type: "number" },
+      { key: "loading_label", label: "Message de chargement", full: true },
+      { key: "empty_label", label: "Message vide", full: true },
+      { key: "error_label", label: "Message d’erreur", full: true },
+      { key: "link_label", label: "Libellé du lien" },
       { key: "prev_label", label: "Libellé bouton précédent" },
       { key: "next_label", label: "Libellé bouton suivant" },
-    ],
-    lists: [
-      {
-        key: "items",
-        label: "Publications",
-        fields: [
-          { key: "title", label: "Titre" },
-          { key: "type", label: "Type" },
-          { key: "url", label: "Lien Instagram", full: true },
-        ],
-      },
     ],
   },
   {

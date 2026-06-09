@@ -27,48 +27,223 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.querySelectorAll("[data-testimonial-carousel]").forEach((carousel) => {
-    const track = carousel.querySelector(".testimonial-track");
-    if (!track) return;
-    const originals = Array.from(track.children);
-    if (originals.length < 2) return;
+  function shortCaption(caption, fallback) {
+    const clean = String(caption || "").replace(/\s+/g, " ").trim();
+    if (!clean) return fallback;
+    return clean.length > 72 ? `${clean.slice(0, 69).trim()}...` : clean;
+  }
 
-    originals.forEach((card) => {
-      const clone = card.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      track.append(clone);
+  function instagramTypeLabel(item, lang) {
+    if (item.mediaProductType === "REELS") return lang === "fr" ? "Reel Instagram" : "Instagram reel";
+    if (item.mediaType === "CAROUSEL_ALBUM") return lang === "fr" ? "Carrousel Instagram" : "Instagram carousel";
+    if (item.mediaType === "VIDEO") return lang === "fr" ? "Vidéo Instagram" : "Instagram video";
+    return lang === "fr" ? "Publication Instagram" : "Instagram post";
+  }
+
+  function createInstagramCard(item, feed) {
+    const lang = document.documentElement.lang?.startsWith("en") ? "en" : "fr";
+    const fallback = lang === "fr" ? "Publication Instagram" : "Instagram post";
+    const title = shortCaption(item.caption, fallback);
+
+    const card = document.createElement("article");
+    card.className = "media-card";
+
+    const iframe = document.createElement("iframe");
+    iframe.src = item.embedUrl;
+    iframe.title = title;
+    iframe.loading = "lazy";
+    iframe.allow = "encrypted-media; picture-in-picture";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.tabIndex = -1;
+
+    const copy = document.createElement("div");
+    copy.className = "media-card-link";
+
+    const type = document.createElement("span");
+    type.textContent = instagramTypeLabel(item, lang);
+
+    const heading = document.createElement("strong");
+    heading.textContent = title;
+
+    const link = document.createElement("a");
+    link.className = "media-card-hit";
+    link.href = item.permalink;
+    link.target = "_blank";
+    link.rel = "noopener";
+    const linkLabel = feed.dataset.linkLabel || (lang === "fr" ? "Ouvrir sur Instagram" : "Open on Instagram");
+    link.setAttribute("aria-label", `${linkLabel}: ${title}`);
+
+    copy.append(type, heading);
+    card.append(iframe, copy, link);
+    return card;
+  }
+
+  async function loadInstagramFeeds() {
+    const feeds = Array.from(document.querySelectorAll("[data-instagram-feed]"));
+    await Promise.all(feeds.map(async (feed) => {
+      const carousel = feed.closest("[data-paged-carousel]");
+      const status = carousel?.querySelector("[data-instagram-status]");
+      const limit = Math.max(1, Math.min(12, Number(feed.dataset.instagramLimit || 6)));
+      if (status) status.textContent = feed.dataset.loadingLabel || status.textContent;
+
+      try {
+        const response = await fetch(`/api/instagram?limit=${encodeURIComponent(limit)}`, {
+          headers: { Accept: "application/json" },
+          cache: "no-store",
+        });
+        const payload = await response.json();
+        if (!response.ok || payload.success === false) throw new Error("Instagram feed unavailable");
+        const items = Array.isArray(payload.items) ? payload.items : [];
+        feed.replaceChildren(...items.map((item) => createInstagramCard(item, feed)));
+        if (status) {
+          status.textContent = items.length ? "" : (feed.dataset.emptyLabel || "");
+          status.hidden = Boolean(items.length);
+        }
+      } catch {
+        feed.replaceChildren();
+        if (status) {
+          status.textContent = feed.dataset.errorLabel || "";
+          status.hidden = false;
+        }
+      }
+    }));
+  }
+
+  function initPagedCarousel(carousel) {
+    if (carousel.dataset.carouselReady === "true") return;
+    const track = carousel.querySelector("[data-carousel-track]");
+    const section = carousel.closest("section");
+    const prev = carousel.querySelector("[data-carousel-prev]") || section?.querySelector("[data-carousel-prev]");
+    const next = carousel.querySelector("[data-carousel-next]") || section?.querySelector("[data-carousel-next]");
+    if (!track) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const intervalMs = Math.max(0, Number(carousel.dataset.carouselInterval || 7000));
+    const mode = carousel.dataset.carouselMode || "page";
+    let timer = null;
+    let paused = false;
+
+    function uniquePositions(positions) {
+      const normalized = positions.map((position) => Math.max(0, Math.round(position)));
+      return normalized.filter((position, index) => index === 0 || Math.abs(position - normalized[index - 1]) > 2);
+    }
+
+    function getPages() {
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      if (maxScroll <= 2) return [0];
+
+      if (mode === "item") {
+        const itemPages = Array.from(track.children).map((child) => Math.min(child.offsetLeft, maxScroll));
+        return uniquePositions(itemPages);
+      }
+
+      const pageWidth = Math.max(1, track.clientWidth);
+      const pages = [];
+      for (let position = 0; position < maxScroll - 2; position += pageWidth) {
+        pages.push(position);
+      }
+      pages.push(maxScroll);
+      return uniquePositions(pages);
+    }
+
+    function currentPageIndex(pages = getPages()) {
+      const scrollLeft = track.scrollLeft;
+      return pages.reduce((closestIndex, page, index) => {
+        return Math.abs(page - scrollLeft) < Math.abs(pages[closestIndex] - scrollLeft) ? index : closestIndex;
+      }, 0);
+    }
+
+    function setControlsState() {
+      const disabled = getPages().length <= 1;
+      if (prev) prev.disabled = disabled;
+      if (next) next.disabled = disabled;
+    }
+
+    function goToPage(index, behavior = "smooth") {
+      const pages = getPages();
+      if (pages.length <= 1) {
+        setControlsState();
+        return;
+      }
+      const normalizedIndex = (index + pages.length) % pages.length;
+      track.scrollTo({ left: pages[normalizedIndex], behavior });
+      setControlsState();
+    }
+
+    function goBy(direction) {
+      const pages = getPages();
+      goToPage(currentPageIndex(pages) + direction);
+    }
+
+    function stopAuto() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    }
+
+    function startAuto() {
+      stopAuto();
+      if (intervalMs <= 0 || reducedMotion.matches || getPages().length <= 1) return;
+      timer = window.setInterval(() => {
+        if (!paused && !document.hidden) goBy(1);
+      }, intervalMs);
+    }
+
+    function resetAuto() {
+      startAuto();
+    }
+
+    if (prev) {
+      prev.addEventListener("click", () => {
+        goBy(-1);
+        resetAuto();
+      });
+    }
+
+    if (next) {
+      next.addEventListener("click", () => {
+        goBy(1);
+        resetAuto();
+      });
+    }
+
+    carousel.addEventListener("pointerenter", () => {
+      paused = true;
+      stopAuto();
+    });
+    carousel.addEventListener("pointerleave", () => {
+      paused = false;
+      startAuto();
+    });
+    carousel.addEventListener("focusin", () => {
+      paused = true;
+      stopAuto();
+    });
+    carousel.addEventListener("focusout", () => {
+      window.requestAnimationFrame(() => {
+        if (!carousel.contains(document.activeElement)) {
+          paused = false;
+          startAuto();
+        }
+      });
     });
 
-    function syncCarouselDistance() {
-      const firstClone = track.children[originals.length];
-      if (!firstClone) return;
-      const shift = firstClone.offsetLeft;
-      if (!shift) return;
-      track.style.setProperty("--testimonial-shift", `-${shift}px`);
-      track.style.setProperty("--testimonial-duration", `${Math.max(24, originals.length * 12)}s`);
-    }
+    track.addEventListener("scroll", setControlsState, { passive: true });
+    window.addEventListener("resize", () => {
+      const index = currentPageIndex();
+      goToPage(index, "auto");
+      resetAuto();
+    }, { passive: true });
+    document.addEventListener("visibilitychange", resetAuto);
+    reducedMotion.addEventListener?.("change", resetAuto);
 
-    carousel.classList.add("is-looping");
-    window.requestAnimationFrame(syncCarouselDistance);
-    window.addEventListener("resize", syncCarouselDistance, { passive: true });
-  });
+    carousel.classList.add("is-paged");
+    carousel.dataset.carouselReady = "true";
+    setControlsState();
+    startAuto();
+  }
 
-  document.querySelectorAll("[data-scroll-carousel]").forEach((carousel) => {
-    const track = carousel.querySelector("[data-scroll-track]");
-    const section = carousel.closest("section");
-    const prev = section ? section.querySelector("[data-carousel-prev]") : null;
-    const next = section ? section.querySelector("[data-carousel-next]") : null;
-    if (!track || (!prev && !next)) return;
-
-    function scrollCarousel(direction) {
-      const card = track.querySelector(".media-card");
-      const gap = parseFloat(window.getComputedStyle(track).columnGap || "0");
-      const amount = card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.85;
-      track.scrollBy({ left: direction * amount, behavior: "smooth" });
-    }
-
-    if (prev) prev.addEventListener("click", () => scrollCarousel(-1));
-    if (next) next.addEventListener("click", () => scrollCarousel(1));
+  loadInstagramFeeds().finally(() => {
+    document.querySelectorAll("[data-paged-carousel]").forEach(initPagedCarousel);
   });
 
   if (hamburger && navMenu) {

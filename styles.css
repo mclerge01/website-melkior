@@ -1155,52 +1155,40 @@ p {
 }
 
 .testimonial-showcase {
-  display: grid;
+  display: flex;
   gap: var(--space-6);
   max-width: 980px;
   margin-inline: auto;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.testimonial-showcase::-webkit-scrollbar,
+.media-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .testimonial-carousel {
-  max-width: 1040px;
+  display: grid;
+  gap: var(--space-5);
+  max-width: 980px;
   margin-inline: auto;
-}
-
-.testimonial-carousel.is-looping {
   overflow: hidden;
   padding-block: var(--space-2);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
-.testimonial-carousel.is-looping .testimonial-track {
-  display: flex;
-  width: max-content;
-  max-width: none;
-  margin-inline: 0;
-  animation: testimonial-loop var(--testimonial-duration, 30s) linear infinite;
-  will-change: transform;
-}
-
-.testimonial-carousel.is-looping:hover .testimonial-track,
-.testimonial-carousel.is-looping:focus-within .testimonial-track {
-  animation-play-state: paused;
-}
-
-.testimonial-carousel.is-looping .testimonial-card {
-  flex: 0 0 min(82vw, 30rem);
-}
-
-@keyframes testimonial-loop {
-  to {
-    transform: translate3d(var(--testimonial-shift, -50%), 0, 0);
-  }
+.testimonial-controls {
+  justify-content: center;
 }
 
 .testimonial-card {
   position: relative;
+  flex: 0 0 100%;
   padding: var(--space-8);
   text-align: center;
+  scroll-snap-align: start;
 }
 
 .testimonial-section .testimonial-card {
@@ -1288,11 +1276,13 @@ p {
   color: var(--color-text-light);
 }
 
+.carousel-controls,
 .media-controls {
   display: flex;
   gap: var(--space-2);
 }
 
+.carousel-control,
 .media-control {
   display: grid;
   width: 2.5rem;
@@ -1311,6 +1301,8 @@ p {
     border-color var(--transition);
 }
 
+.carousel-control:hover,
+.carousel-control:focus-visible,
 .media-control:hover,
 .media-control:focus-visible {
   border-color: var(--color-primary);
@@ -1318,10 +1310,28 @@ p {
   background: var(--color-primary);
 }
 
+.carousel-control:disabled,
+.media-control:disabled {
+  cursor: default;
+  opacity: 0.42;
+  transform: none;
+}
+
 .media-carousel {
   overflow: hidden;
   margin-inline: calc(var(--container-padding) * -1);
   padding-inline: var(--container-padding);
+}
+
+.media-status {
+  padding: var(--space-6);
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.media-status:empty,
+.media-status[hidden] {
+  display: none;
 }
 
 .media-card {
@@ -1391,7 +1401,9 @@ p {
   gap: var(--space-5);
   overflow-x: auto;
   padding-bottom: var(--space-2);
-  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 .media-card {
@@ -1912,21 +1924,9 @@ p {
     transition: none;
   }
 
-  .testimonial-carousel.is-looping {
-    overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .testimonial-carousel.is-looping .testimonial-track {
-    display: grid;
-    width: auto;
-    animation: none;
-    transform: none;
-  }
-
-  .testimonial-carousel.is-looping .testimonial-card[aria-hidden="true"] {
-    display: none;
+  .testimonial-showcase,
+  .media-grid {
+    scroll-behavior: auto;
   }
 }
 

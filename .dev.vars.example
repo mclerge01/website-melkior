@@ -13,3 +13,11 @@ TURNSTILE_SECRET=1x0000000000000000000000000000000AA
 # Contact form
 CONTACT_EMAIL=
 CONTACT_DESTINATION=consultation@melkiorclerge.ca
+
+# Instagram Graph API
+# Requires an Instagram professional account connected to Meta developer access.
+INSTAGRAM_USER_ID=
+INSTAGRAM_ACCESS_TOKEN=
+INSTAGRAM_GRAPH_VERSION=v23.0
+INSTAGRAM_MEDIA_LIMIT=6
+INSTAGRAM_CACHE_TTL=0

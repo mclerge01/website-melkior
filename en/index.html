@@ -285,15 +285,39 @@
           <p class="eyebrow">Testimonials</p>
           <h2 class="section-title">Client trust, <em>front and center.</em></h2>
         </div>
-        <div class="testimonial-carousel reveal-on-scroll" data-testimonial-carousel>
-          <div class="testimonial-track testimonial-showcase">
+        <div class="testimonial-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="item" data-carousel-interval="7000">
+          <div class="carousel-controls testimonial-controls">
+            <button class="carousel-control" type="button" data-carousel-prev aria-label="Previous testimonial">‹</button>
+            <button class="carousel-control" type="button" data-carousel-next aria-label="Next testimonial">›</button>
+          </div>
+          <div class="testimonial-track testimonial-showcase" data-carousel-track>
 
             <article class="testimonial-card">
               <div class="testimonial-stars" aria-hidden="true">*****</div>
               <p>Add a real approved client testimonial here when Melkior has content ready to publish.</p>
               <div class="testimonial-person">
                 <span>AR</span>
-                <strong>Review to add</strong>
+                <strong>Review to add 1</strong>
+                <small>Verified client</small>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-hidden="true">*****</div>
+              <p>Replace this text with a Google review or approved client comment before publishing.</p>
+              <div class="testimonial-person">
+                <span>CR</span>
+                <strong>Review to add 2</strong>
+                <small>Verified client</small>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-hidden="true">*****</div>
+              <p>Use this card for a short testimonial that explains the client context and support received.</p>
+              <div class="testimonial-person">
+                <span>VR</span>
+                <strong>Review to add 3</strong>
                 <small>Verified client</small>
               </div>
             </article>
@@ -303,7 +327,7 @@
               <p>This section is ready to showcase client satisfaction without inventing reviews.</p>
               <div class="testimonial-person">
                 <span>MP</span>
-                <strong>Multi-Prêts</strong>
+                <strong>Review to add 4</strong>
                 <small>Client experience</small>
               </div>
             </article>
@@ -327,41 +351,14 @@
             <strong>On Instagram</strong>
             <a href="https://www.instagram.com/mr.hypotheque/" target="_blank" rel="noopener">@mr.hypotheque</a>
           </div>
-          <div class="media-controls">
-            <button class="media-control" type="button" data-carousel-prev aria-label="Previous post">‹</button>
-            <button class="media-control" type="button" data-carousel-next aria-label="Next post">›</button>
+          <div class="carousel-controls media-controls">
+            <button class="carousel-control media-control" type="button" data-carousel-prev aria-label="Previous post">‹</button>
+            <button class="carousel-control media-control" type="button" data-carousel-next aria-label="Next post">›</button>
           </div>
         </div>
-        <div class="media-carousel reveal-on-scroll" data-scroll-carousel>
-          <div class="media-grid" data-scroll-track>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/reel/C5G-s7OgN5C/embed/" title="Mortgage advice" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Instagram reel</span>
-                <strong>Mortgage advice</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/reel/C5G-s7OgN5C/" target="_blank" rel="noopener" aria-label="Mortgage advice"></a>
-            </article>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/reel/C5FccNus2iF/embed/" title="Debt consolidation" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Instagram reel</span>
-                <strong>Debt consolidation</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/reel/C5FccNus2iF/" target="_blank" rel="noopener" aria-label="Debt consolidation"></a>
-            </article>
-
-            <article class="media-card">
-              <iframe src="https://www.instagram.com/p/C4ivabALcSj/embed/" title="Multi-Prêts advice" loading="lazy" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1"></iframe>
-              <div class="media-card-link">
-                <span>Instagram post</span>
-                <strong>Multi-Prêts advice</strong>
-              </div>
-              <a class="media-card-hit" href="https://www.instagram.com/p/C4ivabALcSj/" target="_blank" rel="noopener" aria-label="Multi-Prêts advice"></a>
-            </article>
-
+        <div class="media-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="page" data-carousel-interval="7000">
+          <p class="media-status" data-instagram-status>Loading the latest Instagram posts...</p>
+          <div class="media-grid" data-carousel-track data-instagram-feed data-instagram-limit="6" data-loading-label="Loading the latest Instagram posts..." data-empty-label="Instagram posts will appear once the API is configured." data-error-label="Unable to load Instagram posts right now." data-link-label="Open on Instagram">
           </div>
         </div>
       </div>
