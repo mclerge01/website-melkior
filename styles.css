@@ -90,7 +90,9 @@ p {
 :root {
   /* Colors */
   --color-primary: #790025;
+  --color-primary-rgb: 121, 0, 37;
   --color-primary-dark: #3c0012;
+  --color-primary-dark-rgb: 60, 0, 18;
   --color-primary-light: #fff1f3;
   --color-secondary: #007167;
   --color-accent: #dbaa4b;
@@ -686,12 +688,12 @@ p {
   gap: var(--space-4);
   align-items: center;
   padding: var(--space-5);
-  border: 1px solid rgba(var(--color-bg-dark-rgb), 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--card-radius);
   color: var(--color-white);
   background:
     radial-gradient(circle at 88% 12%, rgba(219, 170, 75, 0.14), transparent 34%),
-    linear-gradient(135deg, var(--color-bg-dark), #071513);
+    linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.78), rgba(var(--color-primary-dark-rgb), 0.96));
   box-shadow: var(--shadow);
 }
 
@@ -733,8 +735,8 @@ p {
   align-items: center;
   padding-inline: var(--space-5);
   border-radius: var(--rounded-full);
-  color: var(--color-white);
-  background: var(--color-primary);
+  color: var(--color-primary-dark);
+  background: var(--color-accent);
   font-size: var(--text-sm);
   font-weight: 800;
 }
