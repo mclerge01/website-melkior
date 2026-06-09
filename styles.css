@@ -677,7 +677,7 @@ p {
 
 .teaser-section {
   padding: var(--space-10) 0 0;
-  background: var(--color-bg);
+  background: var(--color-primary-dark);
 }
 
 .calculator-teaser {
