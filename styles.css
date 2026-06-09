@@ -447,7 +447,7 @@ p {
 .hero {
   position: relative;
   display: grid;
-  align-items: center;
+  align-items: start;
   isolation: isolate;
   min-height: var(--hero-min-h);
   padding-top: calc(var(--nav-height) + var(--space-16));
@@ -503,6 +503,7 @@ p {
 }
 
 .hero-copy {
+  order: 2;
   max-width: 720px;
 }
 
@@ -555,45 +556,29 @@ p {
 .hero-portrait {
   position: relative;
   display: grid;
+  order: 1;
   width: 100%;
-  justify-self: stretch;
+  justify-self: center;
   place-items: center;
 }
 
 .hero-portrait::before,
 .hero-portrait::after {
-  content: "";
-  position: absolute;
-  border-radius: var(--rounded-full);
-  pointer-events: none;
-}
-
-.hero-portrait::before {
-  width: min(96%, 33rem);
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 0 0 2rem rgba(121, 0, 37, 0.14);
-}
-
-.hero-portrait::after {
-  width: min(84%, 28rem);
-  aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(219, 170, 75, 0.18), transparent 68%);
-  filter: blur(8px);
+  display: none;
 }
 
 .hero-portrait img {
   position: relative;
   z-index: 1;
-  width: min(100%, 30rem);
-  aspect-ratio: 1;
+  width: min(64vw, 20rem);
+  height: min(80vw, 25rem);
   object-fit: cover;
   object-position: center top;
   border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: var(--rounded-full);
+  border-radius: var(--card-radius);
   background:
     radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.72) 42%, rgba(121, 0, 37, 0.9) 100%);
-  box-shadow: 0 2rem 4.5rem rgba(0, 0, 0, 0.34);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.28);
 }
 
 .scroll-cue {
@@ -1993,7 +1978,13 @@ p {
     gap: var(--space-10);
   }
 
+  .hero-copy,
+  .hero-portrait {
+    order: initial;
+  }
+
   .hero {
+    align-items: center;
     padding-top: calc(var(--nav-height) + var(--space-12));
     padding-bottom: var(--space-16);
   }
@@ -2005,6 +1996,9 @@ p {
 
   .hero-portrait img {
     width: min(100%, 31rem);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: var(--rounded-full);
   }
 
   .calculator-grid,
