@@ -2,6 +2,9 @@
    Public site behavior - vanilla JS
    ========================================================================== */
 
+const MDI_PHONE_IN_TALK_PATH =
+  "M15,12H17A5,5 0 0,0 12,7V9A3,3 0 0,1 15,12M19,12H21C21,7 16.97,3 12,3V5C15.86,5 19,8.13 19,12M20,15.5C18.75,15.5 17.55,15.3 16.43,14.93C16.08,14.82 15.69,14.9 15.41,15.18L13.21,17.38C10.38,15.94 8.06,13.62 6.62,10.79L8.82,8.59C9.1,8.31 9.18,7.92 9.07,7.57C8.7,6.45 8.5,5.25 8.5,4A1,1 0 0,0 7.5,3H4A1,1 0 0,0 3,4A17,17 0 0,0 20,21A1,1 0 0,0 21,20V16.5A1,1 0 0,0 20,15.5Z";
+
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const nav = document.getElementById("site-nav");
@@ -207,7 +210,24 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("modal-error", "modal-phone", "modal-success");
     modal.classList.toggle("modal-phone", options.variant === "phone");
     modal.classList.add(success ? "modal-success" : "modal-error");
-    modalIcon.textContent = options.title || getModalTitle(success);
+    modalIcon.textContent = "";
+    if (options.variant === "phone") {
+      const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      icon.setAttribute("class", "modal-phone-icon");
+      icon.setAttribute("viewBox", "0 0 24 24");
+      icon.setAttribute("aria-hidden", "true");
+      icon.setAttribute("focusable", "false");
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", MDI_PHONE_IN_TALK_PATH);
+      icon.appendChild(path);
+
+      const number = document.createElement("span");
+      number.textContent = options.title || "";
+      modalIcon.append(icon, number);
+    } else {
+      modalIcon.textContent = options.title || getModalTitle(success);
+    }
     modalMessage.textContent = message;
     modal.classList.remove("hidden");
     body.classList.add("overflow-hidden");

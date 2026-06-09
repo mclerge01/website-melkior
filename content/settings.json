@@ -22,7 +22,7 @@
     "border": "#e1e1e1"
   },
   "shared": {
-    "phone": "(514) 836-6736",
+    "phone": "+1 (514) 836-6736",
     "phone_href": "+15148366736",
     "email": "consultation@melkiorclerge.ca",
     "office_address": "6799 boulevard St-Laurent, Montréal, QC, H2S 3C8",
@@ -64,9 +64,7 @@
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
         "title": "Votre projet immobilier mérite une stratégie claire.",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
-        "primary_cta": "Me contacter",
-        "secondary_cta": "Calculer",
-        "phone_label": "Appeler maintenant",
+        "primary_cta": "Consultation gratuite",
         "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire"
       },
       "stats": {
@@ -330,9 +328,7 @@
         "eyebrow": "Mortgage Broker | Multi-Prêts",
         "title": "Your real estate project deserves a clear mortgage strategy.",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
-        "primary_cta": "Contact me",
-        "secondary_cta": "Calculate",
-        "phone_label": "Call now",
+        "primary_cta": "Get a free consultation",
         "image_alt": "Portrait of Melkior Clergé, mortgage broker"
       },
       "stats": {

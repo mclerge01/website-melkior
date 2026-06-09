@@ -80,9 +80,8 @@
           <p class="hero-subtitle">{{hero.subtitle}}</p>
           <div class="hero-actions">
             <a class="btn btn-primary btn-lg" href="#contact">{{hero.primary_cta}}</a>
-            <a class="btn btn-outline btn-lg" href="#calculator">{{hero.secondary_cta}}</a>
+            <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a>
           </div>
-          <a class="phone-link" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{hero.phone_label}} {{shared.phone}}</a>
         </div>
         <div class="hero-portrait reveal-on-scroll">
           <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">

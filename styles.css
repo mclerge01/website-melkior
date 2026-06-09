@@ -1035,13 +1035,27 @@ p {
 }
 
 .modal-phone .form-modal-icon {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
   color: var(--color-primary);
   font-size: var(--text-3xl);
   line-height: 1.1;
 }
 
+.modal-phone-icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  color: var(--color-text);
+  fill: currentColor;
+}
+
 .modal-success .form-modal-icon {
   color: var(--color-success);
+}
+
+.modal-phone.modal-success .form-modal-icon {
+  color: var(--color-primary);
 }
 
 .modal-error .form-modal-icon {
