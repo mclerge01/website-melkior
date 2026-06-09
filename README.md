@@ -83,7 +83,7 @@ TURNSTILE_SECRET
 CONTACT_EMAIL
 CONTACT_DESTINATION
 EMAIL_WORKER service binding
-INSTAGRAM_USER_ID
+INSTAGRAM_BUSINESS_ACCOUNT_ID
 INSTAGRAM_ACCESS_TOKEN
 ```
 
@@ -97,7 +97,7 @@ INSTAGRAM_MEDIA_LIMIT=6
 INSTAGRAM_CACHE_TTL=0
 ```
 
-`INSTAGRAM_ACCESS_TOKEN` must be created through Meta/Instagram Graph API access for the Instagram professional account. The public page fetches `/api/instagram` on each load; the Pages Function fetches the latest media server-side and returns sanitized embed data. Keep `INSTAGRAM_CACHE_TTL=0` for a fresh Graph API request on each load, or set a short TTL such as `300` seconds if rate-limit protection becomes more important than absolute freshness.
+`INSTAGRAM_ACCESS_TOKEN` must be created through Meta/Instagram Graph API access for an Instagram professional account that can use Business Discovery. `INSTAGRAM_BUSINESS_ACCOUNT_ID` is the authenticated Graph API business account used to make that request; it is not the public profile to display. The displayed Instagram handle and profile URL are edited in Admin → Contenu du site → Médias. The public page fetches `/api/instagram` on each load; the Pages Function validates the requested handle against `content/settings.json`, fetches the latest media server-side, and returns sanitized embed data. Keep `INSTAGRAM_CACHE_TTL=0` for a fresh Graph API request on each load, or set a short TTL such as `300` seconds if rate-limit protection becomes more important than absolute freshness.
 
 ## Bilingual Routing
 

@@ -84,10 +84,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const carousel = feed.closest("[data-paged-carousel]");
       const status = carousel?.querySelector("[data-instagram-status]");
       const limit = Math.max(1, Math.min(12, Number(feed.dataset.instagramLimit || 6)));
+      const handle = String(feed.dataset.instagramHandle || "").trim();
       if (status) status.textContent = feed.dataset.loadingLabel || status.textContent;
 
       try {
-        const response = await fetch(`/api/instagram?limit=${encodeURIComponent(limit)}`, {
+        const params = new URLSearchParams({ limit: String(limit) });
+        if (handle) params.set("handle", handle);
+        const response = await fetch(`/api/instagram?${params.toString()}`, {
           headers: { Accept: "application/json" },
           cache: "no-store",
         });

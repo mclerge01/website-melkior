@@ -208,7 +208,7 @@ const CONTENT_SECTIONS = [
       { key: "heading", label: "Titre", type: "markdown", full: true },
       { key: "description", label: "Description", type: "textarea", full: true },
       { key: "account_label", label: "Libellé du compte" },
-      { key: "account_handle", label: "Identifiant" },
+      { key: "account_handle", label: "Identifiant Instagram", hint: "Ce champ contrôle le profil dont les publications sont affichées." },
       { key: "profile_url", label: "Lien du profil Instagram", full: true },
       { key: "max_items", label: "Nombre de publications", type: "number" },
       { key: "loading_label", label: "Message de chargement", full: true },

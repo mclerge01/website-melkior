@@ -2,6 +2,7 @@ const GRAPH_HOST = "https://graph.facebook.com";
 const DEFAULT_GRAPH_VERSION = "v23.0";
 const DEFAULT_LIMIT = 6;
 const DEFAULT_CACHE_TTL = 0;
+const HANDLE_PATTERN = /^[a-z0-9._]{1,30}$/i;
 
 function corsHeaders() {
   return {
@@ -35,6 +36,13 @@ function instagramEmbedUrl(url) {
   return match ? `https://www.instagram.com/${match[1]}/${match[2]}/embed/` : "";
 }
 
+function normalizeInstagramHandle(value) {
+  const raw = String(value || "").trim();
+  const fromUrl = raw.match(/^https?:\/\/(?:www\.)?instagram\.com\/([^/?#]+)/i);
+  const handle = (fromUrl ? fromUrl[1] : raw).replace(/^@+/, "").trim();
+  return HANDLE_PATTERN.test(handle) ? handle.toLowerCase() : "";
+}
+
 function normalizeItem(item) {
   const permalink = typeof item.permalink === "string" ? item.permalink : "";
   const embedUrl = instagramEmbedUrl(permalink);
@@ -60,10 +68,40 @@ function cacheTtl(env) {
   return clampNumber(env.INSTAGRAM_CACHE_TTL, DEFAULT_CACHE_TTL, 0, 86400);
 }
 
+async function configuredHandles(request, env) {
+  if (!env.ASSETS) return [];
+
+  try {
+    const settingsUrl = new URL("/content/settings.json", request.url);
+    const response = await env.ASSETS.fetch(new Request(settingsUrl));
+    if (!response.ok) return [];
+
+    const settings = await response.json();
+    const locales = Object.values(settings?.locales || {});
+    return [...new Set(locales
+      .flatMap((locale) => [locale?.media?.account_handle, locale?.media?.profile_url])
+      .map(normalizeInstagramHandle)
+      .filter(Boolean))];
+  } catch {
+    return [];
+  }
+}
+
+async function configuredHandle(request, env) {
+  const url = new URL(request.url);
+  const requestedHandle = normalizeInstagramHandle(url.searchParams.get("handle"));
+  const allowedHandles = await configuredHandles(request, env);
+
+  if (!requestedHandle) return allowedHandles[0] || "";
+  if (!allowedHandles.length || !allowedHandles.includes(requestedHandle)) return "";
+  return requestedHandle;
+}
+
 async function fetchInstagramMedia(request, env) {
   const accessToken = env.INSTAGRAM_ACCESS_TOKEN;
-  const userId = env.INSTAGRAM_USER_ID;
-  if (!accessToken || !userId) {
+  const businessAccountId = env.INSTAGRAM_BUSINESS_ACCOUNT_ID;
+  const handle = await configuredHandle(request, env);
+  if (!accessToken || !businessAccountId || !handle) {
     return jsonResponse({
       success: false,
       items: [],
@@ -77,6 +115,7 @@ async function fetchInstagramMedia(request, env) {
   const ttl = cacheTtl(env);
   const cacheUrl = new URL(request.url);
   cacheUrl.searchParams.set("limit", String(limit));
+  cacheUrl.searchParams.set("handle", handle);
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
   const cache = typeof caches !== "undefined" ? caches.default : null;
 
@@ -85,9 +124,11 @@ async function fetchInstagramMedia(request, env) {
     if (cached) return cached;
   }
 
-  const apiUrl = new URL(`${GRAPH_HOST}/${version}/${encodeURIComponent(userId)}/media`);
-  apiUrl.searchParams.set("fields", "id,caption,media_type,media_product_type,permalink,timestamp");
-  apiUrl.searchParams.set("limit", String(limit));
+  const apiUrl = new URL(`${GRAPH_HOST}/${version}/${encodeURIComponent(businessAccountId)}`);
+  apiUrl.searchParams.set(
+    "fields",
+    `business_discovery.username(${handle}){media.limit(${limit}){id,caption,media_type,media_product_type,permalink,timestamp}}`
+  );
   apiUrl.searchParams.set("access_token", accessToken);
 
   const response = await fetch(apiUrl.toString());
@@ -102,7 +143,8 @@ async function fetchInstagramMedia(request, env) {
     }, 502, { "Cache-Control": "no-store" });
   }
 
-  const items = Array.isArray(payload.data) ? payload.data.map(normalizeItem).filter(Boolean) : [];
+  const media = payload?.business_discovery?.media?.data;
+  const items = Array.isArray(media) ? media.map(normalizeItem).filter(Boolean) : [];
   const result = jsonResponse({
     success: true,
     items,
