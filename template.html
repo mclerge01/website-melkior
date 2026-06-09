@@ -75,7 +75,7 @@
     <section id="hero" class="hero section">
       <img class="hero-bg-image" src="{{shared.images.hero_background}}" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
       <div class="container hero-grid">
-        <div class="hero-copy reveal-on-scroll">
+        <div class="hero-copy reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{hero.eyebrow}}</p>
           <h1 class="hero-title">{{hero.title}}</h1>
           <p class="hero-subtitle">{{hero.subtitle}}</p>
@@ -84,16 +84,16 @@
             <a class="btn btn-outline btn-lg" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a>
           </div>
         </div>
-        <div class="hero-portrait reveal-on-scroll">
+        <div class="hero-portrait reveal-on-scroll reveal-from-right">
           <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">
         </div>
       </div>
     </section>
 
     <section class="stats-band" aria-label="Highlights">
-      <div class="container stats-grid">
+      <div class="container stats-grid reveal-stagger">
         {{#each stats.items}}
-        <div class="stat-item">
+        <div class="stat-item reveal-on-scroll reveal-scale">
           <strong>{{value}}</strong>
           <span>{{label}}</span>
         </div>
@@ -103,11 +103,11 @@
 
     <section id="services" class="section bg-primary-dark text-white">
       <div class="container">
-        <div class="section-heading">
+        <div class="section-heading reveal-on-scroll">
           <p class="eyebrow eyebrow-light">{{services.eyebrow}}</p>
           <h2 class="section-title">{{services.heading}}</h2>
         </div>
-        <div class="service-grid">
+        <div class="service-grid reveal-stagger">
           {{#each services.items}}
           <article class="service-card reveal-on-scroll">
             <h3>{{title}}</h3>
@@ -115,7 +115,7 @@
           </article>
           {{/each}}
         </div>
-        <div class="section-cta service-cta">
+        <div class="section-cta service-cta reveal-on-scroll reveal-scale">
           <h3>{{final_cta.heading}}</h3>
           <p>{{final_cta.description}}</p>
           <div class="hero-actions justify-center">
@@ -128,14 +128,14 @@
 
     <section id="guide" class="section">
       <div class="container guide-grid">
-        <div>
+        <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{guide.eyebrow}}</p>
           <h2 class="section-title">{{guide.heading}}</h2>
           <p class="section-lead">{{guide.intro}}</p>
         </div>
-        <div class="guide-list">
+        <div class="guide-list reveal-stagger">
           {{#each guide.items}}
-          <article class="guide-item">
+          <article class="guide-item reveal-on-scroll">
             <h3>{{title}}</h3>
             <div class="text-light">{{description}}</div>
           </article>
@@ -146,16 +146,16 @@
 
     <section id="about" class="section about-section bg-dark text-white">
       <div class="container about-grid lg:items-stretch">
-        <div class="about-image lg:h-full">
+        <div class="about-image lg:h-full reveal-on-scroll reveal-from-left">
           <img class="lg:h-full" src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
         </div>
-        <div>
+        <div class="reveal-on-scroll reveal-from-right">
           <p class="eyebrow eyebrow-light">{{about.eyebrow}}</p>
           <h2 class="section-title">{{about.title}}</h2>
           <div class="about-body">{{about.body}}</div>
-          <div class="timeline">
+          <div class="timeline reveal-stagger">
             {{#each about.timeline}}
-            <article class="timeline-item">
+            <article class="timeline-item reveal-on-scroll">
               <span class="timeline-year">{{year}}</span>
               <h3>{{title}}</h3>
               <div>{{description}}</div>
@@ -168,7 +168,7 @@
 
     {{#if promo.enabled}}
     <section class="section promo-section">
-      <div class="container promo-band">
+      <div class="container promo-band reveal-on-scroll reveal-scale">
         <p class="eyebrow">{{promo.eyebrow}}</p>
         <h2>{{promo.heading}}</h2>
         <p>{{promo.description}}</p>
@@ -180,13 +180,13 @@
     {{#if testimonials.has_items}}
     <section id="testimonials" class="section bg-light">
       <div class="container">
-        <div class="section-heading">
+        <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{testimonials.eyebrow}}</p>
           <h2 class="section-title">{{testimonials.heading}}</h2>
         </div>
-        <div class="testimonial-grid">
+        <div class="testimonial-grid reveal-stagger">
           {{#each testimonials.items}}
-          <article class="testimonial-card">
+          <article class="testimonial-card reveal-on-scroll">
             <p>{{quote}}</p>
             <strong>{{name}}</strong>
             <span>{{context}}</span>
@@ -200,14 +200,14 @@
     {{#if media.has_items}}
     <section id="media" class="section">
       <div class="container">
-        <div class="section-heading">
+        <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{media.eyebrow}}</p>
           <h2 class="section-title">{{media.heading}}</h2>
           <p class="section-lead">{{media.description}}</p>
         </div>
-        <div class="media-grid">
+        <div class="media-grid reveal-stagger">
           {{#each media.items}}
-          <a class="media-card" href="{{url}}" target="_blank" rel="noopener">
+          <a class="media-card reveal-on-scroll" href="{{url}}" target="_blank" rel="noopener">
             <span>{{type}}</span>
             <strong>{{title}}</strong>
           </a>
@@ -219,7 +219,7 @@
 
     <section id="calculator" class="section calculator-section">
       <div class="container calculator-grid">
-        <div>
+        <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{calculator.eyebrow}}</p>
           <h2 class="section-title">{{calculator.heading}}</h2>
           <p class="section-lead">{{calculator.description}}</p>
@@ -229,9 +229,9 @@
               <p>{{calculator.rate_note}}</p>
               <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
             </div>
-            <div class="calculator-detail-list">
+            <div class="calculator-detail-list reveal-stagger">
 {{#each calculator.details}}
-              <div class="calculator-detail">
+              <div class="calculator-detail reveal-on-scroll">
                 <strong>{{title}}</strong>
                 <p>{{description}}</p>
               </div>
@@ -239,7 +239,7 @@
             </div>
           </div>
         </div>
-        <form class="calculator-card" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
+        <form class="calculator-card reveal-on-scroll reveal-from-right" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
           <label class="form-group">
             <span class="form-label">{{calculator.amount_label}}</span>
             <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
@@ -270,7 +270,7 @@
 
     <section id="contact" class="section bg-light">
       <div class="container contact-grid">
-        <div>
+        <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{nav.contact}}</p>
           <h2 class="section-title">{{contact.heading}}</h2>
           <p class="section-lead">{{contact.subtitle}}</p>
@@ -286,7 +286,7 @@
             <p>{{contact.consultation_text}}</p>
           </div>
         </div>
-        <form id="contact-form" class="contact-form" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">
+        <form id="contact-form" class="contact-form reveal-on-scroll reveal-from-right" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">
           <input type="hidden" name="locale" value="{{locale}}">
           <div class="form-group hidden">
             <label for="bot-field">Do not fill</label>

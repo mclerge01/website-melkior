@@ -499,7 +499,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const revealElements = document.querySelectorAll(".reveal-on-scroll");
-  if ("IntersectionObserver" in window && revealElements.length) {
+  const prefersReducedMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReducedMotion) {
+    revealElements.forEach((element) => element.classList.add("revealed"));
+  } else if ("IntersectionObserver" in window && revealElements.length) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
