@@ -70,7 +70,7 @@
       "popup": {
         "enabled": false,
         "title": "Annonce importante",
-        "message": "Ajoutez ici une annonce temporaire à afficher aux visiteurs à leur première visite.",
+        "message": "Une annonce importante peut être affichée ici lorsque Melkior souhaite communiquer une mise à jour aux visiteurs.",
         "image": "",
         "dismiss_label": "Fermer"
       },
@@ -204,37 +204,12 @@
         ]
       },
       "testimonials": {
-        "has_items": true,
+        "has_items": false,
         "eyebrow": "Témoignages",
         "heading": "La confiance des clients, *une priorité.*",
         "prev_label": "Témoignage précédent",
         "next_label": "Témoignage suivant",
-        "items": [
-          {
-            "initials": "AA",
-            "name": "Avis à ajouter 1",
-            "context": "Client vérifié",
-            "quote": "Ajoutez ici un vrai témoignage client lorsque Melkior aura approuvé le contenu à publier."
-          },
-          {
-            "initials": "AV",
-            "name": "Avis à ajouter 2",
-            "context": "Client vérifié",
-            "quote": "Remplacez ce texte par un avis Google ou un commentaire client validé avant publication."
-          },
-          {
-            "initials": "AC",
-            "name": "Avis à ajouter 3",
-            "context": "Client vérifié",
-            "quote": "Utilisez cette carte pour un témoignage court qui explique le contexte du projet et l’accompagnement reçu."
-          },
-          {
-            "initials": "MP",
-            "name": "Avis à ajouter 4",
-            "context": "Expérience client",
-            "quote": "Cet espace est prêt pour mettre en valeur la satisfaction des clients sans inventer d’avis."
-          }
-        ]
+        "items": []
       },
       "media": {
         "has_items": true,
@@ -367,7 +342,7 @@
       "popup": {
         "enabled": false,
         "title": "Important notice",
-        "message": "Add a temporary announcement here to show visitors on their first visit.",
+        "message": "An important notice can be displayed here when Melkior wants to share an update with visitors.",
         "image": "",
         "dismiss_label": "Close"
       },
@@ -501,37 +476,12 @@
         ]
       },
       "testimonials": {
-        "has_items": true,
+        "has_items": false,
         "eyebrow": "Testimonials",
         "heading": "Client trust, *front and center.*",
         "prev_label": "Previous testimonial",
         "next_label": "Next testimonial",
-        "items": [
-          {
-            "initials": "AR",
-            "name": "Review to add 1",
-            "context": "Verified client",
-            "quote": "Add a real approved client testimonial here when Melkior has content ready to publish."
-          },
-          {
-            "initials": "CR",
-            "name": "Review to add 2",
-            "context": "Verified client",
-            "quote": "Replace this text with a Google review or approved client comment before publishing."
-          },
-          {
-            "initials": "VR",
-            "name": "Review to add 3",
-            "context": "Verified client",
-            "quote": "Use this card for a short testimonial that explains the client context and support received."
-          },
-          {
-            "initials": "MP",
-            "name": "Review to add 4",
-            "context": "Client experience",
-            "quote": "This section is ready to showcase client satisfaction without inventing reviews."
-          }
-        ]
+        "items": []
       },
       "media": {
         "has_items": true,
