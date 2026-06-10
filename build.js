@@ -99,7 +99,6 @@ function prepareLocaleData(settings, locale, page = "home") {
     ...localized.media,
     instagram_embed_url: instagramEmbed.url,
     instagram_embed_title: instagramEmbed.title,
-    use_instagram_api: !instagramEmbed.url,
   };
   const path = pagePath(locale, page);
   const altPath = equivalentPath(path, otherLocale);

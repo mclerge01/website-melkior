@@ -241,17 +241,7 @@
         "eyebrow": "Médias",
         "heading": "Dans les *médias*",
         "description": "Aperçu de publications Instagram de Melkior. Ouvrez une publication pour la consulter directement sur Instagram.",
-        "account_label": "Sur Instagram",
-        "account_handle": "@mr.hypotheque",
-        "profile_url": "https://www.instagram.com/mr.hypotheque/",
-        "max_items": 6,
-        "loading_label": "Chargement des dernières publications Instagram...",
-        "empty_label": "Les publications Instagram seront affichées dès que l’API est configurée.",
-        "config_error_label": "Configurez l’accès API Instagram dans les variables d’environnement. Le profil à afficher se modifie dans l’administration.",
-        "error_label": "Impossible de charger les publications Instagram pour le moment.",
-        "link_label": "Ouvrir sur Instagram",
-        "prev_label": "Publication précédente",
-        "next_label": "Publication suivante"
+        "loading_label": "Chargement des dernières publications Instagram..."
       },
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
@@ -548,17 +538,7 @@
         "eyebrow": "Media",
         "heading": "In the *media*",
         "description": "Preview Melkior's Instagram posts. Open a post to view it directly on Instagram.",
-        "account_label": "On Instagram",
-        "account_handle": "@mr.hypotheque",
-        "profile_url": "https://www.instagram.com/mr.hypotheque/",
-        "max_items": 6,
-        "loading_label": "Loading the latest Instagram posts...",
-        "empty_label": "Instagram posts will appear once the API is configured.",
-        "config_error_label": "Configure the Instagram API access in the environment variables. The displayed profile is edited in the admin.",
-        "error_label": "Unable to load Instagram posts right now.",
-        "link_label": "Open on Instagram",
-        "prev_label": "Previous post",
-        "next_label": "Next post"
+        "loading_label": "Loading the latest Instagram posts..."
       },
       "final_cta": {
         "eyebrow": "Mortgage consultation",

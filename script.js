@@ -27,97 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function shortCaption(caption, fallback) {
-    const clean = String(caption || "").replace(/\s+/g, " ").trim();
-    if (!clean) return fallback;
-    return clean.length > 72 ? `${clean.slice(0, 69).trim()}...` : clean;
-  }
-
-  function instagramTypeLabel(item, lang) {
-    if (item.mediaProductType === "REELS") return lang === "fr" ? "Reel Instagram" : "Instagram reel";
-    if (item.mediaType === "CAROUSEL_ALBUM") return lang === "fr" ? "Carrousel Instagram" : "Instagram carousel";
-    if (item.mediaType === "VIDEO") return lang === "fr" ? "Vidéo Instagram" : "Instagram video";
-    return lang === "fr" ? "Publication Instagram" : "Instagram post";
-  }
-
-  function createInstagramCard(item, feed) {
-    const lang = document.documentElement.lang?.startsWith("en") ? "en" : "fr";
-    const fallback = lang === "fr" ? "Publication Instagram" : "Instagram post";
-    const title = shortCaption(item.caption, fallback);
-
-    const card = document.createElement("article");
-    card.className = "media-card";
-
-    const iframe = document.createElement("iframe");
-    iframe.src = item.embedUrl;
-    iframe.title = title;
-    iframe.loading = "lazy";
-    iframe.allow = "encrypted-media; picture-in-picture";
-    iframe.referrerPolicy = "strict-origin-when-cross-origin";
-    iframe.tabIndex = -1;
-
-    const copy = document.createElement("div");
-    copy.className = "media-card-link";
-
-    const type = document.createElement("span");
-    type.textContent = instagramTypeLabel(item, lang);
-
-    const heading = document.createElement("strong");
-    heading.textContent = title;
-
-    const link = document.createElement("a");
-    link.className = "media-card-hit";
-    link.href = item.permalink;
-    link.target = "_blank";
-    link.rel = "noopener";
-    const linkLabel = feed.dataset.linkLabel || (lang === "fr" ? "Ouvrir sur Instagram" : "Open on Instagram");
-    link.setAttribute("aria-label", `${linkLabel}: ${title}`);
-
-    copy.append(type, heading);
-    card.append(iframe, copy, link);
-    return card;
-  }
-
-  async function loadInstagramFeeds() {
-    const feeds = Array.from(document.querySelectorAll("[data-instagram-feed]"));
-    await Promise.all(feeds.map(async (feed) => {
-      const carousel = feed.closest("[data-paged-carousel]");
-      const status = carousel?.querySelector("[data-instagram-status]");
-      const limit = Math.max(1, Math.min(12, Number(feed.dataset.instagramLimit || 6)));
-      const handle = String(feed.dataset.instagramHandle || "").trim();
-      if (status) status.textContent = feed.dataset.loadingLabel || status.textContent;
-
-      try {
-        const params = new URLSearchParams({ limit: String(limit) });
-        if (handle) params.set("handle", handle);
-        const response = await fetch(`/api/instagram?${params.toString()}`, {
-          headers: { Accept: "application/json" },
-          cache: "no-store",
-        });
-        const payload = await response.json();
-        if (!response.ok || payload.success === false) {
-          const error = new Error("Instagram feed unavailable");
-          error.code = payload.code || "";
-          throw error;
-        }
-        const items = Array.isArray(payload.items) ? payload.items : [];
-        feed.replaceChildren(...items.map((item) => createInstagramCard(item, feed)));
-        if (status) {
-          status.textContent = items.length ? "" : (feed.dataset.emptyLabel || "");
-          status.hidden = Boolean(items.length);
-        }
-      } catch (error) {
-        feed.replaceChildren();
-        if (status) {
-          status.textContent = error?.code === "not_configured"
-            ? (feed.dataset.configErrorLabel || feed.dataset.emptyLabel || feed.dataset.errorLabel || "")
-            : (feed.dataset.errorLabel || "");
-          status.hidden = false;
-        }
-      }
-    }));
-  }
-
   function isLikelyCrawlerUserAgent() {
     const ua = navigator.userAgent || "";
     return /(bot|crawl|crawler|spider|slurp|bingpreview|facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterest|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-user|anthropic-ai|perplexitybot|perplexity-user|ccbot|google-extended|applebot-extended|bytespider|meta-externalagent|meta-externalfetcher|diffbot|cohere-ai|omgili|semrushbot|ahrefsbot|mj12bot|dotbot|petalbot|yandex|baiduspider|duckduckbot|googlebot|bingbot)/i.test(ua);
@@ -388,10 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   initInstagramWidgets();
-
-  loadInstagramFeeds().finally(() => {
-    document.querySelectorAll("[data-paged-carousel]").forEach(initPagedCarousel);
-  });
+  document.querySelectorAll("[data-paged-carousel]").forEach(initPagedCarousel);
 
   if (hamburger && navMenu) {
     function closeMenu() {

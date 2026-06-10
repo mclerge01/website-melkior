@@ -264,23 +264,6 @@
           </div>
         </div>
 {{/if}}
-{{#if media.use_instagram_api}}
-        <div class="media-rail-heading">
-          <div>
-            <strong>{{media.account_label}}</strong>
-            <a href="{{media.profile_url}}" target="_blank" rel="noopener">{{media.account_handle}}</a>
-          </div>
-        </div>
-        <div class="media-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="showcase" data-carousel-interval="7000">
-          <p class="media-status" data-instagram-status>{{media.loading_label}}</p>
-          <div class="carousel-controls media-controls">
-            <button class="carousel-control media-control" type="button" data-carousel-prev aria-label="{{media.prev_label}}">‹</button>
-            <button class="carousel-control media-control" type="button" data-carousel-next aria-label="{{media.next_label}}">›</button>
-          </div>
-          <div class="media-grid" data-carousel-track data-instagram-feed data-instagram-handle="{{media.account_handle}}" data-instagram-limit="{{media.max_items}}" data-loading-label="{{media.loading_label}}" data-empty-label="{{media.empty_label}}" data-error-label="{{media.error_label}}" data-config-error-label="{{media.config_error_label}}" data-link-label="{{media.link_label}}">
-          </div>
-        </div>
-{{/if}}
       </div>
     </section>
 {{/if}}
