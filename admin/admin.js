@@ -981,7 +981,7 @@ function renderList(path, list) {
   const add = document.createElement("button");
   add.type = "button";
   add.className = "admin-add-btn";
-  add.innerHTML = `${adminIcon("plus")}<span>Ajouter ${list.label.toLowerCase()}</span>`;
+  add.innerHTML = `${adminIcon("plus")}<span>Ajouter une entrée</span>`;
   add.addEventListener("click", () => {
     const nextIndex = items.length;
     items.push(emptyItemForList(list));
