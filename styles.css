@@ -426,8 +426,13 @@ p {
 
 .network-logo-link {
   flex: 0 0 auto;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  height: 2.35rem;
   border-radius: var(--rounded-sm);
-  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  transition: transform var(--transition), opacity var(--transition);
 }
 
 .network-logo-link:hover,
@@ -435,29 +440,42 @@ p {
   color: inherit;
   text-decoration: none;
   transform: translateY(-1px);
-  box-shadow: 0 0 0 2px var(--color-link-bright);
-}
-
-.network-logo-link:focus-visible {
-  outline: 2px solid var(--color-link-bright);
-  outline-offset: 0.2rem;
 }
 
 .network-logo {
-  width: 6.2rem;
-  height: 2.35rem;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  padding: 0.35rem 0.65rem;
+  padding: 0.2rem 0.3rem;
   border-radius: var(--rounded-sm);
   background: transparent;
-  filter:
-    drop-shadow(0 0 1px rgba(0, 37, 33, 0.95))
-    drop-shadow(0 1px 1px rgba(0, 37, 33, 0.7));
+  transition: opacity var(--transition);
 }
 
-.site-nav:not(.scrolled):not(.nav-light):not(.menu-open) .network-logo {
-  filter: none;
+.network-logo-contrast {
+  opacity: 0;
+}
+
+.site-nav.scrolled .network-logo-plain,
+.site-nav.nav-light .network-logo-plain {
+  opacity: 0;
+}
+
+.site-nav.scrolled .network-logo-contrast,
+.site-nav.nav-light .network-logo-contrast {
   opacity: 1;
+}
+
+.site-nav.menu-open .network-logo-plain,
+.site-nav:has(.nav-menu.active) .network-logo-plain {
+  opacity: 1;
+}
+
+.site-nav.menu-open .network-logo-contrast,
+.site-nav:has(.nav-menu.active) .network-logo-contrast {
+  opacity: 0;
 }
 
 .nav-menu {

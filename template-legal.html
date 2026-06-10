@@ -13,6 +13,8 @@
   <link rel="alternate" hreflang="en-CA" href="{{alternate_en}}">
   <link rel="alternate" hreflang="x-default" href="{{x_default}}">
   <link rel="icon" href="/favicon.svg">
+  <link rel="preload" href="{{shared.images.multi_prets_logo_plain}}" as="image" type="image/svg+xml">
+  <link rel="preload" href="{{shared.images.multi_prets_logo}}" as="image" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +38,8 @@
         </a>
         <span class="logo-divider" aria-hidden="true"></span>
         <a class="network-logo-link" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Profil Multi-Prêts de Melkior Clergé">
-          <img class="network-logo" src="{{shared.images.multi_prets_logo}}" alt="Multi-Prêts">
+          <img class="network-logo network-logo-plain" src="{{shared.images.multi_prets_logo_plain}}" alt="Multi-Prêts" fetchpriority="high" decoding="async">
+          <img class="network-logo network-logo-contrast" src="{{shared.images.multi_prets_logo}}" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
         </a>
       </div>
       <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">

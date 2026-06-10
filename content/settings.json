@@ -33,7 +33,8 @@
       "hero": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
-      "multi_prets_logo": "/assets/images/multi-prets-logo-light-en.svg"
+      "multi_prets_logo": "/assets/images/multi-prets-logo-dark-en.svg",
+      "multi_prets_logo_plain": "/assets/images/multi-prets-logo-light-en.svg"
     },
     "social": {
       "facebook": "https://www.facebook.com/profile.php?id=100052481268194",
