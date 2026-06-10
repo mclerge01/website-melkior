@@ -116,8 +116,8 @@
 
     <section class="teaser-section" aria-label="{{calculator.heading}}">
       <div class="container">
-        <a class="calculator-teaser reveal-on-scroll reveal-scale" href="#calculator">
-          <span class="teaser-icon" aria-hidden="true">
+        <a class="calculator-teaser card card-glass reveal-on-scroll reveal-scale" href="#calculator">
+          <span class="teaser-icon icon-tile" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
               <path d="M7 2H17A2 2 0 0 1 19 4V20A2 2 0 0 1 17 22H7A2 2 0 0 1 5 20V4A2 2 0 0 1 7 2M7 4V8H17V4H7M8 11V13H10V11H8M12 11V13H14V11H12M16 11V13H18V11H16M8 15V17H10V15H8M12 15V17H14V15H12M16 15V19H18V15H16M8 19H14V19H8Z"></path>
             </svg>
@@ -139,8 +139,8 @@
         </div>
         <div class="service-grid reveal-stagger">
 {{#each services.items}}
-          <article class="service-card reveal-on-scroll">
-            <span class="service-card-icon" aria-hidden="true">
+          <article class="service-card card card-glass card-interactive reveal-on-scroll">
+            <span class="service-card-icon icon-tile" aria-hidden="true">
               <svg viewBox="0 0 24 24" focusable="false"><path d="{{icon_path}}"></path></svg>
             </span>
             <h3>{{title}}</h3>
@@ -152,15 +152,15 @@
     </section>
 
     <section id="guide" class="section">
-      <div class="container guide-grid">
+      <div class="container guide-grid split-grid">
         <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{guide.eyebrow}}</p>
           <h2 class="section-title">{{guide.heading}}</h2>
           <p class="section-lead">{{guide.intro}}</p>
         </div>
-        <div class="guide-list reveal-stagger">
+        <div class="guide-list stack-4 reveal-stagger">
 {{#each guide.items}}
-          <article class="guide-item reveal-on-scroll">
+          <article class="guide-item card reveal-on-scroll">
             <h3>{{title}}</h3>
             <div class="text-light">{{description}}</div>
           </article>
@@ -170,12 +170,12 @@
     </section>
 
     <section id="about" class="section about-section bg-dark text-white">
-      <div class="container about-grid lg:items-stretch">
+      <div class="container about-grid split-grid lg:items-stretch">
         <div class="about-image lg:h-full reveal-on-scroll reveal-from-left">
           <div class="about-image-frame">
             <img class="lg:h-full" src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
           </div>
-          <div class="about-socials" aria-label="Profil professionnel">
+          <div class="about-socials cluster" aria-label="Profil professionnel">
             <a class="icon-button" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Multi-Prêts">
               <span class="icon-button-label">MP</span>
             </a>
@@ -232,7 +232,7 @@
           </div>
           <div class="testimonial-track testimonial-showcase" data-carousel-track>
 {{#each testimonials.items}}
-            <article class="testimonial-card">
+            <article class="testimonial-card card">
               <div class="testimonial-stars" aria-hidden="true">*****</div>
               <p>{{quote}}</p>
               <div class="testimonial-person">
@@ -249,15 +249,15 @@
 {{/if}}
 
 {{#if media.has_items}}
-    <section id="media" class="section media-section">
-      <div class="container">
+    <section id="media" class="section media-section bg-light">
+      <div class="container stack-8">
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{media.eyebrow}}</p>
           <h2 class="section-title">{{media.heading}}</h2>
           <p class="section-lead">{{media.description}}</p>
         </div>
 {{#if media.instagram_embed_url}}
-        <div class="instagram-widget reveal-on-scroll" data-instagram-widget data-embed-src="{{media.instagram_embed_url}}" data-embed-title="{{media.instagram_embed_title}}">
+        <div class="instagram-widget card reveal-on-scroll" data-instagram-widget data-embed-src="{{media.instagram_embed_url}}" data-embed-title="{{media.instagram_embed_title}}">
           <div class="instagram-widget-placeholder" aria-live="polite">
             <strong>Instagram</strong>
             <span>{{media.loading_label}}</span>
@@ -269,20 +269,20 @@
 {{/if}}
 
     <section id="calculator" class="section calculator-section">
-      <div class="container calculator-grid">
+      <div class="container calculator-grid split-grid">
         <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{calculator.eyebrow}}</p>
           <h2 class="section-title">{{calculator.heading}}</h2>
           <p class="section-lead">{{calculator.description}}</p>
-          <div class="calculator-info">
-            <div class="calculator-rate-note">
+          <div class="calculator-info stack-4">
+            <div class="calculator-rate-note side-note stack-2">
               <strong>{{calculator.rate_note_title}}</strong>
               <p>{{calculator.rate_note}}</p>
               <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
             </div>
-            <div class="calculator-detail-list reveal-stagger">
+            <div class="calculator-detail-list grid gap-3 reveal-stagger">
 {{#each calculator.details}}
-              <div class="calculator-detail reveal-on-scroll">
+              <div class="calculator-detail side-note reveal-on-scroll">
                 <strong>{{title}}</strong>
                 <p>{{description}}</p>
               </div>
@@ -290,7 +290,7 @@
             </div>
           </div>
         </div>
-        <form class="calculator-card reveal-on-scroll reveal-from-right" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
+        <form class="calculator-card card stack-5 reveal-on-scroll reveal-from-right" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
           <label class="form-group">
             <span class="form-label">{{calculator.amount_label}}</span>
             <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
@@ -325,16 +325,16 @@
           <p class="eyebrow eyebrow-light">{{final_cta.eyebrow}}</p>
           <h2 class="section-title">{{final_cta.heading}}</h2>
           <p>{{final_cta.description}}</p>
-          <div class="contact-action-grid">
+          <div class="contact-action-grid grid gap-5">
             <a class="action-card" href="#contact-form">
-              <span class="teaser-icon" aria-hidden="true">
+              <span class="teaser-icon icon-tile" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><path d="M19 3H18V1H16V3H8V1H6V3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M19 19H5V9H19V19Z"></path></svg>
               </span>
               <strong>{{final_cta.primary_cta}}</strong>
               <small>{{final_cta.description}}</small>
             </a>
             <a class="action-card" href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">
-              <span class="teaser-icon" aria-hidden="true">
+              <span class="teaser-icon icon-tile" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false"><path d="M20 15.5C18.8 15.5 17.5 15.3 16.4 14.9H16.1C15.8 14.9 15.6 15 15.4 15.2L13.2 17.4C10.4 15.9 8 13.6 6.6 10.8L8.8 8.6C9.1 8.3 9.2 7.9 9 7.6C8.7 6.5 8.5 5.2 8.5 4C8.5 3.5 8 3 7.5 3H4C3.5 3 3 3.5 3 4C3 13.4 10.6 21 20 21C20.5 21 21 20.5 21 20V16.5C21 16 20.5 15.5 20 15.5Z"></path></svg>
               </span>
               <strong>{{shared.phone}}</strong>
@@ -344,24 +344,24 @@
         </div>
       </div>
       <div class="section bg-light">
-      <div class="container contact-grid">
+      <div class="container contact-grid split-grid">
         <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{nav.contact}}</p>
           <h2 class="section-title">{{contact.heading}}</h2>
           <p class="section-lead">{{contact.subtitle}}</p>
-          <div class="contact-info">
+          <div class="contact-info card stack-4">
             <h3>{{contact.info_heading}}</h3>
             <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a></p>
             <p><strong>{{contact.email_label}}</strong><a href="mailto:{{shared.email}}">{{shared.email}}</a></p>
             <p><strong>{{contact.address_label}}</strong><a href="https://www.google.com/maps/search/?api=1&query={{shared.office_address}}" target="_blank" rel="noopener">{{shared.office_address}}</a></p>
             <p><strong>{{contact.regions_label}}</strong><span>{{shared.regions}}</span></p>
           </div>
-          <div class="consultation-note">
+          <div class="consultation-note card">
             <h3>{{contact.consultation_heading}}</h3>
             <p>{{contact.consultation_text}}</p>
           </div>
         </div>
-        <form id="contact-form" class="contact-form reveal-on-scroll reveal-from-right" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">
+        <form id="contact-form" class="contact-form card stack-5 reveal-on-scroll reveal-from-right" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">
           <input type="hidden" name="locale" value="{{locale}}">
           <div class="form-group hidden">
             <label for="bot-field">Do not fill</label>
@@ -413,7 +413,7 @@
     <div class="container footer-title">
       <strong>{{footer.business_name}}</strong>
     </div>
-    <div class="container footer-grid">
+    <div class="container footer-grid split-grid">
       <div class="footer-description">
         <h2 class="footer-column-title">{{footer.description_heading}}</h2>
         <p>{{seo.description}}</p>
