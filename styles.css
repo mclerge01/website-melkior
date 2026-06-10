@@ -42,14 +42,14 @@ a {
   transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
 }
 
-a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):hover,
-a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):focus-visible {
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):hover,
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):focus-visible {
   color: var(--color-link-bright);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
-a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):focus-visible {
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):focus-visible {
   outline: 2px solid var(--color-link-bright);
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
