@@ -310,6 +310,9 @@
             "title": "Recherche internet"
           },
           {
+            "title": "IA / assistant de recherche"
+          },
+          {
             "title": "Recommandation"
           },
           {
@@ -612,6 +615,9 @@
         "referrals": [
           {
             "title": "Internet search"
+          },
+          {
+            "title": "AI / search assistant"
           },
           {
             "title": "Referral"
