@@ -1,4 +1,4 @@
-import { IMAGES_PATH, githubContentsQuery, githubFetch, jsonResponse, requireAdmin } from "../../../lib/admin-auth.mjs";
+import { IMAGES_PATH, githubContentsQuery, githubFetch, isAllowedImageName, jsonResponse, requireAdmin } from "../../../lib/admin-auth.mjs";
 
 export async function onRequestGet(context) {
   const auth = await requireAdmin(context);
@@ -12,7 +12,7 @@ export async function onRequestGet(context) {
 
   const items = await response.json();
   const images = Array.isArray(items)
-    ? items.filter((item) => item.type === "file").map((item) => ({
+    ? items.filter((item) => item.type === "file" && isAllowedImageName(item.name)).map((item) => ({
         name: item.name,
         path: item.path,
         sha: item.sha,
