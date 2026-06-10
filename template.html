@@ -48,15 +48,19 @@
 <body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}" data-popup-enabled="{{popup.enabled}}">
   <header class="site-nav fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
-      <a class="site-logo" href="/{{locale_slug}}/" aria-label="{{header.site_name}}">
-        <span class="logo-mark">MC</span>
-        <span>
-          <strong>{{header.site_name}}</strong>
-          <small>{{header.credential}}</small>
-        </span>
+      <div class="nav-brand">
+        <a class="site-logo" href="/{{locale_slug}}/" aria-label="{{header.site_name}}">
+          <span class="logo-mark">MC</span>
+          <span>
+            <strong>{{header.site_name}}</strong>
+            <small>{{header.credential}}</small>
+          </span>
+        </a>
         <span class="logo-divider" aria-hidden="true"></span>
-        <img class="network-logo" src="{{shared.images.multi_prets_logo}}" alt="Multi-Prêts">
-      </a>
+        <a class="network-logo-link" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Profil Multi-Prêts de Melkior Clergé">
+          <img class="network-logo" src="{{shared.images.multi_prets_logo}}" alt="Multi-Prêts">
+        </a>
+      </div>
       <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>

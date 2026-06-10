@@ -42,14 +42,14 @@ a {
   transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
 }
 
-a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):hover,
-a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):focus-visible {
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):hover,
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):focus-visible {
   color: var(--color-link-bright);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
-a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):focus-visible {
+a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):focus-visible {
   outline: 2px solid var(--color-link-bright);
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
@@ -286,6 +286,13 @@ p {
   gap: var(--space-4);
 }
 
+.nav-brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .site-logo {
   display: inline-flex;
   align-items: center;
@@ -336,7 +343,7 @@ p {
 }
 
 .logo-divider,
-.network-logo {
+.network-logo-link {
   display: none;
 }
 
@@ -345,6 +352,25 @@ p {
   height: 2.25rem;
   background: currentColor;
   opacity: 0.22;
+}
+
+.network-logo-link {
+  flex: 0 0 auto;
+  border-radius: var(--rounded-sm);
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+}
+
+.network-logo-link:hover,
+.network-logo-link:focus-visible {
+  color: inherit;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 2px var(--color-link-bright);
+}
+
+.network-logo-link:focus-visible {
+  outline: 2px solid var(--color-link-bright);
+  outline-offset: 0.2rem;
 }
 
 .network-logo {
@@ -733,6 +759,12 @@ p {
   background: var(--color-accent);
   font-size: var(--text-sm);
   font-weight: 800;
+}
+
+.calculator-teaser:hover .teaser-action,
+.calculator-teaser:focus-visible .teaser-action {
+  color: var(--color-primary-dark);
+  background: var(--color-white);
 }
 
 .calculator-grid,
@@ -2373,9 +2405,12 @@ p {
     text-align: left;
   }
 
-  .logo-divider,
-  .network-logo {
+  .logo-divider {
     display: block;
+  }
+
+  .network-logo-link {
+    display: inline-flex;
   }
 
   .nav-menu .nav-link {
