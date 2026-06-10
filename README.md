@@ -83,6 +83,13 @@ CONTACT_DESTINATION
 EMAIL_WORKER service binding
 ```
 
+For the public contact identity, use:
+
+```text
+CONTACT_EMAIL=consultation@melkiorclerge.ca
+CONTACT_DESTINATION=<set as a local `.dev.vars` value and a Cloudflare Pages secret>
+```
+
 `.dev.vars` must never be committed.
 
 The Instagram media section uses the Fouita iframe widget URL saved in `content/settings.json` under `shared.social.instagram_embed_url`. The public JavaScript delays loading the iframe until a likely human visitor scrolls or interacts with the page, so crawlers do not spend widget views.
@@ -162,7 +169,7 @@ The public contact form posts to:
 /api/contact
 ```
 
-The Pages Function validates required fields, verifies Turnstile server-side, sanitizes values, and sends an email through the `EMAIL_WORKER` binding.
+The Pages Function validates required fields, verifies Turnstile server-side, sanitizes values, and sends an email from `consultation@melkiorclerge.ca` to the secret `CONTACT_DESTINATION` mailbox through the `EMAIL_WORKER` binding.
 
 Local dev can run without a connected email worker, but full delivery testing requires Cloudflare bindings and valid `.dev.vars` values.
 

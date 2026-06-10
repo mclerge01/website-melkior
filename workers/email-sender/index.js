@@ -1,7 +1,7 @@
 import { EmailMessage } from "cloudflare:email";
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     if (request.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
     }
@@ -24,15 +24,15 @@ export default {
       });
     }
 
-    ctx.waitUntil(
-      (async () => {
-        try {
-          await env.SEND_EMAIL.send(new EmailMessage(from, to, raw));
-        } catch (error) {
-          console.error("Email delivery failed:", error);
-        }
-      })()
-    );
+    try {
+      await env.SEND_EMAIL.send(new EmailMessage(from, to, raw));
+    } catch (error) {
+      console.error("Email delivery failed:", error);
+      return new Response(JSON.stringify({ success: false, error: "Email delivery failed" }), {
+        status: 502,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       headers: { "Content-Type": "application/json" },

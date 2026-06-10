@@ -1,6 +1,8 @@
 name = "email-sender"
 main = "index.js"
 compatibility_date = "2026-04-27"
+workers_dev = false
 
 [[send_email]]
 name = "SEND_EMAIL"
+allowed_sender_addresses = ["consultation@melkiorclerge.ca"]

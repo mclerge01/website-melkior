@@ -1,5 +1,11 @@
+name = "website-melkior"
 compatibility_date = "2026-04-27"
 pages_build_output_dir = "dist"
+
+[vars]
+GITHUB_CLIENT_ID = "Ov23lii7Cd2Hi6BAk24W"
+TURNSTILE_SITE_KEY = "0x4AAAAAADiKO0ta5fWUPZ6z"
+CONTACT_EMAIL = "consultation@melkiorclerge.ca"
 
 [[services]]
 binding = "EMAIL_WORKER"
