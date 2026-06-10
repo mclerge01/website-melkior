@@ -42,14 +42,14 @@ a {
   transition: color var(--transition), background-color var(--transition), text-decoration-color var(--transition);
 }
 
-a:not(.btn):not(.site-logo):not(.icon-button):hover,
-a:not(.btn):not(.site-logo):not(.icon-button):focus-visible {
+a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):hover,
+a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):focus-visible {
   color: var(--color-link-bright);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
-a:not(.btn):not(.site-logo):not(.icon-button):focus-visible {
+a:not(.btn):not(.site-logo):not(.icon-button):not(.language-link):focus-visible {
   outline: 2px solid var(--color-link-bright);
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
@@ -411,11 +411,11 @@ p {
 
 .language-link:hover,
 .language-link:focus-visible {
-  color: var(--color-primary-dark);
+  color: inherit;
   text-decoration: none;
-  box-shadow: none;
   border-color: var(--color-link-bright);
-  background: var(--color-link-bright);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 1px var(--color-link-bright);
 }
 
 .hamburger {
