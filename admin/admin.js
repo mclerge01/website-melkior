@@ -634,7 +634,7 @@ function renderSeoView() {
     label: "Configuration générale",
     fields: [
       { key: "domain", label: "Domaine canonique", full: true },
-      { key: "default_locale", label: "Langue par défaut" },
+      { key: "default_locale", label: "Langue par défaut", type: "select", options: getAvailableLocaleOptions },
     ],
   }));
 }
@@ -696,10 +696,20 @@ function renderField(path, field) {
   else if (type === "image") renderImageInput(group, path, value);
   else if (type === "markdown") renderTextarea(group, path, value, true);
   else if (type === "textarea") renderTextarea(group, path, value, false);
+  else if (type === "select") renderSelect(group, path, value, field.options);
   else if (typeof value === "number") renderTextInput(group, path, value, "number");
   else renderTextInput(group, path, value, "text");
 
   return group;
+}
+
+function getAvailableLocaleOptions() {
+  const configuredLocales = Array.isArray(content?.site?.locales) ? content.site.locales : [];
+  const localeKeys = configuredLocales.length ? configuredLocales : LOCALES.map((locale) => locale.key);
+  return localeKeys.map((key) => ({
+    value: key,
+    label: LOCALES.find((locale) => locale.key === key)?.label || key,
+  }));
 }
 
 function inferFieldType(path, value) {
@@ -723,6 +733,21 @@ function renderTextInput(group, path, value, type) {
   input.value = value ?? "";
   input.addEventListener("input", () => setPath(path, type === "number" ? Number(input.value) : input.value));
   group.appendChild(input);
+}
+
+function renderSelect(group, path, value, options) {
+  const select = document.createElement("select");
+  select.className = "input";
+  const resolvedOptions = typeof options === "function" ? options() : options || [];
+  for (const option of resolvedOptions) {
+    const item = document.createElement("option");
+    item.value = option.value ?? option.key ?? "";
+    item.textContent = option.label ?? item.value;
+    select.appendChild(item);
+  }
+  select.value = value ?? "";
+  select.addEventListener("change", () => setPath(path, select.value));
+  group.appendChild(select);
 }
 
 function renderTextarea(group, path, value, markdown) {
