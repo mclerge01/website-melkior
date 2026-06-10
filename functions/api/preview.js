@@ -1,5 +1,5 @@
 import { LOCALES, alternateLocale, canonicalUrl, equivalentPath, pagePath } from "../../lib/i18n.mjs";
-import { processMarkdown, render } from "../../lib/render.mjs";
+import { normalizeInstagramEmbed, processMarkdown, render } from "../../lib/render.mjs";
 import { htmlResponse, jsonResponse, requireAdmin } from "../../lib/admin-auth.mjs";
 
 function themeStyle(theme) {
@@ -12,10 +12,20 @@ function prepareLocaleData(settings, locale) {
   const current = LOCALES[locale] || LOCALES["fr-CA"];
   const otherLocale = alternateLocale(locale);
   const other = LOCALES[otherLocale];
+  const localized = settings.locales[locale];
+  const instagramEmbed = normalizeInstagramEmbed(settings.shared);
+  const media = {
+    ...localized.media,
+    instagram_embed_url: instagramEmbed.url,
+    instagram_embed_title: instagramEmbed.title,
+    instagram_embed_height: instagramEmbed.height,
+    use_instagram_api: !instagramEmbed.url,
+  };
   const path = current.homePath;
 
   return {
-    ...settings.locales[locale],
+    ...localized,
+    media,
     site: settings.site,
     shared: settings.shared,
     theme: settings.theme,

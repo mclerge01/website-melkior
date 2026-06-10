@@ -9,7 +9,7 @@ import {
   equivalentPath,
   pagePath,
 } from "./lib/i18n.mjs";
-import { processMarkdown, render } from "./lib/render.mjs";
+import { normalizeInstagramEmbed, processMarkdown, render } from "./lib/render.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const read = (path) => readFileSync(join(ROOT, path), "utf-8");
@@ -84,12 +84,21 @@ function prepareLocaleData(settings, locale, page = "home") {
   const otherLocale = alternateLocale(locale);
   const other = LOCALES[otherLocale];
   const localized = settings.locales[locale];
+  const instagramEmbed = normalizeInstagramEmbed(settings.shared);
+  const media = {
+    ...localized.media,
+    instagram_embed_url: instagramEmbed.url,
+    instagram_embed_title: instagramEmbed.title,
+    instagram_embed_height: instagramEmbed.height,
+    use_instagram_api: !instagramEmbed.url,
+  };
   const path = pagePath(locale, page);
   const altPath = equivalentPath(path, otherLocale);
   const domain = settings.site.domain;
 
   return {
     ...localized,
+    media,
     site: settings.site,
     shared: settings.shared,
     theme: settings.theme,

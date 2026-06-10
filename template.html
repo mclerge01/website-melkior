@@ -248,6 +248,12 @@
             <a href="{{media.profile_url}}" target="_blank" rel="noopener">{{media.account_handle}}</a>
           </div>
         </div>
+{{#if media.instagram_embed_url}}
+        <div class="instagram-widget reveal-on-scroll">
+          <iframe src="{{media.instagram_embed_url}}" title="{{media.instagram_embed_title}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; web-share" style="height: {{media.instagram_embed_height}};"></iframe>
+        </div>
+{{/if}}
+{{#if media.use_instagram_api}}
         <div class="media-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="showcase" data-carousel-interval="7000">
           <p class="media-status" data-instagram-status>{{media.loading_label}}</p>
           <div class="carousel-controls media-controls">
@@ -257,6 +263,7 @@
           <div class="media-grid" data-carousel-track data-instagram-feed data-instagram-handle="{{media.account_handle}}" data-instagram-limit="{{media.max_items}}" data-loading-label="{{media.loading_label}}" data-empty-label="{{media.empty_label}}" data-error-label="{{media.error_label}}" data-config-error-label="{{media.config_error_label}}" data-link-label="{{media.link_label}}">
           </div>
         </div>
+{{/if}}
       </div>
     </section>
 {{/if}}
