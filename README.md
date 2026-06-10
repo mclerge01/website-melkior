@@ -31,12 +31,10 @@ admin/                         Admin editor UI
 functions/                     Cloudflare Pages Functions
 lib/                           Rendering, i18n, and admin auth helpers
 workers/email-sender/          Cloudflare Email Routing Worker
-fr/, en/                       Generated localized public pages
-index.html                     Generated root language fallback page
-sitemap.xml, robots.txt        Generated SEO files
+dist/                          Ignored build output served by Cloudflare Pages
 ```
 
-The generated public HTML is committed because Cloudflare Pages serves the repository directly.
+Generated public HTML, sitemap, robots file, copied assets, and the admin shell are written to `dist/` by `npm run build`. They are not committed.
 
 ## Local Development
 
@@ -135,7 +133,7 @@ After editing content:
 npm run build
 ```
 
-Then commit both the source content and generated HTML.
+Then commit the edited source files only. The generated `dist/` folder is ignored and recreated during deployment.
 
 ## Admin Image Uploads
 
@@ -189,10 +187,10 @@ npm run build
 Recommended output directory:
 
 ```text
-.
+dist
 ```
 
-The repository contains the generated files Cloudflare serves.
+Cloudflare Pages should serve the generated `dist/` directory. The repository tracks templates, content, functions, assets, and admin source files only.
 
 ## Verification Checklist
 
@@ -216,4 +214,4 @@ Also verify:
 
 - Do not commit secrets, `.dev.vars`, `.wrangler/`, or local logs.
 - Avoid adding frontend dependencies unless there is a clear reason.
-- Keep generated HTML in sync with templates and content.
+- Run `npm run build` before commits that change templates or content.

@@ -1,5 +1,5 @@
 import { execFileSync } from "child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import {
@@ -12,6 +12,7 @@ import {
 import { normalizeInstagramEmbed, processMarkdown, render } from "./lib/render.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
+const OUT_DIR = join(ROOT, "dist");
 const read = (path) => readFileSync(join(ROOT, path), "utf-8");
 
 function loadLocalEnv() {
@@ -32,10 +33,19 @@ function loadLocalEnv() {
 }
 
 function write(path, content) {
-  const abs = join(ROOT, path);
+  const abs = join(OUT_DIR, path);
   mkdirSync(dirname(abs), { recursive: true });
   writeFileSync(abs, content, "utf-8");
   console.log("Generated:", path);
+}
+
+function copyStatic(path) {
+  const source = join(ROOT, path);
+  if (!existsSync(source)) return;
+  const destination = join(OUT_DIR, path);
+  mkdirSync(dirname(destination), { recursive: true });
+  cpSync(source, destination, { recursive: true });
+  console.log("Copied:", path);
 }
 
 function themeStyle(theme) {
@@ -56,17 +66,17 @@ function gitOutput(args) {
   }
 }
 
-function pageDate(generatedPath) {
-  const relatedFiles = ["content/settings.json", "template-legal.html", generatedPath];
+function pageDate(sourcePaths) {
+  const relatedFiles = Array.isArray(sourcePaths) ? sourcePaths : [sourcePaths];
   const dirty = gitOutput(["status", "--porcelain", "--", ...relatedFiles]);
   if (dirty) return new Date();
 
-  const isoDate = gitOutput(["log", "-1", "--format=%cI", "--", generatedPath]);
+  const isoDate = gitOutput(["log", "-1", "--format=%cI", "--", ...relatedFiles]);
   const date = isoDate ? new Date(isoDate) : new Date();
   return Number.isNaN(date.getTime()) ? new Date() : date;
 }
 
-function formatPageUpdated(locale, fallback, generatedPath) {
+function formatPageUpdated(locale, fallback, sourcePaths) {
   const match = fallback.match(/^([^:]+)(\s*:\s*)/);
   const prefix = match ? match[1].trim() : locale.startsWith("en") ? "Last updated" : "Dernière mise à jour";
   const separator = locale.startsWith("fr") ? " : " : ": ";
@@ -74,7 +84,7 @@ function formatPageUpdated(locale, fallback, generatedPath) {
     day: "numeric",
     month: "long",
     year: "numeric",
-  }).format(pageDate(generatedPath));
+  }).format(pageDate(sourcePaths));
 
   return `${prefix}${separator}${formattedDate}`;
 }
@@ -147,6 +157,9 @@ function generateSitemap(settings) {
 
 loadLocalEnv();
 
+rmSync(OUT_DIR, { recursive: true, force: true });
+mkdirSync(OUT_DIR, { recursive: true });
+
 if (!existsSync(join(ROOT, "content", "settings.json"))) {
   console.error("Error: content/settings.json not found.");
   process.exit(1);
@@ -160,6 +173,10 @@ const settings = processMarkdown(JSON.parse(read("content/settings.json")));
 const template = read("template.html");
 const legalTemplate = read("template-legal.html");
 
+for (const path of ["styles.css", "script.js", "favicon.svg", "_headers", "assets", "admin"]) {
+  copyStatic(path);
+}
+
 for (const locale of settings.site.locales) {
   const homeData = prepareLocaleData(settings, locale, "home");
   write(`${LOCALES[locale].slug}/index.html`, render(template, homeData));
@@ -168,7 +185,7 @@ for (const locale of settings.site.locales) {
   const privacyData = {
     ...prepareLocaleData(settings, locale, "privacy"),
     page_title: homeData.privacy_page.title,
-    page_updated: formatPageUpdated(locale, homeData.privacy_page.updated, privacyPath),
+    page_updated: formatPageUpdated(locale, homeData.privacy_page.updated, ["content/settings.json", "template-legal.html"]),
     page_body: homeData.privacy_page.body,
   };
   write(privacyPath, render(legalTemplate, privacyData));
@@ -177,7 +194,7 @@ for (const locale of settings.site.locales) {
   const legalData = {
     ...prepareLocaleData(settings, locale, "legal"),
     page_title: homeData.legal_page.title,
-    page_updated: formatPageUpdated(locale, homeData.legal_page.updated, legalPath),
+    page_updated: formatPageUpdated(locale, homeData.legal_page.updated, ["content/settings.json", "template-legal.html"]),
     page_body: homeData.legal_page.body,
   };
   write(legalPath, render(legalTemplate, legalData));
