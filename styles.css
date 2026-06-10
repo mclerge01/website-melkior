@@ -1361,9 +1361,10 @@ p {
 .media-rail-heading {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-4);
   margin-bottom: var(--space-5);
+  text-align: center;
 }
 
 .media-rail-heading strong,
