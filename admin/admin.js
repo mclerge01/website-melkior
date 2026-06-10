@@ -47,6 +47,8 @@ const SHARED_FIELDS = [
   { key: "profile_url", label: "Profil Multi-Prêts", type: "text", full: true },
   { key: "social.linkedin", label: "Profil LinkedIn", type: "text", full: true },
   { key: "social.instagram", label: "Profil Instagram", type: "text", full: true },
+  { key: "social.facebook", label: "Profil Facebook", type: "text", full: true },
+  { key: "social.tiktok", label: "Profil TikTok", type: "text", full: true },
   { key: "social.instagram_embed_url", label: "Widget Instagram Fouita (URL iframe)", type: "text", full: true, hint: "Utilisez l'URL d'iframe emb.fouita.com, par exemple https://emb.fouita.com/widget/..." },
   { key: "social.instagram_embed_title", label: "Titre accessible du widget Instagram", type: "text", full: true },
 ];

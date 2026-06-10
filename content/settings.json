@@ -36,11 +36,12 @@
       "multi_prets_logo": "/assets/images/multi-prets-logo-light-en.svg"
     },
     "social": {
-      "facebook": "",
+      "facebook": "https://www.facebook.com/profile.php?id=100052481268194",
       "instagram": "https://www.instagram.com/mr.hypotheque/",
       "instagram_embed_url": "https://emb.fouita.com/widget/0x4a4ea7/ftvu0pvdc",
       "instagram_embed_title": "Carousel Instagram Feed",
-      "linkedin": "https://ca.linkedin.com/in/melkior-clerg%C3%A9-36aa7a132"
+      "linkedin": "https://ca.linkedin.com/in/melkior-clerg%C3%A9-36aa7a132",
+      "tiktok": "https://www.tiktok.com/@melkior.mr..hypot"
     }
   },
   "locales": {
