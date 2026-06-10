@@ -985,6 +985,9 @@ p {
   z-index: 2;
   left: 50%;
   bottom: calc(var(--space-6) * -1);
+  width: max-content;
+  max-width: calc(100% - var(--space-4));
+  flex-wrap: nowrap;
   justify-content: center;
   transform: translateX(-50%);
 }
