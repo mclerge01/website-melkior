@@ -1323,6 +1323,10 @@ function getUnusedImages(images) {
   return images.filter((image) => !usedPaths.has(normalizeLocalImagePath(image.path)));
 }
 
+function getUnusedImagePathSet(images) {
+  return new Set(getUnusedImages(images).map((image) => normalizeLocalImagePath(image.path)));
+}
+
 function configureUnusedImagesButton(button, images, target) {
   if (!button) return;
   const unusedImages = getUnusedImages(images);
@@ -1490,21 +1494,33 @@ function compressToWebP(file, maxDimension = 1920, quality = 0.82) {
 async function renderImageGallery(target, cleanupButton = null) {
   try {
     const data = await apiJson(API.images);
-    configureUnusedImagesButton(cleanupButton, data.images || [], target);
-    if (!data.images.length) {
+    const images = data.images || [];
+    const unusedImagePaths = getUnusedImagePathSet(images);
+    configureUnusedImagesButton(cleanupButton, images, target);
+    if (!images.length) {
       target.innerHTML = '<p class="admin-status">Aucune image téléversée pour le moment.</p>';
       return;
     }
     const grid = document.createElement("div");
     grid.className = "admin-gallery-grid";
-    for (const image of data.images) {
+    for (const image of images) {
+      const isUnused = unusedImagePaths.has(normalizeLocalImagePath(image.path));
       const card = document.createElement("article");
-      card.className = "admin-gallery-card";
+      card.className = `admin-gallery-card${isUnused ? " admin-gallery-card-unused" : ""}`;
       const img = document.createElement("img");
       img.src = `/${image.path}`;
       img.alt = image.name;
+      const titleRow = document.createElement("div");
+      titleRow.className = "admin-gallery-title";
       const name = document.createElement("strong");
       name.textContent = image.name;
+      titleRow.appendChild(name);
+      if (isUnused) {
+        const unusedBadge = document.createElement("span");
+        unusedBadge.className = "admin-unused-badge";
+        unusedBadge.textContent = "Inutilisée";
+        titleRow.appendChild(unusedBadge);
+      }
       const path = document.createElement("code");
       path.textContent = `/${image.path}`;
       const remove = document.createElement("button");
@@ -1517,7 +1533,7 @@ async function renderImageGallery(target, cleanupButton = null) {
         showToast("Image supprimée.");
         renderActiveView();
       });
-      card.append(img, name, path, remove);
+      card.append(img, titleRow, path, remove);
       grid.appendChild(card);
     }
     target.innerHTML = "";
