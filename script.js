@@ -349,6 +349,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  function normalizePathname(pathname) {
+    return String(pathname || "/").replace(/\/index\.html$/, "/").replace(/\/?$/, "/");
+  }
+
+  document.querySelectorAll('.site-logo[href^="/"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const target = new URL(link.getAttribute("href"), window.location.href);
+      const currentPath = normalizePathname(window.location.pathname);
+      const targetPath = normalizePathname(target.pathname);
+      if (target.origin !== window.location.origin || targetPath !== currentPath) return;
+
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
   const calculator = document.querySelector(".calculator-card");
   if (calculator) {
     const result = calculator.querySelector("[data-payment-result]");
@@ -520,34 +536,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const sitePopup = document.getElementById("site-popup");
   const sitePopupClose = document.getElementById("site-popup-close");
-  const popupStorageKey = `melkior_popup_seen_${body.dataset.locale || "default"}`;
+  let sitePopupDismissed = false;
 
   function closeSitePopup() {
     if (!sitePopup) return;
+    sitePopupDismissed = true;
     sitePopup.classList.add("hidden");
     body.classList.remove("overflow-hidden");
-    try {
-      sessionStorage.setItem(popupStorageKey, "1");
-    } catch {
-      // Session storage is optional; closing the popup should still work.
-    }
   }
 
   if (sitePopup) {
-    let popupSeen = false;
-    try {
-      popupSeen = sessionStorage.getItem(popupStorageKey) === "1";
-    } catch {
-      popupSeen = false;
-    }
-
-    if (!popupSeen) {
-      window.setTimeout(() => {
-        sitePopup.classList.remove("hidden");
-        body.classList.add("overflow-hidden");
-        if (sitePopupClose) sitePopupClose.focus({ preventScroll: true });
-      }, 650);
-    }
+    window.setTimeout(() => {
+      if (sitePopupDismissed) return;
+      sitePopup.classList.remove("hidden");
+      body.classList.add("overflow-hidden");
+      if (sitePopupClose) sitePopupClose.focus({ preventScroll: true });
+    }, 650);
 
     if (sitePopupClose) sitePopupClose.addEventListener("click", closeSitePopup);
     sitePopup.addEventListener("click", (event) => {
