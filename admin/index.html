@@ -243,9 +243,18 @@
     .admin-list-title-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: var(--space-3);
       min-width: 0;
+    }
+
+    .admin-field-heading {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .admin-list-title-row {
+      justify-content: space-between;
     }
 
     .admin-field-full {
@@ -276,6 +285,10 @@
       font-weight: 900;
       line-height: 1;
       white-space: nowrap;
+    }
+
+    .admin-missing-badge[hidden] {
+      display: none;
     }
 
     .admin-field-warning {

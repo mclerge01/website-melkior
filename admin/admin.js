@@ -705,6 +705,7 @@ function renderField(path, field) {
   const missingBadge = document.createElement("span");
   missingBadge.className = "admin-missing-badge";
   missingBadge.textContent = "À remplir";
+  missingBadge.hidden = true;
   labelRow.append(label, missingBadge);
   group.appendChild(labelRow);
   if (field.hint) {
