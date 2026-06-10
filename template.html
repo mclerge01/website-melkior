@@ -68,8 +68,8 @@
         <a class="nav-link" href="#services">{{nav.services}}</a>
         <a class="nav-link" href="#guide">{{nav.guide}}</a>
         <a class="nav-link" href="#about">{{nav.about}}</a>
-        {{#if testimonials.has_items}}<a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>{{/if}}
-        {{#if media.has_items}}<a class="nav-link" href="#media">{{nav.media}}</a>{{/if}}
+        <a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>
+        <a class="nav-link" href="#media">{{nav.media}}</a>
         <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="#contact">{{header.cta_text}}</a>
@@ -218,7 +218,6 @@
       </div>
     </section>
 
-{{#if testimonials.has_items}}
     <section id="testimonials" class="section testimonial-section">
       <div class="container">
         <div class="section-heading reveal-on-scroll">
@@ -246,9 +245,7 @@
         </div>
       </div>
     </section>
-{{/if}}
 
-{{#if media.has_items}}
     <section id="media" class="section media-section bg-light">
       <div class="container stack-8">
         <div class="section-heading reveal-on-scroll">
@@ -266,7 +263,6 @@
 {{/if}}
       </div>
     </section>
-{{/if}}
 
     <section id="calculator" class="section calculator-section">
       <div class="container calculator-grid split-grid">

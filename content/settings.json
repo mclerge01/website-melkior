@@ -204,15 +204,38 @@
         ]
       },
       "testimonials": {
-        "has_items": false,
         "eyebrow": "Témoignages",
         "heading": "La confiance des clients, *une priorité.*",
         "prev_label": "Témoignage précédent",
         "next_label": "Témoignage suivant",
-        "items": []
+        "items": [
+          {
+            "quote": "Ajoutez ici un avis Google ou un commentaire client validé avant publication.",
+            "initials": "AA",
+            "name": "Avis à ajouter 1",
+            "context": "Client vérifié"
+          },
+          {
+            "quote": "Remplacez ce texte par un témoignage court qui explique le contexte du projet et l'accompagnement reçu.",
+            "initials": "AV",
+            "name": "Avis à ajouter 2",
+            "context": "Client vérifié"
+          },
+          {
+            "quote": "Utilisez cette carte pour un avis client réel lorsque Melkior aura approuvé le contenu à publier.",
+            "initials": "AC",
+            "name": "Avis à ajouter 3",
+            "context": "Client vérifié"
+          },
+          {
+            "quote": "Cet espace est prêt à mettre en valeur la satisfaction des clients sans inventer d'avis.",
+            "initials": "MP",
+            "name": "Avis à ajouter 4",
+            "context": "Expérience client"
+          }
+        ]
       },
       "media": {
-        "has_items": true,
         "eyebrow": "Médias",
         "heading": "Dans les *médias*",
         "description": "Aperçu de publications Instagram de Melkior. Ouvrez une publication pour la consulter directement sur Instagram.",
@@ -476,15 +499,38 @@
         ]
       },
       "testimonials": {
-        "has_items": false,
         "eyebrow": "Testimonials",
         "heading": "Client trust, *front and center.*",
         "prev_label": "Previous testimonial",
         "next_label": "Next testimonial",
-        "items": []
+        "items": [
+          {
+            "quote": "Add a verified Google review or approved client comment here before publishing real testimonial content.",
+            "initials": "AA",
+            "name": "Review to add 1",
+            "context": "Verified client"
+          },
+          {
+            "quote": "Replace this text with a short testimonial that explains the project context and support received.",
+            "initials": "AV",
+            "name": "Review to add 2",
+            "context": "Verified client"
+          },
+          {
+            "quote": "Use this card for a real client review once Melkior has approved the content for publication.",
+            "initials": "AC",
+            "name": "Review to add 3",
+            "context": "Verified client"
+          },
+          {
+            "quote": "This space is ready to highlight client satisfaction without inventing reviews.",
+            "initials": "MP",
+            "name": "Review to add 4",
+            "context": "Client experience"
+          }
+        ]
       },
       "media": {
-        "has_items": true,
         "eyebrow": "Media",
         "heading": "In the *media*",
         "description": "Preview Melkior's Instagram posts. Open a post to view it directly on Instagram.",

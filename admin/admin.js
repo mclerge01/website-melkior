@@ -184,7 +184,6 @@ const CONTENT_SECTIONS = [
     key: "testimonials",
     label: "Témoignages",
     fields: [
-      { key: "has_items", label: "Afficher la section", type: "toggle" },
       { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre", type: "markdown", full: true },
       { key: "prev_label", label: "Libellé bouton précédent" },
@@ -207,7 +206,6 @@ const CONTENT_SECTIONS = [
     key: "media",
     label: "Médias",
     fields: [
-      { key: "has_items", label: "Afficher la section", type: "toggle" },
       { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre", type: "markdown", full: true },
       { key: "description", label: "Description", type: "textarea", full: true },
