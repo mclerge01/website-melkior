@@ -379,7 +379,7 @@ p {
   object-fit: contain;
   padding: 0.35rem 0.65rem;
   border-radius: var(--rounded-sm);
-  background: var(--color-white);
+  background: var(--color-bg-dark);
 }
 
 .site-nav:not(.scrolled):not(.nav-light):not(.menu-open) .network-logo {
