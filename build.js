@@ -188,6 +188,7 @@ write("index.html", `<!DOCTYPE html>
   <link rel="alternate" hreflang="en" href="${settings.site.domain}/en/">
   <link rel="alternate" hreflang="en-CA" href="${settings.site.domain}/en/">
   <link rel="alternate" hreflang="x-default" href="${settings.site.domain}/">
+  <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="/styles.css">
   <script>
     (function () {
