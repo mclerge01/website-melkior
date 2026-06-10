@@ -623,13 +623,21 @@ function renderImagesView() {
   const header = document.createElement("header");
   const h2 = document.createElement("h2");
   h2.textContent = "Bibliothèque d’images";
-  header.appendChild(h2);
+  const actions = document.createElement("div");
+  actions.className = "admin-actions";
+  const cleanupButton = document.createElement("button");
+  cleanupButton.className = "btn btn-outline";
+  cleanupButton.type = "button";
+  cleanupButton.disabled = true;
+  cleanupButton.textContent = "Supprimer les images inutilis\u00e9es";
+  actions.appendChild(cleanupButton);
+  header.append(h2, actions);
   gallery.appendChild(header);
   const body = document.createElement("div");
   body.innerHTML = '<p class="admin-status">Chargement des images...</p>';
   gallery.appendChild(body);
   contentEl.appendChild(gallery);
-  renderImageGallery(body);
+  renderImageGallery(body, cleanupButton);
 }
 
 function renderSeoView() {
@@ -1286,6 +1294,164 @@ async function prepareImageUpload(file) {
   };
 }
 
+function normalizeLocalImagePath(value) {
+  const path = String(value || "")
+    .trim()
+    .replace(/^https?:\/\/[^/]+\//i, "")
+    .split(/[?#]/)[0]
+    .replace(/^\/+/, "");
+  return path.startsWith("assets/images/") ? path : "";
+}
+
+function collectLocalImagePaths(source, paths = new Set(), seen = new Set()) {
+  if (source == null) return paths;
+  if (typeof source === "string") {
+    const matches = source.match(/\/?assets\/images\/[^\s"'<>),]+/gi) || [];
+    for (const match of matches) {
+      const path = normalizeLocalImagePath(match);
+      if (path) paths.add(path);
+    }
+    const directPath = normalizeLocalImagePath(source);
+    if (directPath) paths.add(directPath);
+    return paths;
+  }
+  if (typeof source !== "object" || seen.has(source)) return paths;
+
+  seen.add(source);
+  for (const value of Array.isArray(source) ? source : Object.values(source)) {
+    collectLocalImagePaths(value, paths, seen);
+  }
+  return paths;
+}
+
+function getUnusedImages(images) {
+  const usedPaths = collectLocalImagePaths(content);
+  return images.filter((image) => !usedPaths.has(normalizeLocalImagePath(image.path)));
+}
+
+function configureUnusedImagesButton(button, images, target) {
+  if (!button) return;
+  const unusedImages = getUnusedImages(images);
+  button.disabled = unusedImages.length === 0;
+  button.textContent = unusedImages.length
+    ? `Supprimer ${unusedImages.length} image${unusedImages.length > 1 ? "s" : ""} inutilis\u00e9e${unusedImages.length > 1 ? "s" : ""}`
+    : "Aucune image inutilis\u00e9e";
+  button.title = unusedImages.length
+    ? "Afficher les fichiers inutilis\u00e9s avant suppression."
+    : "Toutes les images locales sont utilis\u00e9es dans le contenu.";
+  button.onclick = unusedImages.length ? () => showUnusedImagesDialog(unusedImages, target, button) : null;
+}
+
+async function deleteImageFile(image) {
+  return apiJson(API.image, {
+    method: "DELETE",
+    csrf: true,
+    body: { name: image.name, sha: image.sha },
+  });
+}
+
+function showUnusedImagesDialog(images, target, cleanupButton) {
+  if (!images.length) {
+    showToast("Aucune image inutilis\u00e9e \u00e0 supprimer.");
+    return;
+  }
+
+  const backdrop = document.createElement("div");
+  backdrop.className = "modal-backdrop";
+  backdrop.setAttribute("role", "dialog");
+  backdrop.setAttribute("aria-modal", "true");
+  backdrop.setAttribute("aria-labelledby", "unused-images-title");
+
+  const modal = document.createElement("div");
+  modal.className = "modal admin-cleanup-modal";
+  const title = document.createElement("h2");
+  title.className = "text-2xl";
+  title.id = "unused-images-title";
+  title.textContent = "Supprimer les images inutilis\u00e9es?";
+  const intro = document.createElement("p");
+  intro.className = "admin-status";
+  intro.textContent = images.length === 1
+    ? "1 fichier local ne semble pas \u00eatre r\u00e9f\u00e9renc\u00e9 dans le contenu."
+    : `${images.length} fichiers locaux ne semblent pas \u00eatre r\u00e9f\u00e9renc\u00e9s dans le contenu.`;
+
+  const list = document.createElement("ul");
+  list.className = "admin-cleanup-list";
+  for (const image of images) {
+    const item = document.createElement("li");
+    const name = document.createElement("strong");
+    name.textContent = image.name;
+    const path = document.createElement("code");
+    path.textContent = `/${image.path}`;
+    item.append(name, path);
+    list.appendChild(item);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "admin-actions justify-center mt-6";
+  const cancel = document.createElement("button");
+  cancel.className = "btn btn-outline";
+  cancel.type = "button";
+  cancel.textContent = "Annuler";
+  const confirmDelete = document.createElement("button");
+  confirmDelete.className = "btn btn-primary";
+  confirmDelete.type = "button";
+  confirmDelete.textContent = "Supprimer tout";
+  actions.append(cancel, confirmDelete);
+
+  modal.append(title, intro, list, actions);
+  backdrop.appendChild(modal);
+  document.body.appendChild(backdrop);
+  document.body.classList.add("overflow-hidden");
+
+  function close() {
+    backdrop.remove();
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("keydown", onKeydown);
+  }
+
+  function onKeydown(event) {
+    if (event.key === "Escape") close();
+  }
+
+  cancel.addEventListener("click", close);
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) close();
+  });
+  document.addEventListener("keydown", onKeydown);
+  confirmDelete.addEventListener("click", async () => {
+    confirmDelete.disabled = true;
+    cancel.disabled = true;
+    await deleteUnusedImages(images, target, cleanupButton);
+    close();
+  });
+  cancel.focus();
+}
+
+async function deleteUnusedImages(images, target, cleanupButton) {
+  setStatus("saving", "Suppression des images...", `${images.length} fichier${images.length > 1 ? "s" : ""} inutilis\u00e9${images.length > 1 ? "s" : ""}.`);
+  if (cleanupButton) cleanupButton.disabled = true;
+  const failures = [];
+  let deletedCount = 0;
+
+  for (const image of images) {
+    try {
+      await deleteImageFile(image);
+      deletedCount += 1;
+    } catch (error) {
+      failures.push(`${image.name}: ${error.message}`);
+    }
+  }
+
+  if (failures.length) {
+    setStatus("error", "Suppression incompl\u00e8te", failures.join(" | "));
+    showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} supprim\u00e9e${deletedCount > 1 ? "s" : ""}, ${failures.length} erreur${failures.length > 1 ? "s" : ""}.`, "error");
+  } else {
+    setStatus("connected", "Pr\u00eat", "Aucune modification non publi\u00e9e.");
+    showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} inutilis\u00e9e${deletedCount > 1 ? "s" : ""} supprim\u00e9e${deletedCount > 1 ? "s" : ""}.`);
+  }
+  await renderImageGallery(target, cleanupButton);
+}
+
 function compressToWebP(file, maxDimension = 1920, quality = 0.82) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -1327,9 +1493,10 @@ function compressToWebP(file, maxDimension = 1920, quality = 0.82) {
   });
 }
 
-async function renderImageGallery(target) {
+async function renderImageGallery(target, cleanupButton = null) {
   try {
     const data = await apiJson(API.images);
+    configureUnusedImagesButton(cleanupButton, data.images || [], target);
     if (!data.images.length) {
       target.innerHTML = '<p class="admin-status">Aucune image téléversée pour le moment.</p>';
       return;
@@ -1352,7 +1519,7 @@ async function renderImageGallery(target) {
       remove.textContent = "Supprimer";
       remove.addEventListener("click", async () => {
         if (!confirm(`Supprimer ${image.name}?`)) return;
-        await apiJson(API.image, { method: "DELETE", csrf: true, body: { name: image.name, sha: image.sha } });
+        await deleteImageFile(image);
         showToast("Image supprimée.");
         renderActiveView();
       });
@@ -1362,6 +1529,7 @@ async function renderImageGallery(target) {
     target.innerHTML = "";
     target.appendChild(grid);
   } catch (error) {
+    configureUnusedImagesButton(cleanupButton, [], target);
     target.innerHTML = `<p class="admin-status text-error">${escapeHtml(error.message)}</p>`;
   }
 }

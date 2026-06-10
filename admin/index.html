@@ -775,6 +775,43 @@
       text-align: center;
     }
 
+    .admin-cleanup-modal {
+      width: min(100%, 36rem);
+      text-align: left;
+    }
+
+    .admin-cleanup-modal h2 {
+      margin-bottom: var(--space-3);
+    }
+
+    .admin-cleanup-list {
+      display: grid;
+      gap: var(--space-2);
+      max-height: 18rem;
+      margin: var(--space-5) 0 0;
+      padding: var(--space-3);
+      overflow: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--card-radius);
+      background: var(--color-bg-light);
+      list-style: none;
+    }
+
+    .admin-cleanup-list li {
+      display: grid;
+      gap: var(--space-1);
+      padding: var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded);
+      background: var(--color-white);
+    }
+
+    .admin-cleanup-list code {
+      color: var(--color-text-light);
+      font-size: var(--text-xs);
+      overflow-wrap: anywhere;
+    }
+
     @media (max-width: 1024px) {
       .admin-body {
         display: block;
