@@ -242,18 +242,21 @@
           <h2 class="section-title">{{media.heading}}</h2>
           <p class="section-lead">{{media.description}}</p>
         </div>
+{{#if media.instagram_embed_url}}
+        <div class="instagram-widget reveal-on-scroll" data-instagram-widget data-embed-src="{{media.instagram_embed_url}}" data-embed-title="{{media.instagram_embed_title}}">
+          <div class="instagram-widget-placeholder" aria-live="polite">
+            <strong>Instagram</strong>
+            <span>{{media.loading_label}}</span>
+          </div>
+        </div>
+{{/if}}
+{{#if media.use_instagram_api}}
         <div class="media-rail-heading">
           <div>
             <strong>{{media.account_label}}</strong>
             <a href="{{media.profile_url}}" target="_blank" rel="noopener">{{media.account_handle}}</a>
           </div>
         </div>
-{{#if media.instagram_embed_url}}
-        <div class="instagram-widget reveal-on-scroll">
-          <iframe src="{{media.instagram_embed_url}}" title="{{media.instagram_embed_title}}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="encrypted-media; picture-in-picture; web-share" style="height: {{media.instagram_embed_height}};"></iframe>
-        </div>
-{{/if}}
-{{#if media.use_instagram_api}}
         <div class="media-carousel reveal-on-scroll" data-paged-carousel data-carousel-mode="showcase" data-carousel-interval="7000">
           <p class="media-status" data-instagram-status>{{media.loading_label}}</p>
           <div class="carousel-controls media-controls">

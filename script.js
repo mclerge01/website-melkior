@@ -118,6 +118,89 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
   }
 
+  function isLikelyCrawlerUserAgent() {
+    const ua = navigator.userAgent || "";
+    return /(bot|crawl|crawler|spider|slurp|bingpreview|facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterest|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-user|anthropic-ai|perplexitybot|perplexity-user|ccbot|google-extended|applebot-extended|bytespider|meta-externalagent|meta-externalfetcher|diffbot|cohere-ai|omgili|semrushbot|ahrefsbot|mj12bot|dotbot|petalbot|yandex|baiduspider|duckduckbot|googlebot|bingbot)/i.test(ua);
+  }
+
+  function initInstagramWidgets() {
+    const widgets = Array.from(document.querySelectorAll("[data-instagram-widget]"));
+    if (!widgets.length) return;
+
+    if (isLikelyCrawlerUserAgent()) {
+      widgets.forEach((widget) => {
+        widget.dataset.embedBlocked = "crawler";
+      });
+      return;
+    }
+
+    const visibleWidgets = new Set();
+    const humanEvents = ["pointerdown", "keydown", "wheel", "touchstart"];
+    const humanOptions = { passive: true };
+    let hasHumanSignal = false;
+
+    function loadWidget(widget) {
+      if (!widget || widget.dataset.embedLoaded === "true") return;
+
+      const src = String(widget.dataset.embedSrc || "").trim();
+      if (!/^https:\/\/emb\.fouita\.com\/widget\/[a-z0-9]+\/[a-z0-9]+\/?$/i.test(src)) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.title = String(widget.dataset.embedTitle || "Carousel Instagram Feed").trim() || "Carousel Instagram Feed";
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.allow = "encrypted-media; picture-in-picture; web-share";
+
+      widget.replaceChildren(iframe);
+      widget.dataset.embedLoaded = "true";
+      widget.classList.add("is-loaded");
+    }
+
+    function tryLoadVisibleWidgets() {
+      if (!hasHumanSignal) return;
+      visibleWidgets.forEach(loadWidget);
+    }
+
+    function markHumanSignal(event) {
+      if (event && event.isTrusted === false) return;
+      hasHumanSignal = true;
+      tryLoadVisibleWidgets();
+      humanEvents.forEach((type) => window.removeEventListener(type, markHumanSignal, humanOptions));
+    }
+
+    humanEvents.forEach((type) => window.addEventListener(type, markHumanSignal, humanOptions));
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          visibleWidgets.add(entry.target);
+          observer.unobserve(entry.target);
+        });
+        tryLoadVisibleWidgets();
+      }, { rootMargin: "25% 0px", threshold: 0.01 });
+
+      widgets.forEach((widget) => observer.observe(widget));
+      return;
+    }
+
+    function checkVisibleWidgets() {
+      widgets.forEach((widget) => {
+        const rect = widget.getBoundingClientRect();
+        const loadOffset = window.innerHeight * 0.25;
+        if (rect.top < window.innerHeight + loadOffset && rect.bottom > -loadOffset) {
+          visibleWidgets.add(widget);
+        }
+      });
+      tryLoadVisibleWidgets();
+    }
+
+    window.addEventListener("scroll", checkVisibleWidgets, { passive: true });
+    window.addEventListener("resize", checkVisibleWidgets, { passive: true });
+    checkVisibleWidgets();
+  }
+
   function initPagedCarousel(carousel) {
     if (carousel.dataset.carouselReady === "true") return;
     const track = carousel.querySelector("[data-carousel-track]");
@@ -303,6 +386,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateShowcase(0);
     startAuto();
   }
+
+  initInstagramWidgets();
 
   loadInstagramFeeds().finally(() => {
     document.querySelectorAll("[data-paged-carousel]").forEach(initPagedCarousel);

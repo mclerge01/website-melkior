@@ -18,7 +18,6 @@ function prepareLocaleData(settings, locale) {
     ...localized.media,
     instagram_embed_url: instagramEmbed.url,
     instagram_embed_title: instagramEmbed.title,
-    instagram_embed_height: instagramEmbed.height,
     use_instagram_api: !instagramEmbed.url,
   };
   const path = current.homePath;
