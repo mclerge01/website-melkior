@@ -1195,7 +1195,7 @@ function getTranslationSummary(missing = getMissingTranslationCount("locales.en-
   if (!content?.locales?.["fr-CA"] || !content?.locales?.["en-CA"]) return "";
   return missing
     ? `${missing} champ${missing > 1 ? "s" : ""} anglais à remplir.`
-    : "Traductions principales complètes.";
+    : "Tous les champs sont remplis.";
 }
 
 function getMissingTranslationCount(path) {
