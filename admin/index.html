@@ -150,6 +150,36 @@
       line-height: 1.1;
     }
 
+    .admin-translation-summary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.25rem;
+      margin: 0;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded-full);
+      color: var(--color-text-light);
+      background: var(--color-white);
+      font-size: var(--text-sm);
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .admin-translation-summary.warning {
+      border-color: rgba(219, 170, 75, 0.65);
+      color: var(--color-accent-dark);
+      background: rgba(219, 170, 75, 0.16);
+    }
+
+    .admin-translation-summary.complete {
+      border-color: rgba(21, 128, 61, 0.24);
+      color: var(--color-success);
+      background: rgba(21, 128, 61, 0.08);
+    }
+
     .admin-actions {
       display: flex;
       flex-wrap: wrap;
@@ -209,6 +239,15 @@
       align-content: start;
     }
 
+    .admin-field-heading,
+    .admin-list-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      min-width: 0;
+    }
+
     .admin-field-full {
       grid-column: 1 / -1;
     }
@@ -222,6 +261,34 @@
       color: var(--color-text);
       font-size: var(--text-sm);
       font-weight: 800;
+    }
+
+    .admin-missing-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid rgba(219, 170, 75, 0.6);
+      border-radius: var(--rounded-full);
+      color: var(--color-accent-dark);
+      background: rgba(219, 170, 75, 0.16);
+      font-size: var(--text-xs);
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .admin-field-warning {
+      color: var(--color-accent-dark);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .admin-field-missing .input,
+    .admin-field-missing .textarea,
+    .admin-field-missing .EasyMDEContainer .CodeMirror {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(219, 170, 75, 0.14);
     }
 
     .admin-hint,
@@ -241,6 +308,9 @@
 
     .admin-locale-tab {
       position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
       padding: var(--space-4) 0;
       border: 0;
       background: transparent;
@@ -268,6 +338,21 @@
 
     .admin-locale-tab.active::after {
       background: var(--color-primary);
+    }
+
+    .admin-tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.4rem;
+      height: 1.4rem;
+      padding: 0 var(--space-1);
+      border-radius: var(--rounded-full);
+      color: var(--color-accent-dark);
+      background: rgba(219, 170, 75, 0.18);
+      font-size: var(--text-xs);
+      font-weight: 900;
+      line-height: 1;
     }
 
     .admin-btn-icon {
@@ -484,6 +569,11 @@
 
     .admin-list-item:hover {
       box-shadow: var(--shadow-sm);
+    }
+
+    .admin-list-item-missing {
+      border-color: rgba(219, 170, 75, 0.6);
+      background: rgba(219, 170, 75, 0.08);
     }
 
     .admin-list-item.dragging {

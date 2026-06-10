@@ -440,7 +440,16 @@ function setPath(path, value, options = {}) {
     cursor = cursor[key];
   }
   cursor[parts[parts.length - 1]] = value;
+  updateTranslationSummary();
   if (!options.silent) setStatus("saving", "Modifications non publiées", "Cliquez sur Publier pour les mettre en ligne.");
+}
+
+function updateTranslationSummary() {
+  const status = document.querySelector(".admin-translation-summary");
+  if (!status) return;
+  const missingCount = getMissingTranslationCount("locales.en-CA");
+  status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
+  status.textContent = getTranslationSummary(missingCount);
 }
 
 function setStatus(type, text, detail = "") {
@@ -531,8 +540,9 @@ function renderPageHeader(title, description = "") {
     copy.appendChild(p);
   }
   const status = document.createElement("p");
-  status.className = "admin-status";
-  status.textContent = getTranslationSummary();
+  const missingCount = getMissingTranslationCount("locales.en-CA");
+  status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
+  status.textContent = getTranslationSummary(missingCount);
   header.append(copy, status);
   return header;
 }
@@ -554,7 +564,16 @@ function renderLocaleTabs(activeKey, onChange) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `admin-locale-tab${locale.key === activeKey ? " active" : ""}`;
-    button.textContent = locale.label;
+    const label = document.createElement("span");
+    label.textContent = locale.label;
+    button.appendChild(label);
+    const missingCount = locale.key === "en-CA" ? getMissingTranslationCount("locales.en-CA") : 0;
+    if (missingCount) {
+      const badge = document.createElement("span");
+      badge.className = "admin-tab-count";
+      badge.textContent = String(missingCount);
+      button.appendChild(badge);
+    }
     button.addEventListener("click", () => onChange(locale.key));
     tabs.appendChild(button);
   }
@@ -677,16 +696,26 @@ function renderSectionCard(rootPath, section) {
 function renderField(path, field) {
   const group = document.createElement("div");
   group.className = `admin-field${field.full || field.type === "markdown" || field.type === "image" ? " admin-field-full" : ""}`;
+  const labelRow = document.createElement("span");
+  labelRow.className = "admin-field-heading";
   const label = document.createElement("span");
   label.className = "admin-label";
   label.textContent = field.label || labelFromKey(field.key);
-  group.appendChild(label);
+  const missingBadge = document.createElement("span");
+  missingBadge.className = "admin-missing-badge";
+  missingBadge.textContent = "À remplir";
+  labelRow.append(label, missingBadge);
+  group.appendChild(labelRow);
   if (field.hint) {
     const hint = document.createElement("span");
     hint.className = "admin-hint";
     hint.textContent = field.hint;
     group.appendChild(hint);
   }
+  const missingHint = document.createElement("span");
+  missingHint.className = "admin-field-warning";
+  missingHint.textContent = "Ce champ anglais est vide.";
+  group.appendChild(missingHint);
 
   const value = getPath(path);
   const type = field.type || inferFieldType(path, value);
@@ -700,7 +729,24 @@ function renderField(path, field) {
   else if (typeof value === "number") renderTextInput(group, path, value, "number");
   else renderTextInput(group, path, value, "text");
 
+  group.addEventListener("input", () => syncFieldMissingState(group, path));
+  group.addEventListener("change", () => syncFieldMissingState(group, path));
+  syncFieldMissingState(group, path);
+
   return group;
+}
+
+function syncFieldMissingState(group, path) {
+  const missing = isDirectMissingTranslationField(path);
+  group.classList.toggle("admin-field-missing", missing);
+  const badge = group.querySelector(".admin-missing-badge");
+  if (badge) badge.hidden = !missing;
+  const warning = group.querySelector(".admin-field-warning");
+  if (warning) warning.hidden = !missing;
+  group.querySelectorAll(".input, .textarea, select").forEach((control) => {
+    if (missing) control.setAttribute("aria-invalid", "true");
+    else control.removeAttribute("aria-invalid");
+  });
 }
 
 function getAvailableLocaleOptions() {
@@ -902,7 +948,10 @@ function initMarkdownEditor(group, path) {
     ],
   });
 
-  editor.codemirror.on("change", () => setPath(path, editor.value()));
+  editor.codemirror.on("change", () => {
+    setPath(path, editor.value());
+    syncFieldMissingState(group, path);
+  });
   return editor;
 }
 
@@ -971,12 +1020,23 @@ function renderListItem(path, list, item, index, total) {
   });
 
   const summary = listItemSummary(item, index);
+  const missingCount = getMissingTranslationCount(`${path}.${index}`);
+  itemEl.classList.toggle("admin-list-item-missing", Boolean(missingCount));
   const body = document.createElement("div");
   body.className = "admin-list-item-body";
+  const titleRow = document.createElement("span");
+  titleRow.className = "admin-list-title-row";
   const title = document.createElement("p");
   title.className = "admin-list-item-title";
   title.textContent = summary.title;
-  body.appendChild(title);
+  titleRow.appendChild(title);
+  if (missingCount) {
+    const badge = document.createElement("span");
+    badge.className = "admin-missing-badge";
+    badge.textContent = `${missingCount} à remplir`;
+    titleRow.appendChild(badge);
+  }
+  body.appendChild(titleRow);
   if (summary.description) {
     const description = document.createElement("p");
     description.className = "admin-list-item-desc";
@@ -1129,24 +1189,43 @@ function adminIcon(name) {
   return icons[name] || "";
 }
 
-function getTranslationSummary() {
+function getTranslationSummary(missing = getMissingTranslationCount("locales.en-CA")) {
   if (!content?.locales?.["fr-CA"] || !content?.locales?.["en-CA"]) return "";
-  let missing = 0;
-  const walk = (source, target) => {
-    if (typeof source === "string") {
-      if (!String(target || "").trim()) missing += 1;
-      return;
-    }
-    if (Array.isArray(source)) {
-      source.forEach((item, index) => walk(item, Array.isArray(target) ? target[index] : undefined));
-      return;
-    }
-    if (source && typeof source === "object") {
-      Object.keys(source).forEach((key) => walk(source[key], target ? target[key] : undefined));
-    }
-  };
-  walk(content.locales["fr-CA"], content.locales["en-CA"]);
-  return missing ? `${missing} champ(s) anglais semblent vides.` : "Traductions principales complètes.";
+  return missing
+    ? `${missing} champ${missing > 1 ? "s" : ""} anglais à remplir.`
+    : "Traductions principales complètes.";
+}
+
+function getMissingTranslationCount(path) {
+  const sourcePath = getFrenchSourcePath(path);
+  if (!sourcePath) return 0;
+  return countMissingTranslationStrings(getPath(sourcePath), getPath(path));
+}
+
+function isDirectMissingTranslationField(path) {
+  const sourcePath = getFrenchSourcePath(path);
+  if (!sourcePath) return false;
+  const source = getPath(sourcePath);
+  if (typeof source !== "string" || !source.trim()) return false;
+  return !String(getPath(path) || "").trim();
+}
+
+function getFrenchSourcePath(path) {
+  if (!String(path || "").startsWith("locales.en-CA.")) return "";
+  return path.replace(/^locales\.en-CA\./, "locales.fr-CA.");
+}
+
+function countMissingTranslationStrings(source, target) {
+  if (typeof source === "string") {
+    return source.trim() && !String(target || "").trim() ? 1 : 0;
+  }
+  if (Array.isArray(source)) {
+    return source.reduce((total, item, index) => total + countMissingTranslationStrings(item, Array.isArray(target) ? target[index] : undefined), 0);
+  }
+  if (source && typeof source === "object") {
+    return Object.keys(source).reduce((total, key) => total + countMissingTranslationStrings(source[key], target ? target[key] : undefined), 0);
+  }
+  return 0;
 }
 
 function fileToBase64(file) {
