@@ -220,6 +220,13 @@ export async function onRequestPost(context) {
         body: JSON.stringify({ from: fromEmail, to: toEmail, raw }),
       });
       if (!response.ok) throw new Error("Email worker rejected message");
+      console.log({
+        event: "contact_email_handoff",
+        locale,
+        subject,
+        referral: referral || "not_provided",
+        message_length: message.length,
+      });
     } else {
       console.log("Contact form dev mode:", {
         locale,

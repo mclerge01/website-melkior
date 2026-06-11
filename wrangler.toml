@@ -3,6 +3,16 @@ main = "worker/index.js"
 compatibility_date = "2026-06-11"
 workers_dev = true
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
 [vars]
 GITHUB_CLIENT_ID = "Ov23lii7Cd2Hi6BAk24W"
 TURNSTILE_SITE_KEY = "0x4AAAAAADiKO0ta5fWUPZ6z"

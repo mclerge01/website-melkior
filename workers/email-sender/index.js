@@ -1,5 +1,9 @@
 import { EmailMessage } from "cloudflare:email";
 
+function emailDomain(value) {
+  return String(value || "").split("@").pop() || "";
+}
+
 export default {
   async fetch(request, env) {
     if (request.method !== "POST") {
@@ -26,6 +30,12 @@ export default {
 
     try {
       await env.SEND_EMAIL.send(new EmailMessage(from, to, raw));
+      console.log({
+        event: "email_sent",
+        from_domain: emailDomain(from),
+        to_domain: emailDomain(to),
+        raw_bytes: raw.length,
+      });
     } catch (error) {
       console.error("Email delivery failed:", error);
       return new Response(JSON.stringify({ success: false, error: "Email delivery failed" }), {
