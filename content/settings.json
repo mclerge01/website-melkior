@@ -245,25 +245,21 @@
         "items": [
           {
             "quote": "Service impeccable de la part de mon courtier hypothécaire monsieur Melkior. Notre dossier n'était pas simple, mais son expertise et sa persévérance nous ont permis de concrétiser notre projet. Achat de notre première maison, efficace et proactif, il a su trouver des solutions là où d'autres ont échoué. Merci encore pour tout!",
-            "initials": "AS",
             "name": "Client vérifié",
             "context": "Achat de première maison"
           },
           {
             "quote": "Rapidité, efficacité, sont les deux qualités qui décrivent le mieux Melkior. Le traitement de mon dossier a été plus que parfait. Je le recommande sans hésiter.",
-            "initials": "RE",
             "name": "Client vérifié",
             "context": "Dossier hypothécaire"
           },
           {
             "quote": "J'ai eu recours aux services de Melkior à deux reprises au cours de la dernière année. J'ai toujours reçu un excellent service. Non seulement il est professionnel, mais mes besoins étaient au coeur de ses démarches. Il a pris le temps nécessaire pour répondre à mes questions et me fournir les explications nécessaires afin que je puisse prendre les meilleures décisions. Je le recommande fortement. Merci.",
-            "initials": "DR",
             "name": "Client vérifié",
             "context": "Accompagnement récurrent"
           },
           {
             "quote": "Très bon service. Un accompagnement adapté et professionnel tout au long du processus d'achat de notre maison. Nous recommandons Melkior sans hésiter.",
-            "initials": "MA",
             "name": "Client vérifié",
             "context": "Achat de maison"
           }
@@ -571,28 +567,24 @@
         "items": [
           {
             "quote": "Impeccable service from my mortgage broker, Mr. Melkior. Our file was not simple, but his expertise and perseverance helped us make our project happen. For the purchase of our first home, he was efficient and proactive, finding solutions where others had failed. Thank you again for everything!",
-            "initials": "AS",
             "name": "Verified client",
             "context": "First-home purchase",
             "translation_note": "Translated from French"
           },
           {
             "quote": "Speed and efficiency are the two qualities that best describe Melkior. The handling of my file was more than perfect. I recommend him without hesitation.",
-            "initials": "RE",
             "name": "Verified client",
             "context": "Mortgage file",
             "translation_note": "Translated from French"
           },
           {
             "quote": "I used Melkior's services twice over the past year. I always received excellent service. Not only is he professional, but my needs were at the heart of his approach. He took the time needed to answer my questions and provide the explanations I needed to make the best decisions. I highly recommend him. Thank you.",
-            "initials": "DR",
             "name": "Verified client",
             "context": "Repeat guidance",
             "translation_note": "Translated from French"
           },
           {
             "quote": "Very good service. Tailored and professional guidance throughout the purchase process for our home. We recommend Melkior without hesitation.",
-            "initials": "MA",
             "name": "Verified client",
             "context": "Home purchase",
             "translation_note": "Translated from French"

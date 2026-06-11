@@ -1541,18 +1541,26 @@ p {
   margin-top: var(--component-gap-compact);
 }
 
-.testimonial-person span {
-  display: grid;
+.testimonial-avatar {
   width: 3rem;
   height: 3rem;
-  place-items: center;
   border-radius: var(--rounded-full);
+}
+
+span.testimonial-avatar {
+  display: grid;
+  place-items: center;
   color: var(--color-white);
   background: var(--color-bg-dark);
   font-weight: 900;
 }
 
-.testimonial-section .testimonial-person span {
+img.testimonial-avatar {
+  display: block;
+  object-fit: cover;
+}
+
+.testimonial-section span.testimonial-avatar {
   color: var(--color-primary-dark);
   background: var(--color-accent);
 }
@@ -2533,7 +2541,7 @@ p {
     margin-top: var(--content-gap);
   }
 
-  .testimonial-person span {
+  .testimonial-avatar {
     width: 2.5rem;
     height: 2.5rem;
   }

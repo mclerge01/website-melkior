@@ -204,7 +204,8 @@ const CONTENT_SECTIONS = [
         label: "Avis",
         fields: [
           { key: "quote", label: "Texte", type: "textarea", full: true },
-          { key: "initials", label: "Initiales" },
+          { key: "image", label: "Image optionnelle", type: "image", full: true },
+          { key: "image_alt", label: "Texte alternatif optionnel", full: true },
           { key: "name", label: "Nom" },
           { key: "context", label: "Contexte" },
           { key: "translation_note", label: "Badge de traduction" },

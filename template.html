@@ -238,7 +238,12 @@
 {{/if}}
               <p>{{quote}}</p>
               <div class="testimonial-person">
-                <span>{{initials}}</span>
+{{#if image}}
+                <img class="testimonial-avatar" src="{{image}}" alt="{{image_alt}}" loading="lazy" decoding="async">
+{{/if}}
+{{#if avatar_label}}
+                <span class="testimonial-avatar" aria-hidden="true">{{avatar_label}}</span>
+{{/if}}
                 <strong>{{name}}</strong>
                 <small>{{context}}</small>
               </div>
