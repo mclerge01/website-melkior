@@ -66,7 +66,7 @@ export async function onRequestPost(context) {
     return jsonResponse({ success: false, error: "Content object is required." }, { status: 400, headers: auth.headers });
   }
 
-  const templateResponse = await context.env.ASSETS.fetch(new Request(new URL("/template.html", context.request.url)));
+  const templateResponse = await context.env.ASSETS.fetch(new Request(new URL("/admin/preview-template.txt", context.request.url)));
   if (!templateResponse.ok) {
     return jsonResponse({ success: false, error: "Unable to load preview template." }, { status: 500, headers: auth.headers });
   }

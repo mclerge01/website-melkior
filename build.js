@@ -300,6 +300,7 @@ for (const path of ["styles.css", "script.js", "favicon.svg", "_headers", "asset
   copyStatic(path);
 }
 await minifyStaticAssets();
+write("admin/preview-template.txt", template);
 
 for (const locale of settings.site.locales) {
   const homeData = prepareLocaleData(settings, locale, "home");
