@@ -428,7 +428,8 @@ p {
 }
 
 .logo-divider,
-.network-logo-link {
+.nav-brand .network-logo-link,
+.nav-menu-network-logo {
   display: none;
 }
 
@@ -448,6 +449,10 @@ p {
   height: 2.35rem;
   border-radius: var(--rounded-sm);
   transition: transform var(--transition), opacity var(--transition);
+}
+
+.nav-menu-network-logo {
+  margin-top: var(--space-2);
 }
 
 .network-logo-link:hover,
@@ -2434,6 +2439,10 @@ img.testimonial-avatar {
     width: min(100%, 26rem);
   }
 
+  .nav-menu.active .nav-menu-network-logo {
+    display: inline-flex;
+  }
+
   .scroll-cue {
     display: none;
   }
@@ -2568,6 +2577,15 @@ img.testimonial-avatar {
 
   .stat-item:last-child {
     border-right: 0;
+  }
+
+  .logo-divider {
+    display: block;
+  }
+
+  .nav-brand .network-logo-link {
+    display: inline-flex;
+    width: 6.4rem;
   }
 
   .service-grid {
@@ -2719,15 +2737,6 @@ img.testimonial-avatar {
   .nav-menu.active {
     display: flex;
     text-align: left;
-  }
-
-  .logo-divider {
-    display: block;
-  }
-
-  .network-logo-link {
-    display: inline-flex;
-    width: 6.4rem;
   }
 
   .nav-menu .nav-link {
