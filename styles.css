@@ -797,12 +797,29 @@ p {
   gap: var(--space-4);
   align-items: center;
   padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--color-bg-dark) 16%, var(--color-border) 84%);
   border-radius: var(--card-radius);
-  color: var(--color-white);
+  color: var(--color-text);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.09), transparent 36%),
-    #171717;
-  box-shadow: var(--shadow);
+    linear-gradient(135deg, rgba(var(--color-bg-dark-rgb), 0.06), transparent 40%),
+    var(--color-white);
+  box-shadow: 0 1.25rem 3rem rgba(0, 37, 33, 0.16);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+.calculator-teaser:hover,
+.calculator-teaser:focus-visible {
+  border-color: color-mix(in srgb, var(--color-bg-dark) 28%, var(--color-border) 72%);
+  box-shadow: 0 1.6rem 3.4rem rgba(0, 37, 33, 0.22);
+  transform: translateY(-2px);
+}
+
+.calculator-teaser:focus-visible {
+  outline: 2px solid var(--color-link-bright);
+  outline-offset: 0.25rem;
 }
 
 .calculator-teaser strong,
@@ -816,7 +833,7 @@ p {
 
 .calculator-teaser small {
   margin-top: var(--space-1);
-  color: var(--color-white-muted);
+  color: var(--color-text-light);
 }
 
 .teaser-icon svg {
@@ -932,10 +949,11 @@ p {
   position: relative;
   overflow: hidden;
   padding-block: var(--space-10) var(--section-y);
+  color: var(--color-text);
   background:
-    radial-gradient(circle at 14% 18%, rgba(219, 170, 75, 0.14), transparent 22rem),
-    radial-gradient(circle at 88% 74%, rgba(219, 170, 75, 0.1), transparent 24rem),
-    #070707;
+    radial-gradient(circle at 14% 18%, rgba(var(--color-bg-dark-rgb), 0.06), transparent 22rem),
+    radial-gradient(circle at 88% 74%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    var(--color-white);
 }
 
 .services-stack {
@@ -965,11 +983,13 @@ p {
   gap: var(--space-4);
   align-content: start;
   min-height: 18rem;
+  border-color: color-mix(in srgb, var(--color-bg-dark) 14%, var(--color-border) 86%);
   padding: var(--space-6);
-  color: var(--color-white);
+  color: var(--color-text);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 38%),
-    rgba(23, 23, 23, 0.88);
+    linear-gradient(135deg, rgba(var(--color-bg-dark-rgb), 0.04), transparent 38%),
+    var(--color-white);
+  box-shadow: 0 1rem 2.5rem rgba(0, 37, 33, 0.12);
 }
 
 .service-card-icon svg {
@@ -1026,8 +1046,35 @@ p {
   margin-bottom: var(--space-3);
 }
 
+.guide-section {
+  color: var(--color-white);
+  background:
+    radial-gradient(circle at 15% 18%, rgba(219, 170, 75, 0.12), transparent 23rem),
+    #070707;
+}
+
+.guide-section .section-title {
+  color: var(--color-white);
+}
+
+.guide-section .section-lead,
+.guide-section .text-light {
+  color: var(--color-white-muted);
+}
+
+.guide-section .guide-item {
+  border-color: var(--color-white-border);
+  color: var(--color-white);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    var(--color-white-subtle);
+}
+
 .about-section {
   color: var(--color-white);
+  background:
+    radial-gradient(circle at 16% 20%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    var(--color-bg-dark);
 }
 
 .about-grid {
@@ -2215,6 +2262,25 @@ p {
     transform: translate3d(0, 0.5rem, 0) scale(0.985);
   }
 
+  .calculator-teaser.reveal-on-scroll {
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease),
+      border-color var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .calculator-teaser.reveal-on-scroll.revealed:hover,
+  .calculator-teaser.reveal-on-scroll.revealed:focus-visible {
+    transform: translateY(-2px);
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--transition),
+      border-color var(--transition),
+      box-shadow var(--transition);
+    transition-delay: 0ms;
+  }
+
   .reveal-stagger > .reveal-on-scroll:nth-child(2) { --reveal-delay: 80ms; }
   .reveal-stagger > .reveal-on-scroll:nth-child(3) { --reveal-delay: 140ms; }
   .reveal-stagger > .reveal-on-scroll:nth-child(4) { --reveal-delay: 200ms; }
@@ -2238,10 +2304,73 @@ p {
 }
 
 @media (max-width: 767px) {
+  .hero {
+    align-content: center;
+    min-height: auto;
+    padding-top: calc(var(--nav-height) + var(--space-8));
+    padding-bottom: var(--space-12);
+  }
+
+  .hero-grid {
+    gap: var(--space-10);
+  }
+
+  .hero-title {
+    font-size: clamp(2.45rem, 11.5vw, 3.25rem);
+    line-height: 1.02;
+  }
+
+  .hero-subtitle {
+    margin-top: var(--space-5);
+    font-size: clamp(1rem, 4.8vw, 1.15rem);
+  }
+
+  .hero-highlight {
+    margin-top: var(--space-5);
+    font-size: clamp(1rem, 4.8vw, 1.2rem);
+  }
+
+  .hero-actions {
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .hero-actions .btn {
+    width: min(100%, 26rem);
+  }
+
+  .scroll-cue {
+    display: none;
+  }
+
+  .calculator-teaser {
+    align-items: start;
+    padding: var(--space-5);
+  }
+
+  .calculator-teaser .teaser-icon {
+    align-self: start;
+    margin-top: 0.2rem;
+  }
+
+  .service-card {
+    min-height: 0;
+    padding: var(--space-5);
+    gap: var(--space-3);
+  }
+
+  .about-section {
+    padding-bottom: var(--space-8);
+  }
+
+  .about-section .timeline {
+    margin-bottom: 0;
+  }
+
   .testimonial-carousel {
     --testimonial-card-width: min(100%, 24rem);
     --testimonial-side-offset: calc(100% + var(--space-6));
-    --testimonial-showcase-height: clamp(36rem, 142vw, 46rem);
+    --testimonial-showcase-height: clamp(29rem, 106vw, 34rem);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -2249,19 +2378,31 @@ p {
   }
 
   .testimonial-carousel.is-showcase .testimonial-showcase {
+    display: grid;
     order: 1;
     overflow: hidden;
     -webkit-mask-image: none;
     mask-image: none;
   }
 
+  .testimonial-carousel.is-showcase .testimonial-card,
+  .testimonial-carousel.is-showcase .testimonial-card.is-active {
+    inset: 0;
+    left: 0;
+    margin-left: 0;
+    width: 100%;
+    transform: none;
+  }
+
   .testimonial-carousel.is-showcase .testimonial-card.is-prev,
-  .testimonial-carousel.is-showcase .testimonial-card.is-next {
+  .testimonial-carousel.is-showcase .testimonial-card.is-next,
+  .testimonial-carousel.is-showcase .testimonial-card.is-hidden {
     opacity: 0;
-    visibility: visible;
+    visibility: hidden;
     filter: none;
     -webkit-mask-image: none;
     mask-image: none;
+    transform: none;
   }
 
   .testimonial-controls {
@@ -2280,20 +2421,34 @@ p {
   }
 
   .testimonial-section .section-heading {
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
 
   .testimonial-section .section-title {
-    font-size: clamp(2.15rem, 13vw, 3.6rem);
-    line-height: 1.04;
+    font-size: clamp(2rem, 10vw, 2.85rem);
+    line-height: 1.03;
   }
 
   .testimonial-card {
-    padding: var(--space-6) var(--space-5);
+    padding: var(--space-5);
   }
 
   .testimonial-card p {
-    font-size: clamp(1.35rem, 7vw, 1.8rem);
+    font-size: clamp(1rem, 4.6vw, 1.18rem);
+    line-height: 1.4;
+  }
+
+  .testimonial-stars {
+    margin-bottom: var(--space-3);
+  }
+
+  .testimonial-person {
+    margin-top: var(--space-4);
+  }
+
+  .testimonial-person span {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
@@ -2326,6 +2481,7 @@ p {
 
   .calculator-teaser {
     grid-template-columns: auto 1fr auto;
+    align-items: center;
     padding: var(--space-6);
   }
 

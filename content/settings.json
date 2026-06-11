@@ -26,7 +26,7 @@
     "phone_href": "+15148366736",
     "email": "consultation@melkiorclerge.ca",
     "office_address": "6799 boulevard St-Laurent, Montréal, QC, H2S 3C8",
-    "regions": "Montréal, Rive-Sud/Montérégie, Laval/Rive-Nord",
+    "regions": "Partout au Québec",
     "profile_url": "https://www.multi-prets.com/en/mortgage-broker/melkior-clerge/",
     "images": {
       "hero_background": "/assets/images/hero-background-unsplash.webp",
@@ -57,7 +57,7 @@
     "fr-CA": {
       "seo": {
         "title": "Melkior Clergé | Courtier hypothécaire Multi-Prêts à Montréal",
-        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts à Montréal, Rive-Sud et Laval/Rive-Nord: achat, préautorisation, renouvellement, refinancement, consolidation.",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
         "favicon": "/favicon.svg"
       },
@@ -67,6 +67,7 @@
         "cta_text": "Réserver une consultation",
         "cta_link": "#contact-form"
       },
+      "regions": "Partout au Québec",
       "nav": {
         "services": "Services",
         "guide": "Guide",
@@ -334,7 +335,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts à Montréal, Rive-Sud et Laval/Rive-Nord: achat, préautorisation, renouvellement, refinancement, consolidation.",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "description_heading": "Résumé",
         "pages_heading": "Navigation",
         "legal_heading": "Légal",
@@ -357,7 +358,7 @@
     "en-CA": {
       "seo": {
         "title": "Melkior Clergé | Multi-Prêts Mortgage Broker in Montreal",
-        "description": "Melkior Clergé, Multi-Prêts mortgage broker in Montreal, South Shore and Laval/North Shore: purchase, pre-approval, renewal, refinancing, debt consolidation.",
+        "description": "Melkior Clergé, Multi-Prêts mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
         "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
         "favicon": "/favicon.svg"
       },
@@ -367,6 +368,7 @@
         "cta_text": "Book a meeting",
         "cta_link": "#contact-form"
       },
+      "regions": "Across Quebec",
       "nav": {
         "services": "Services",
         "guide": "Guide",
@@ -634,7 +636,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Melkior Clergé, Multi-Prêts mortgage broker in Montreal, South Shore and Laval/North Shore: purchase, pre-approval, renewal, refinancing, debt consolidation.",
+        "description": "Melkior Clergé, Multi-Prêts mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
         "description_heading": "Summary",
         "pages_heading": "Navigation",
         "legal_heading": "Legal",

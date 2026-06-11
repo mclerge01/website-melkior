@@ -119,7 +119,7 @@
       </div>
     </section>
 
-    <section id="services" class="section services-section text-white">
+    <section id="services" class="section services-section">
       <div class="container services-stack">
         <a class="calculator-teaser card card-glass reveal-on-scroll reveal-scale" href="#calculator">
           <span class="teaser-icon icon-tile" aria-hidden="true">
@@ -134,17 +134,17 @@
           <span class="teaser-action">{{nav.calculator}}</span>
         </a>
         <div class="section-heading reveal-on-scroll">
-          <p class="eyebrow eyebrow-light">{{services.eyebrow}}</p>
+          <p class="eyebrow">{{services.eyebrow}}</p>
           <h2 class="section-title">{{services.heading}}</h2>
         </div>
         <div class="service-grid reveal-stagger">
 {{#each services.items}}
-          <article class="service-card card card-glass card-interactive reveal-on-scroll">
+          <article class="service-card card card-glass reveal-on-scroll">
             <span class="service-card-icon icon-tile" aria-hidden="true">
               <svg viewBox="0 0 24 24" focusable="false"><path d="{{icon_path}}"></path></svg>
             </span>
             <h3>{{title}}</h3>
-            <div class="text-white-muted">{{description}}</div>
+            <div class="text-light">{{description}}</div>
           </article>
 {{/each}}
         </div>
@@ -154,7 +154,7 @@
       </div>
     </section>
 
-    <section id="guide" class="section">
+    <section id="guide" class="section guide-section">
       <div class="container guide-grid split-grid">
         <div class="reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{guide.eyebrow}}</p>
@@ -172,7 +172,7 @@
       </div>
     </section>
 
-    <section id="about" class="section about-section bg-dark text-white">
+    <section id="about" class="section about-section text-white">
       <div class="container about-grid split-grid lg:items-stretch">
         <div class="about-image lg:h-full reveal-on-scroll reveal-from-left">
           <div class="about-image-frame">
