@@ -1640,6 +1640,15 @@ p {
   background: var(--color-bg);
 }
 
+.contact-content,
+.contact-copy {
+  min-width: 0;
+}
+
+.contact-eyebrow {
+  width: fit-content;
+}
+
 .contact-action {
   position: relative;
   overflow: hidden;

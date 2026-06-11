@@ -259,13 +259,13 @@
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
         "heading": "Votre prochain chapitre *immobilier* commence ici.",
-        "description": "Choisissez la façon la plus simple de joindre Melkior: réserver en ligne, écrire un message ou appeler directement.",
-        "booking_cta": "Réserver en ligne",
-        "booking_text": "Ouvre Calendly pour choisir un créneau de 30 minutes.",
-        "email_cta": "Écrire un message",
-        "email_text": "Descend au formulaire sécurisé de consultation.",
+        "description": "Choisissez la façon la plus simple de joindre Melkior : réserver une consultation, envoyer un courriel ou appeler directement.",
+        "booking_cta": "Réserver une consultation",
+        "booking_text": "Réservez une plage horaire pour discuter de votre projet avec Melkior.",
+        "email_cta": "Envoyer un courriel",
+        "email_text": "Transmettez les détails de votre demande par formulaire sécurisé.",
         "phone_cta": "Appeler Melkior",
-        "phone_text": "Lance un appel direct pour clarifier vos prochaines étapes."
+        "phone_text": "Appelez Melkior directement pour clarifier vos prochaines étapes."
       },
       "contact": {
         "heading": "Consultation hypothécaire",
@@ -564,13 +564,13 @@
       "final_cta": {
         "eyebrow": "Mortgage consultation",
         "heading": "Your next real estate *chapter* starts here.",
-        "description": "Choose the easiest way to reach Melkior: book online, send a message, or call directly.",
-        "booking_cta": "Book online",
-        "booking_text": "Opens Calendly so you can choose a 30-minute time slot.",
-        "email_cta": "Send a message",
-        "email_text": "Jumps to the secure consultation form.",
+        "description": "Choose the easiest way to reach Melkior: book a consultation, send an email, or call directly.",
+        "booking_cta": "Book a consultation",
+        "booking_text": "Reserve a time slot to discuss your project with Melkior.",
+        "email_cta": "Send an email",
+        "email_text": "Send the details of your request through the secure form.",
         "phone_cta": "Call Melkior",
-        "phone_text": "Starts a direct call to clarify your next steps."
+        "phone_text": "Call Melkior directly to clarify your next steps."
       },
       "contact": {
         "heading": "Mortgage consultation",
