@@ -14,7 +14,7 @@ export async function onRequestGet(context) {
   url.searchParams.set("state", challenge.state);
   url.searchParams.set("code_challenge", challenge.challenge);
   url.searchParams.set("code_challenge_method", "S256");
-  url.searchParams.set("scope", "repo");
+  url.searchParams.set("scope", "public_repo");
 
   const headers = addSetCookies(new Headers({ Location: url.toString() }), challenge.cookies);
   return new Response(null, { status: 302, headers });
