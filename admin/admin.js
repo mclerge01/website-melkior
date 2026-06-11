@@ -348,6 +348,7 @@ let activeSeoLocale = "fr-CA";
 let activeListEditor = null;
 let toastTimer = null;
 let pendingImages = [];
+let hasUnpublishedChanges = false;
 const pendingImagePreviews = new Map();
 
 const loginScreen = document.getElementById("login-screen");
@@ -425,6 +426,15 @@ function getPath(path) {
 }
 
 function setPath(path, value, options = {}) {
+  setPathValue(path, value);
+  syncAdminStateForPath(path);
+  if (!options.silent) {
+    hasUnpublishedChanges = true;
+    setStatus("saving", "Modifications non publiées", "Cliquez sur Publier pour les mettre en ligne.");
+  }
+}
+
+function setPathValue(path, value) {
   const parts = path.split(".");
   let cursor = content;
   for (let i = 0; i < parts.length - 1; i += 1) {
@@ -433,14 +443,67 @@ function setPath(path, value, options = {}) {
     cursor = cursor[key];
   }
   cursor[parts[parts.length - 1]] = value;
+}
+
+function syncAdminStateForPath(path = "") {
+  if (!path) {
+    refreshAdminState();
+    return;
+  }
+  syncFieldByPath(path);
+  syncListItemByPath(path);
   updateTranslationSummary();
-  if (!options.silent) setStatus("saving", "Modifications non publiées", "Cliquez sur Publier pour les mettre en ligne.");
+}
+
+function syncFieldByPath(path) {
+  if (typeof document === "undefined") return;
+  document.querySelectorAll(`[data-admin-field-path="${cssEscape(path)}"]`).forEach(syncFieldMissingState);
+}
+
+function syncListItemByPath(path) {
+  if (typeof document === "undefined") return;
+  const match = String(path).match(/^(locales\.[^.]+\.[^.]+\.[^.]+)\.(\d+)(?:\.|$)/);
+  if (!match) return;
+  const selector = `[data-admin-list-path="${cssEscape(match[1])}"][data-admin-list-index="${cssEscape(match[2])}"]`;
+  document.querySelectorAll(selector).forEach(syncListItemMissingState);
+}
+
+function cssEscape(value) {
+  if (globalThis.CSS?.escape) return CSS.escape(String(value));
+  return String(value).replace(/["\\]/g, "\\$&");
+}
+
+function markDirty() {
+  hasUnpublishedChanges = true;
+  refreshAdminState();
+  setStatus("saving", "Modifications non publiées", "Cliquez sur Publier pour les mettre en ligne.");
+}
+
+function markClean(type = "connected", text = "Prêt", detail = "Aucune modification non publiée.") {
+  hasUnpublishedChanges = false;
+  refreshAdminState();
+  setStatus(type, text, detail);
+}
+
+function hasPendingChanges() {
+  return hasUnpublishedChanges || pendingImages.length > 0;
+}
+
+function refreshAdminState(root = document) {
+  syncRequiredFieldUi(root);
+  updateTranslationSummary();
+}
+
+function syncRequiredFieldUi(root = document) {
+  if (!root?.querySelectorAll) return;
+  root.querySelectorAll("[data-admin-field-path]").forEach(syncFieldMissingState);
+  root.querySelectorAll("[data-admin-list-path][data-admin-list-index]").forEach(syncListItemMissingState);
 }
 
 function updateTranslationSummary() {
   const status = document.querySelector(".admin-translation-summary");
   if (!status) return;
-  const missingCount = getMissingTranslationCount("locales.en-CA");
+  const missingCount = getMissingFieldCount();
   status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
   status.textContent = getTranslationSummary(missingCount);
 }
@@ -533,7 +596,7 @@ function renderPageHeader(title, description = "") {
     copy.appendChild(p);
   }
   const status = document.createElement("p");
-  const missingCount = getMissingTranslationCount("locales.en-CA");
+  const missingCount = getMissingFieldCount();
   status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
   status.textContent = getTranslationSummary(missingCount);
   header.append(copy, status);
@@ -560,7 +623,7 @@ function renderLocaleTabs(activeKey, onChange) {
     const label = document.createElement("span");
     label.textContent = locale.label;
     button.appendChild(label);
-    const missingCount = locale.key === "en-CA" ? getMissingTranslationCount("locales.en-CA") : 0;
+    const missingCount = getMissingLocaleFieldCount(locale.key);
     if (missingCount) {
       const badge = document.createElement("span");
       badge.className = "admin-tab-count";
@@ -697,6 +760,8 @@ function renderSectionCard(rootPath, section) {
 function renderField(path, field) {
   const group = document.createElement("div");
   group.className = `admin-field${field.full || field.type === "markdown" || field.type === "image" ? " admin-field-full" : ""}`;
+  group.dataset.adminFieldPath = path;
+  group.dataset.adminFieldRequired = isRequiredField(field) ? "true" : "false";
   const labelRow = document.createElement("span");
   labelRow.className = "admin-field-heading";
   const label = document.createElement("span");
@@ -716,7 +781,7 @@ function renderField(path, field) {
   }
   const missingHint = document.createElement("span");
   missingHint.className = "admin-field-warning";
-  missingHint.textContent = "Ce champ anglais est vide.";
+  missingHint.textContent = getMissingFieldWarning(path);
   group.appendChild(missingHint);
 
   const value = getPath(path);
@@ -731,20 +796,23 @@ function renderField(path, field) {
   else if (typeof value === "number") renderTextInput(group, path, value, "number");
   else renderTextInput(group, path, value, "text");
 
-  group.addEventListener("input", () => syncFieldMissingState(group, path));
-  group.addEventListener("change", () => syncFieldMissingState(group, path));
-  syncFieldMissingState(group, path);
+  syncFieldMissingState(group);
 
   return group;
 }
 
-function syncFieldMissingState(group, path) {
-  const missing = isDirectMissingTranslationField(path);
+function syncFieldMissingState(group) {
+  const path = group?.dataset?.adminFieldPath;
+  const required = group?.dataset?.adminFieldRequired === "true";
+  const missing = isPathMissing(path, required);
   group.classList.toggle("admin-field-missing", missing);
   const badge = group.querySelector(".admin-missing-badge");
   if (badge) badge.hidden = !missing;
   const warning = group.querySelector(".admin-field-warning");
-  if (warning) warning.hidden = !missing;
+  if (warning) {
+    warning.textContent = getMissingFieldWarning(path);
+    warning.hidden = !missing;
+  }
   group.querySelectorAll(".input, .textarea, select").forEach((control) => {
     if (missing) control.setAttribute("aria-invalid", "true");
     else control.removeAttribute("aria-invalid");
@@ -952,7 +1020,6 @@ function initMarkdownEditor(group, path) {
 
   editor.codemirror.on("change", () => {
     setPath(path, editor.value());
-    syncFieldMissingState(group, path);
   });
   return editor;
 }
@@ -1000,6 +1067,8 @@ function renderListItem(path, list, item, index, total) {
   const itemEl = document.createElement("article");
   itemEl.className = "admin-list-item";
   itemEl.dataset.index = String(index);
+  itemEl.dataset.adminListPath = path;
+  itemEl.dataset.adminListIndex = String(index);
   const editing = isListItemEditing(path, index);
   itemEl.draggable = !editing;
   if (!editing) initListDragReorder(itemEl, path, index);
@@ -1022,7 +1091,7 @@ function renderListItem(path, list, item, index, total) {
   });
 
   const summary = listItemSummary(item, index);
-  const missingCount = getMissingTranslationCount(`${path}.${index}`);
+  const missingCount = getMissingListItemFieldCount(path, index, list);
   itemEl.classList.toggle("admin-list-item-missing", Boolean(missingCount));
   const body = document.createElement("div");
   body.className = "admin-list-item-body";
@@ -1067,6 +1136,27 @@ function renderListItem(path, list, item, index, total) {
   }
 
   return itemEl;
+}
+
+function syncListItemMissingState(itemEl) {
+  const path = itemEl?.dataset?.adminListPath;
+  const index = Number(itemEl?.dataset?.adminListIndex);
+  const missingCount = getMissingListItemFieldCount(path, index);
+  itemEl.classList.toggle("admin-list-item-missing", missingCount > 0);
+  const titleRow = itemEl.querySelector(".admin-list-title-row");
+  if (!titleRow) return;
+  let badge = titleRow.querySelector(".admin-missing-badge");
+  if (!missingCount) {
+    if (badge) badge.remove();
+    return;
+  }
+  if (!badge) {
+    badge = document.createElement("span");
+    badge.className = "admin-missing-badge";
+    titleRow.appendChild(badge);
+  }
+  badge.textContent = `${missingCount} à remplir`;
+  badge.hidden = false;
 }
 
 function listAction(icon, label, disabled, handler, variant = "") {
@@ -1191,25 +1281,11 @@ function adminIcon(name) {
   return icons[name] || "";
 }
 
-function getTranslationSummary(missing = getMissingTranslationCount("locales.en-CA")) {
+function getTranslationSummary(missing = getMissingFieldCount()) {
   if (!content?.locales?.["fr-CA"] || !content?.locales?.["en-CA"]) return "";
   return missing
-    ? `${missing} champ${missing > 1 ? "s" : ""} anglais à remplir.`
+    ? `${missing} champ${missing > 1 ? "s" : ""} à remplir.`
     : "Tous les champs sont remplis.";
-}
-
-function getMissingTranslationCount(path) {
-  const sourcePath = getFrenchSourcePath(path);
-  if (!sourcePath) return 0;
-  return countMissingTranslationStrings(getPath(sourcePath), getPath(path));
-}
-
-function isDirectMissingTranslationField(path) {
-  const sourcePath = getFrenchSourcePath(path);
-  if (!sourcePath) return false;
-  const source = getPath(sourcePath);
-  if (typeof source !== "string" || !source.trim()) return false;
-  return !String(getPath(path) || "").trim();
 }
 
 function getFrenchSourcePath(path) {
@@ -1217,17 +1293,74 @@ function getFrenchSourcePath(path) {
   return path.replace(/^locales\.en-CA\./, "locales.fr-CA.");
 }
 
-function countMissingTranslationStrings(source, target) {
-  if (typeof source === "string") {
-    return source.trim() && !String(target || "").trim() ? 1 : 0;
+function getMissingFieldCount() {
+  return LOCALES.reduce((total, locale) => total + getMissingLocaleFieldCount(locale.key), 0);
+}
+
+function getMissingLocaleFieldCount(localeKey) {
+  return CONTENT_SECTIONS.reduce(
+    (total, section) => total + getMissingSectionFieldCount(`locales.${localeKey}.${section.key}`, section),
+    0
+  );
+}
+
+function getMissingSectionFieldCount(basePath, section) {
+  const fieldCount = (section.fields || []).reduce(
+    (count, field) => count + (isPathMissing(`${basePath}.${field.key}`, isRequiredField(field)) ? 1 : 0),
+    0
+  );
+  const listCount = (section.lists || []).reduce(
+    (count, list) => count + getMissingListFieldCount(`${basePath}.${list.key}`, list),
+    0
+  );
+  return fieldCount + listCount;
+}
+
+function getMissingListFieldCount(path, list) {
+  const items = getPath(path);
+  if (!Array.isArray(items)) return 0;
+  return items.reduce((count, _item, index) => count + getMissingListItemFieldCount(path, index, list), 0);
+}
+
+function getMissingListItemFieldCount(path, index, list = getListDefinitionForPath(path)) {
+  if (!list?.fields || !Number.isInteger(index)) return 0;
+  return list.fields.reduce(
+    (count, field) => count + (isPathMissing(`${path}.${index}.${field.key}`, isRequiredField(field)) ? 1 : 0),
+    0
+  );
+}
+
+function getListDefinitionForPath(path) {
+  const parts = String(path || "").split(".");
+  if (parts[0] !== "locales" || parts.length < 4) return null;
+  const section = CONTENT_SECTIONS.find((item) => item.key === parts[2]);
+  return section?.lists?.find((item) => item.key === parts[3]) || null;
+}
+
+function isRequiredField(field = {}) {
+  if (field.required === false || field.type === "toggle") return false;
+  return !/optionnel|optional/i.test(field.label || "");
+}
+
+function isPathMissing(path, required = true) {
+  if (!required || !path || !String(path).startsWith("locales.")) return false;
+  const value = getPath(path);
+  if (String(path).startsWith("locales.en-CA.")) {
+    const source = getPath(getFrenchSourcePath(path));
+    if (!hasMeaningfulValue(source)) return false;
   }
-  if (Array.isArray(source)) {
-    return source.reduce((total, item, index) => total + countMissingTranslationStrings(item, Array.isArray(target) ? target[index] : undefined), 0);
-  }
-  if (source && typeof source === "object") {
-    return Object.keys(source).reduce((total, key) => total + countMissingTranslationStrings(source[key], target ? target[key] : undefined), 0);
-  }
-  return 0;
+  return !hasMeaningfulValue(value);
+}
+
+function hasMeaningfulValue(value) {
+  if (typeof value === "string") return value.trim().length > 0;
+  return value !== null && value !== undefined && value !== false;
+}
+
+function getMissingFieldWarning(path) {
+  return String(path || "").startsWith("locales.en-CA.")
+    ? "Ce champ anglais est vide."
+    : "Ce champ est requis.";
 }
 
 function fileToBase64(file) {
@@ -1444,7 +1577,11 @@ async function deleteUnusedImages(images, target, cleanupButton) {
     setStatus("error", "Suppression incompl\u00e8te", failures.join(" | "));
     showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} supprim\u00e9e${deletedCount > 1 ? "s" : ""}, ${failures.length} erreur${failures.length > 1 ? "s" : ""}.`, "error");
   } else {
-    setStatus("connected", "Pr\u00eat", "Aucune modification non publi\u00e9e.");
+    if (hasPendingChanges()) {
+      markDirty();
+    } else {
+      markClean();
+    }
     showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} inutilis\u00e9e${deletedCount > 1 ? "s" : ""} supprim\u00e9e${deletedCount > 1 ? "s" : ""}.`);
   }
   await renderImageGallery(target, cleanupButton);
@@ -1557,24 +1694,52 @@ async function loadContent() {
   contentSha = data.sha;
   activeLocale = content.site?.default_locale || "fr-CA";
   activeSeoLocale = activeLocale;
+  hasUnpublishedChanges = false;
   pendingImages = [];
   pendingImagePreviews.clear();
   applyColorTheme();
 }
 
-function showPublishConfirmation() {
+function showConfirmation({
+  title,
+  message,
+  confirmText,
+  cancelText = "Annuler",
+  confirmClass = "",
+}) {
   return new Promise((resolve) => {
     const cancel = document.getElementById("publish-cancel");
     const confirm = document.getElementById("publish-confirm");
+    const heading = publishModal.querySelector("h2");
+    const copy = publishModal.querySelector("p");
+    const original = {
+      title: heading?.textContent || "",
+      message: copy?.textContent || "",
+      cancelText: cancel.textContent,
+      confirmText: confirm.textContent,
+      confirmClass: confirm.className,
+    };
+
+    if (heading) heading.textContent = title;
+    if (copy) copy.textContent = message;
+    cancel.textContent = cancelText;
+    confirm.textContent = confirmText;
+    if (confirmClass) confirm.className = confirmClass;
     publishModal.classList.remove("hidden");
     document.body.classList.add("overflow-hidden");
 
     function done(result) {
       publishModal.classList.add("hidden");
       document.body.classList.remove("overflow-hidden");
+      if (heading) heading.textContent = original.title;
+      if (copy) copy.textContent = original.message;
+      cancel.textContent = original.cancelText;
+      confirm.textContent = original.confirmText;
+      confirm.className = original.confirmClass;
       cancel.removeEventListener("click", onCancel);
       confirm.removeEventListener("click", onConfirm);
       publishModal.removeEventListener("click", onBackdrop);
+      document.removeEventListener("keydown", onKeydown);
       resolve(result);
     }
     function onCancel() { done(false); }
@@ -1582,10 +1747,31 @@ function showPublishConfirmation() {
     function onBackdrop(event) {
       if (event.target === publishModal) done(false);
     }
+    function onKeydown(event) {
+      if (event.key === "Escape") done(false);
+    }
 
     cancel.addEventListener("click", onCancel);
     confirm.addEventListener("click", onConfirm);
     publishModal.addEventListener("click", onBackdrop);
+    document.addEventListener("keydown", onKeydown);
+  });
+}
+
+function showPublishConfirmation() {
+  return showConfirmation({
+    title: "Publier les modifications?",
+    message: "Les changements seront enregistrés dans GitHub. Cloudflare Pages redéploiera le site ensuite.",
+    confirmText: "Publier",
+  });
+}
+
+function showDiscardConfirmation() {
+  if (!hasPendingChanges()) return Promise.resolve(true);
+  return showConfirmation({
+    title: "Abandonner les modifications?",
+    message: "Des changements ne sont pas publiés. Ils seront perdus si vous quittez l'administration maintenant.",
+    confirmText: "Abandonner",
   });
 }
 
@@ -1606,7 +1792,7 @@ async function publish() {
       body: { content, sha: contentSha },
     });
     contentSha = data.sha || contentSha;
-    setStatus("connected", "Publié", "Cloudflare Pages redéploiera le site.");
+    markClean("connected", "Publié", "Cloudflare Pages redéploiera le site.");
     showToast("Publié. Le site sera redéployé automatiquement.");
   } catch (error) {
     setStatus("error", "Erreur de publication", error.message);
@@ -1637,7 +1823,11 @@ async function preview() {
     previewWindow.document.open();
     previewWindow.document.write(html);
     previewWindow.document.close();
-    setStatus("saving", "Modifications non publiées", "L’aperçu utilise la langue par défaut.");
+    if (hasPendingChanges()) {
+      markDirty();
+    } else {
+      markClean();
+    }
   } catch (error) {
     previewWindow.close();
     showToast(error.message, "error");
@@ -1646,9 +1836,13 @@ async function preview() {
 }
 
 async function logout() {
+  if (!(await showDiscardConfirmation())) return;
   await fetch(API.logout, { method: "POST" });
   csrfToken = "";
   content = null;
+  hasUnpublishedChanges = false;
+  pendingImages = [];
+  pendingImagePreviews.clear();
   showLogin();
 }
 
@@ -1662,7 +1856,7 @@ async function init() {
     showEditor();
     renderChrome();
     renderActiveView();
-    setStatus("connected", "Prêt", "Aucune modification non publiée.");
+    markClean();
   } catch {
     showLogin(error || "login_required");
   }
@@ -1670,6 +1864,18 @@ async function init() {
   document.getElementById("publish").addEventListener("click", publish);
   document.getElementById("preview").addEventListener("click", preview);
   document.getElementById("logout").addEventListener("click", logout);
+  document.querySelector(".admin-brand-link")?.addEventListener("click", async (event) => {
+    if (!hasPendingChanges()) return;
+    event.preventDefault();
+    if (await showDiscardConfirmation()) {
+      window.location.href = event.currentTarget.href;
+    }
+  });
+  window.addEventListener("beforeunload", (event) => {
+    if (!hasPendingChanges()) return;
+    event.preventDefault();
+    event.returnValue = "";
+  });
 }
 
 init();
