@@ -365,7 +365,7 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Mortgage Broker",
-        "cta_text": "Book a meeting",
+        "cta_text": "Book a consultation",
         "cta_link": "#contact-form"
       },
       "regions": "Across Quebec",
@@ -389,7 +389,7 @@
         "eyebrow": "Mortgage Broker | Multi-Prêts",
         "title": "Your real estate **project** *deserves a clear strategy.*",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
-        "primary_cta": "Book a meeting",
+        "primary_cta": "Book a consultation",
         "image_alt": "Portrait of Melkior Clergé, mortgage broker",
         "highlight": "For gold-standard service, contact Melkior.",
         "primary_cta_link": "#contact-form"
@@ -443,7 +443,7 @@
         "monthly_label": "Monthly (12/year)",
         "biweekly_label": "Biweekly (26/year)",
         "result_label": "Estimated payment",
-        "cta_text": "Book a meeting",
+        "cta_text": "Book a consultation",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
@@ -473,7 +473,7 @@
             "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
         ],
-        "cta_text": "Book a meeting",
+        "cta_text": "Book a consultation",
         "cta_link": "#contact-form"
       },
       "guide": {
@@ -525,28 +525,28 @@
         "next_label": "Next testimonial",
         "items": [
           {
-            "quote": "Add a verified Google review or approved client comment here before publishing real testimonial content.",
-            "initials": "AA",
-            "name": "Review to add 1",
-            "context": "Verified client"
+            "quote": "Impeccable service from my mortgage broker, Mr. Melkior. Our file was not simple, but his expertise and perseverance helped us make our project happen. For the purchase of our first home, he was efficient and proactive, finding solutions where others had failed. Thank you again for everything!",
+            "initials": "AS",
+            "name": "Verified client",
+            "context": "First-home purchase"
           },
           {
-            "quote": "Replace this text with a short testimonial that explains the project context and support received.",
-            "initials": "AV",
-            "name": "Review to add 2",
-            "context": "Verified client"
+            "quote": "Speed and efficiency are the two qualities that best describe Melkior. The handling of my file was more than perfect. I recommend him without hesitation.",
+            "initials": "RE",
+            "name": "Verified client",
+            "context": "Mortgage file"
           },
           {
-            "quote": "Use this card for a real client review once Melkior has approved the content for publication.",
-            "initials": "AC",
-            "name": "Review to add 3",
-            "context": "Verified client"
+            "quote": "I used Melkior's services twice over the past year. I always received excellent service. Not only is he professional, but my needs were at the heart of his approach. He took the time needed to answer my questions and provide the explanations I needed to make the best decisions. I highly recommend him. Thank you.",
+            "initials": "DR",
+            "name": "Verified client",
+            "context": "Repeat guidance"
           },
           {
-            "quote": "This space is ready to highlight client satisfaction without inventing reviews.",
-            "initials": "MP",
-            "name": "Review to add 4",
-            "context": "Client experience"
+            "quote": "Very good service. Tailored and professional guidance throughout the purchase process for our home. We recommend Melkior without hesitation.",
+            "initials": "MA",
+            "name": "Verified client",
+            "context": "Home purchase"
           }
         ]
       },
