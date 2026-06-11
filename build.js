@@ -1,6 +1,8 @@
 import { execFileSync } from "child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
+import CleanCSS from "clean-css";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "fs";
+import { dirname, join, relative } from "path";
+import { minify as minifyJs } from "terser";
 import { fileURLToPath } from "url";
 import {
   LOCALES,
@@ -60,6 +62,114 @@ function copyStatic(path) {
   mkdirSync(dirname(destination), { recursive: true });
   cpSync(source, destination, { recursive: true });
   console.log("Copied:", path);
+}
+
+async function minifyCode(code, loader, filePath) {
+  if (loader === "css") {
+    const result = new CleanCSS({ level: 2 }).minify(code);
+    if (result.errors.length) {
+      const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+      throw new Error(`Unable to minify CSS in ${rel}: ${result.errors.join("; ")}`);
+    }
+    return result.styles;
+  }
+  const result = await minifyJs(code, {
+    compress: true,
+    ecma: 2020,
+    format: { comments: false },
+    mangle: true,
+  });
+  if (result.error) {
+    const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+    throw new Error(`Unable to minify JS in ${rel}: ${result.error.message}`);
+  }
+  return result.code || "";
+}
+
+async function minifyAsset(path, loader) {
+  const abs = join(OUT_DIR, path);
+  if (!existsSync(abs)) return;
+  const source = readFileSync(abs, "utf-8");
+  const minified = await minifyCode(source, loader, abs);
+  writeFileSync(abs, minified, "utf-8");
+  console.log(`Minified: ${path} (${source.length} -> ${minified.length} bytes)`);
+}
+
+async function minifyStaticAssets() {
+  for (const filePath of distFilesWithExtension(OUT_DIR, ".css")) {
+    await minifyAsset(relative(OUT_DIR, filePath).replace(/\\/g, "/"), "css");
+  }
+  for (const filePath of distFilesWithExtension(OUT_DIR, ".js")) {
+    await minifyAsset(relative(OUT_DIR, filePath).replace(/\\/g, "/"), "js");
+  }
+}
+
+async function minifyInlineBlock(code, loader, filePath) {
+  try {
+    return (await minifyCode(code, loader, filePath)).trim();
+  } catch (error) {
+    const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+    throw new Error(`Unable to minify inline ${loader} in ${rel}: ${error.message}`);
+  }
+}
+
+function isJavaScriptScriptTag(attributes) {
+  if (/\bsrc\s*=/i.test(attributes)) return false;
+  const typeMatch = attributes.match(/\btype\s*=\s*["']?([^"'\s>]+)/i);
+  if (!typeMatch) return true;
+  return [
+    "application/ecmascript",
+    "application/javascript",
+    "module",
+    "text/ecmascript",
+    "text/javascript",
+  ].includes(typeMatch[1].toLowerCase());
+}
+
+function distFilesWithExtension(dir, extension) {
+  const files = [];
+  for (const entry of readdirSync(dir)) {
+    const abs = join(dir, entry);
+    const stats = statSync(abs);
+    if (stats.isDirectory()) files.push(...distFilesWithExtension(abs, extension));
+    else if (entry.endsWith(extension)) files.push(abs);
+  }
+  return files;
+}
+
+async function minifyHtmlInlineAssets() {
+  for (const filePath of distFilesWithExtension(OUT_DIR, ".html")) {
+    const source = readFileSync(filePath, "utf-8");
+    let changed = false;
+    const styleBlocks = [];
+    let html = source.replace(/<style\b([^>]*)>([\s\S]*?)<\/style>/gi, (match, attributes, css) => {
+      if (!css.trim()) return match;
+      changed = true;
+      const marker = `__MELKIOR_MINIFIED_STYLE_${styleBlocks.length}__`;
+      styleBlocks.push({ marker, attributes, css });
+      return marker;
+    });
+    for (const block of styleBlocks) {
+      html = html.replace(block.marker, `<style${block.attributes}>${await minifyInlineBlock(block.css, "css", filePath)}</style>`);
+    }
+
+    const scriptBlocks = [];
+    html = html.replace(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi, (match, attributes, js) => {
+      if (!js.trim() || !isJavaScriptScriptTag(attributes)) return match;
+      changed = true;
+      const marker = `__MELKIOR_MINIFIED_SCRIPT_${scriptBlocks.length}__`;
+      scriptBlocks.push({ marker, attributes, js });
+      return marker;
+    });
+    for (const block of scriptBlocks) {
+      html = html.replace(block.marker, `<script${block.attributes}>${await minifyInlineBlock(block.js, "js", filePath)}</script>`);
+    }
+
+    if (changed) {
+      writeFileSync(filePath, html, "utf-8");
+      console.log("Minified inline assets:", relative(OUT_DIR, filePath).replace(/\\/g, "/"));
+    }
+  }
 }
 
 function themeStyle(theme) {
@@ -189,6 +299,7 @@ const legalTemplate = read("template-legal.html");
 for (const path of ["styles.css", "script.js", "favicon.svg", "_headers", "assets", "admin"]) {
   copyStatic(path);
 }
+await minifyStaticAssets();
 
 for (const locale of settings.site.locales) {
   const homeData = prepareLocaleData(settings, locale, "home");
@@ -307,4 +418,5 @@ Disallow: /admin/
 
 Sitemap: ${settings.site.domain}/sitemap.xml
 `);
+await minifyHtmlInlineAssets();
 console.log("Build complete.");
