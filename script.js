@@ -43,10 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const visibleWidgets = new Set();
-    const humanEvents = ["pointerdown", "keydown", "wheel", "touchstart"];
-    const humanOptions = { passive: true };
-    let hasHumanSignal = false;
+    const eventOptions = { passive: true };
+    let hasLoadedWidgets = false;
+    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    let touchStartY = null;
 
     function loadWidget(widget) {
       if (!widget || widget.dataset.embedLoaded === "true") return;
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const iframe = document.createElement("iframe");
       iframe.src = src;
       iframe.title = String(widget.dataset.embedTitle || "Carousel Instagram Feed").trim() || "Carousel Instagram Feed";
-      iframe.loading = "lazy";
+      iframe.loading = "eager";
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
       iframe.allow = "encrypted-media; picture-in-picture; web-share";
 
@@ -66,48 +66,60 @@ document.addEventListener("DOMContentLoaded", () => {
       widget.classList.add("is-loaded");
     }
 
-    function tryLoadVisibleWidgets() {
-      if (!hasHumanSignal) return;
-      visibleWidgets.forEach(loadWidget);
+    function removeScrollStartListeners() {
+      window.removeEventListener("scroll", onScroll, eventOptions);
+      window.removeEventListener("wheel", onWheel, eventOptions);
+      window.removeEventListener("touchstart", onTouchStart, eventOptions);
+      window.removeEventListener("touchmove", onTouchMove, eventOptions);
+      window.removeEventListener("keydown", onKeyDown);
     }
 
-    function markHumanSignal(event) {
+    function loadWidgetsAfterUserScroll(event) {
+      if (hasLoadedWidgets) return;
       if (event && event.isTrusted === false) return;
-      hasHumanSignal = true;
-      tryLoadVisibleWidgets();
-      humanEvents.forEach((type) => window.removeEventListener(type, markHumanSignal, humanOptions));
+      hasLoadedWidgets = true;
+      removeScrollStartListeners();
+      widgets.forEach(loadWidget);
     }
 
-    humanEvents.forEach((type) => window.addEventListener(type, markHumanSignal, humanOptions));
-
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          visibleWidgets.add(entry.target);
-          observer.unobserve(entry.target);
-        });
-        tryLoadVisibleWidgets();
-      }, { rootMargin: "25% 0px", threshold: 0.01 });
-
-      widgets.forEach((widget) => observer.observe(widget));
-      return;
+    function onScroll(event) {
+      const currentScrollY = window.scrollY || window.pageYOffset || 0;
+      if (currentScrollY > lastScrollY + 4) {
+        loadWidgetsAfterUserScroll(event);
+      }
+      lastScrollY = currentScrollY;
     }
 
-    function checkVisibleWidgets() {
-      widgets.forEach((widget) => {
-        const rect = widget.getBoundingClientRect();
-        const loadOffset = window.innerHeight * 0.25;
-        if (rect.top < window.innerHeight + loadOffset && rect.bottom > -loadOffset) {
-          visibleWidgets.add(widget);
-        }
-      });
-      tryLoadVisibleWidgets();
+    function onWheel(event) {
+      if (event.deltaY > 0) {
+        loadWidgetsAfterUserScroll(event);
+      }
     }
 
-    window.addEventListener("scroll", checkVisibleWidgets, { passive: true });
-    window.addEventListener("resize", checkVisibleWidgets, { passive: true });
-    checkVisibleWidgets();
+    function onTouchStart(event) {
+      touchStartY = event.touches?.[0]?.clientY ?? null;
+    }
+
+    function onTouchMove(event) {
+      if (touchStartY == null) return;
+      const currentY = event.touches?.[0]?.clientY;
+      if (typeof currentY === "number" && touchStartY - currentY > 8) {
+        loadWidgetsAfterUserScroll(event);
+      }
+    }
+
+    function onKeyDown(event) {
+      const scrollKeys = new Set(["ArrowDown", "PageDown", " ", "End"]);
+      if (scrollKeys.has(event.key)) {
+        loadWidgetsAfterUserScroll(event);
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, eventOptions);
+    window.addEventListener("wheel", onWheel, eventOptions);
+    window.addEventListener("touchstart", onTouchStart, eventOptions);
+    window.addEventListener("touchmove", onTouchMove, eventOptions);
+    window.addEventListener("keydown", onKeyDown);
   }
 
   function initPagedCarousel(carousel) {
