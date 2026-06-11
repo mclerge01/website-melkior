@@ -37,28 +37,25 @@ function normalizeLocale(locale) {
   return locale === "en-CA" ? "en-CA" : "fr-CA";
 }
 
-function sanitize(value) {
+function sanitize(value, maxLength = 2000, preserveLines = false) {
   if (typeof value !== "string") return "";
-  return value.replace(/<[^>]*>/g, "").trim();
+  const withoutTags = value.replace(/<[^>]*>/g, "");
+  const normalized = preserveLines
+    ? withoutTags.replace(/\r\n?/g, "\n").replace(/[^\S\n]+/g, " ")
+    : withoutTags.replace(/\s+/g, " ");
+  return normalized.trim().slice(0, maxLength);
 }
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function corsHeaders() {
-  return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-  };
-}
+const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json; charset=utf-8", ...corsHeaders() },
+    headers: JSON_HEADERS,
   });
 }
 
@@ -118,7 +115,7 @@ function createMimeMessage({ from, to, replyTo, subject, body }) {
 }
 
 export async function onRequestOptions() {
-  return new Response(null, { status: 204, headers: corsHeaders() });
+  return new Response(null, { status: 204, headers: { Allow: "POST, OPTIONS" } });
 }
 
 export async function onRequestPost(context) {
@@ -129,18 +126,18 @@ export async function onRequestPost(context) {
     return errorResponse(MESSAGES["fr-CA"].invalidBody);
   }
 
-  const locale = normalizeLocale(sanitize(data.locale));
+  const locale = normalizeLocale(sanitize(data.locale, 10));
   const msg = MESSAGES[locale];
 
   if (data.bot_field) return jsonResponse({ success: true, message: msg.success });
 
-  const name = sanitize(data.name);
-  const email = sanitize(data.email);
-  const phone = sanitize(data.phone || "");
-  const subject = sanitize(data.subject);
-  const referral = sanitize(data.referral || "");
-  const message = sanitize(data.message);
-  const turnstileToken = sanitize(data["cf-turnstile-response"] || data.turnstileToken || "");
+  const name = sanitize(data.name, 120);
+  const email = sanitize(data.email, 254).toLowerCase();
+  const phone = sanitize(data.phone || "", 40);
+  const subject = sanitize(data.subject, 120);
+  const referral = sanitize(data.referral || "", 120);
+  const message = sanitize(data.message, 5000, true);
+  const turnstileToken = sanitize(data["cf-turnstile-response"] || data.turnstileToken || "", 2048);
 
   if (!name) return errorResponse(msg.name);
   if (!email) return errorResponse(msg.email);
@@ -150,16 +147,25 @@ export async function onRequestPost(context) {
   if (!message) return errorResponse(msg.message);
   if (!turnstileToken) return errorResponse(msg.turnstile, 403);
 
-  const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      secret: context.env.TURNSTILE_SECRET,
-      response: turnstileToken,
-      remoteip: context.request.headers.get("CF-Connecting-IP"),
-    }),
-  });
-  const turnstileData = await turnstileRes.json();
+  if (!context.env.TURNSTILE_SECRET) return errorResponse(msg.config, 500);
+
+  let turnstileData;
+  try {
+    const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        secret: context.env.TURNSTILE_SECRET,
+        response: turnstileToken,
+        remoteip: context.request.headers.get("CF-Connecting-IP"),
+      }),
+    });
+    if (!turnstileRes.ok) return errorResponse(msg.turnstileFailed, 403);
+    turnstileData = await turnstileRes.json();
+  } catch (error) {
+    console.error("Turnstile verification error:", error);
+    return errorResponse(msg.internal, 500);
+  }
   if (!turnstileData.success) return errorResponse(msg.turnstileFailed, 403);
 
   const fromEmail = context.env.CONTACT_EMAIL;
@@ -209,9 +215,14 @@ export async function onRequestPost(context) {
       });
       if (!response.ok) throw new Error("Email worker rejected message");
     } else {
-      console.log("=== EMAIL DEV MODE ===");
-      console.log(raw);
-      console.log("=== END EMAIL ===");
+      console.log("Contact form dev mode:", {
+        locale,
+        subject,
+        referral: referral || "not_provided",
+        hasPhone: Boolean(phone),
+        emailDomain: email.includes("@") ? email.split("@").pop() : "",
+        messageLength: message.length,
+      });
     }
   } catch (error) {
     console.error("Contact email error:", error);

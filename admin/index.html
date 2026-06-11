@@ -754,6 +754,13 @@
       overflow-wrap: anywhere;
     }
 
+    .admin-gallery-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      min-width: 0;
+    }
+
     .admin-unused-badge {
       display: inline-flex;
       align-items: center;
@@ -829,13 +836,14 @@
       text-align: center;
     }
 
+    .admin-publish-modal h2,
+    .admin-cleanup-modal h2 {
+      margin-bottom: var(--space-3);
+    }
+
     .admin-cleanup-modal {
       width: min(100%, 36rem);
       text-align: left;
-    }
-
-    .admin-cleanup-modal h2 {
-      margin-bottom: var(--space-3);
     }
 
     .admin-cleanup-list {

@@ -31,23 +31,37 @@ export async function onRequestGet(context) {
   const clientSecret = context.env.GITHUB_CLIENT_SECRET;
   if (!clientId || !clientSecret) return redirectWithError(request, "oauth_not_configured", clearCookies);
 
-  const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      client_id: clientId,
-      client_secret: clientSecret,
-      code,
-      redirect_uri: new URL("/api/auth/callback", request.url).toString(),
-      code_verifier: challenge.verifier,
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  let tokenResponse;
+  let tokenData = {};
+  try {
+    tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code,
+        redirect_uri: new URL("/api/auth/callback", request.url).toString(),
+        code_verifier: challenge.verifier,
+      }),
+      signal: controller.signal,
+    });
+    tokenData = await tokenResponse.json().catch(() => ({}));
+  } catch (error) {
+    console.error("GitHub token exchange failed:", error);
+    return redirectWithError(request, "token_exchange_failed", clearCookies);
+  } finally {
+    clearTimeout(timeout);
+  }
 
-  const tokenData = await tokenResponse.json();
-  if (!tokenResponse.ok || !tokenData.access_token) return redirectWithError(request, "token_exchange_failed", clearCookies);
+  if (!tokenResponse.ok || typeof tokenData.access_token !== "string" || !tokenData.access_token) {
+    return redirectWithError(request, "token_exchange_failed", clearCookies);
+  }
 
   try {
     const user = await getGithubUser(tokenData.access_token);

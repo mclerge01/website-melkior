@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node build.js",
     "dev": "node build.js && wrangler pages dev dist --port 8788",
-    "preview": "node build.js"
+    "preview": "node build.js",
+    "test": "node --test"
   },
   "dependencies": {
     "marked": "^17.0.5"

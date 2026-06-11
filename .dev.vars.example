@@ -2,7 +2,8 @@
 # .dev.vars is gitignored. Never commit secrets.
 
 # GitHub OAuth App
-GITHUB_CLIENT_ID=Ov23lii7Cd2Hi6BAk24W
+# Use your local development GitHub OAuth App client ID.
+GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 ADMIN_SESSION_SECRET=
 

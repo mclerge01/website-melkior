@@ -489,6 +489,12 @@ function hasPendingChanges() {
   return hasUnpublishedChanges || pendingImages.length > 0;
 }
 
+function discardPendingChanges() {
+  hasUnpublishedChanges = false;
+  pendingImages = [];
+  pendingImagePreviews.clear();
+}
+
 function refreshAdminState(root = document) {
   syncRequiredFieldUi(root);
   updateTranslationSummary();
@@ -523,12 +529,6 @@ function showToast(message, type = "success") {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 4500);
 }
 
-function escapeHtml(value) {
-  const div = document.createElement("div");
-  div.textContent = value == null ? "" : String(value);
-  return div.innerHTML;
-}
-
 function labelFromKey(key) {
   return key.replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
@@ -553,8 +553,8 @@ function applyColorTheme() {
 }
 
 function renderChrome() {
-  sidebar.innerHTML = "";
-  mobileTabs.innerHTML = "";
+  sidebar.replaceChildren();
+  mobileTabs.replaceChildren();
 
   const title = document.createElement("p");
   title.className = "admin-sidebar-title";
@@ -604,7 +604,7 @@ function renderPageHeader(title, description = "") {
 }
 
 function renderActiveView() {
-  contentEl.innerHTML = "";
+  contentEl.replaceChildren();
   if (!content) return;
 
   if (activeView === "content") renderContentView();
@@ -690,7 +690,10 @@ function renderImagesView() {
   header.append(h2, actions);
   gallery.appendChild(header);
   const body = document.createElement("div");
-  body.innerHTML = '<p class="admin-status">Chargement des images...</p>';
+  const loading = document.createElement("p");
+  loading.className = "admin-status";
+  loading.textContent = "Chargement des images...";
+  body.appendChild(loading);
   gallery.appendChild(body);
   contentEl.appendChild(gallery);
   renderImageGallery(body, cleanupButton);
@@ -1050,7 +1053,9 @@ function renderList(path, list) {
   const add = document.createElement("button");
   add.type = "button";
   add.className = "admin-add-btn";
-  add.innerHTML = `${adminIcon("plus")}<span>Ajouter une entrée</span>`;
+  const addLabel = document.createElement("span");
+  addLabel.textContent = "Ajouter une entrée";
+  add.append(createAdminIcon("plus"), addLabel);
   add.addEventListener("click", () => {
     const nextIndex = items.length;
     items.push(emptyItemForList(list));
@@ -1078,7 +1083,7 @@ function renderListItem(path, list, item, index, total) {
   handle.className = "admin-drag-handle";
   handle.title = "Glisser ou utiliser les flèches pour réordonner";
   handle.setAttribute("aria-label", "Réordonner cet élément");
-  handle.innerHTML = adminIcon("drag");
+  handle.appendChild(createAdminIcon("drag"));
   handle.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp" && index > 0) {
       event.preventDefault();
@@ -1163,7 +1168,7 @@ function listAction(icon, label, disabled, handler, variant = "") {
   const button = document.createElement("button");
   button.type = "button";
   button.className = `admin-btn-icon${variant ? ` ${variant}` : ""}`;
-  button.innerHTML = adminIcon(icon);
+  button.appendChild(createAdminIcon(icon));
   button.title = label;
   button.setAttribute("aria-label", label);
   button.disabled = disabled;
@@ -1271,14 +1276,40 @@ function clearListDragState(itemEl) {
   });
 }
 
-function adminIcon(name) {
+function createAdminIcon(name) {
   const icons = {
-    plus: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
-    drag: '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>',
-    edit: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
-    trash: '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg>',
+    plus: { paths: ["M12 5v14M5 12h14"] },
+    drag: {
+      circles: [
+        ["9", "6", "1.5"],
+        ["15", "6", "1.5"],
+        ["9", "12", "1.5"],
+        ["15", "12", "1.5"],
+        ["9", "18", "1.5"],
+        ["15", "18", "1.5"],
+      ],
+    },
+    edit: { paths: ["M12 20h9", "M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"] },
+    trash: { paths: ["M3 6h18", "M8 6V4h8v2", "M19 6l-1 14H6L5 6", "M10 11v5M14 11v5"] },
   };
-  return icons[name] || "";
+  const spec = icons[name];
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  if (!spec) return svg;
+  for (const d of spec.paths || []) {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    svg.appendChild(path);
+  }
+  for (const [cx, cy, r] of spec.circles || []) {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", cx);
+    circle.setAttribute("cy", cy);
+    circle.setAttribute("r", r);
+    svg.appendChild(circle);
+  }
+  return svg;
 }
 
 function getTranslationSummary(missing = getMissingFieldCount()) {
@@ -1635,7 +1666,10 @@ async function renderImageGallery(target, cleanupButton = null) {
     const unusedImagePaths = getUnusedImagePathSet(images);
     configureUnusedImagesButton(cleanupButton, images, target);
     if (!images.length) {
-      target.innerHTML = '<p class="admin-status">Aucune image téléversée pour le moment.</p>';
+      const empty = document.createElement("p");
+      empty.className = "admin-status";
+      empty.textContent = "Aucune image téléversée pour le moment.";
+      target.replaceChildren(empty);
       return;
     }
     const grid = document.createElement("div");
@@ -1652,11 +1686,13 @@ async function renderImageGallery(target, cleanupButton = null) {
       const name = document.createElement("strong");
       name.textContent = image.name;
       titleRow.appendChild(name);
+      const metaRow = document.createElement("div");
+      metaRow.className = "admin-gallery-meta";
       if (isUnused) {
         const unusedBadge = document.createElement("span");
         unusedBadge.className = "admin-unused-badge";
         unusedBadge.textContent = "Inutilisée";
-        titleRow.appendChild(unusedBadge);
+        metaRow.appendChild(unusedBadge);
       }
       const path = document.createElement("code");
       path.textContent = `/${image.path}`;
@@ -1670,14 +1706,18 @@ async function renderImageGallery(target, cleanupButton = null) {
         showToast("Image supprimée.");
         renderActiveView();
       });
-      card.append(img, titleRow, path, remove);
+      card.append(img, titleRow);
+      if (metaRow.childElementCount) card.appendChild(metaRow);
+      card.append(path, remove);
       grid.appendChild(card);
     }
-    target.innerHTML = "";
-    target.appendChild(grid);
+    target.replaceChildren(grid);
   } catch (error) {
     configureUnusedImagesButton(cleanupButton, [], target);
-    target.innerHTML = `<p class="admin-status text-error">${escapeHtml(error.message)}</p>`;
+    const message = document.createElement("p");
+    message.className = "admin-status text-error";
+    message.textContent = error.message;
+    target.replaceChildren(message);
   }
 }
 
@@ -1802,16 +1842,11 @@ async function publish() {
 
 async function preview() {
   const locale = content.site?.default_locale || "fr-CA";
-  const previewWindow = window.open("", "_blank");
+  const previewWindow = window.open("about:blank", "_blank", "noopener");
   if (!previewWindow) {
     showToast("Impossible d’ouvrir l’aperçu. Autorisez les fenêtres pop-up.", "error");
     return;
   }
-
-  previewWindow.opener = null;
-  previewWindow.document.open();
-  previewWindow.document.write("<!doctype html><html><head><title>Aperçu</title></head><body>Chargement...</body></html>");
-  previewWindow.document.close();
 
   try {
     setStatus("saving", "Préparation de l’aperçu...", LOCALES.find((item) => item.key === locale)?.label || locale);
@@ -1820,9 +1855,9 @@ async function preview() {
       csrf: true,
       body: { content, locale },
     });
-    previewWindow.document.open();
-    previewWindow.document.write(html);
-    previewWindow.document.close();
+    const previewUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+    previewWindow.location.replace(previewUrl);
+    window.setTimeout(() => URL.revokeObjectURL(previewUrl), 60000);
     if (hasPendingChanges()) {
       markDirty();
     } else {
@@ -1837,7 +1872,11 @@ async function preview() {
 
 async function logout() {
   if (!(await showDiscardConfirmation())) return;
-  await fetch(API.logout, { method: "POST" });
+  try {
+    await apiJson(API.logout, { method: "POST", csrf: true });
+  } catch (error) {
+    console.warn("Logout request failed:", error);
+  }
   csrfToken = "";
   content = null;
   hasUnpublishedChanges = false;
@@ -1865,10 +1904,12 @@ async function init() {
   document.getElementById("preview").addEventListener("click", preview);
   document.getElementById("logout").addEventListener("click", logout);
   document.querySelector(".admin-brand-link")?.addEventListener("click", async (event) => {
+    const href = event.currentTarget.href;
     if (!hasPendingChanges()) return;
     event.preventDefault();
     if (await showDiscardConfirmation()) {
-      window.location.href = event.currentTarget.href;
+      discardPendingChanges();
+      window.location.href = href;
     }
   });
   window.addEventListener("beforeunload", (event) => {
