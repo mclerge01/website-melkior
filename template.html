@@ -28,6 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.0.5/dist/css/intlTelInput.min.css">
   <link rel="stylesheet" href="/styles.css">
   <style>
     :root {
@@ -376,7 +377,7 @@
           </label>
           <label class="form-group">
             <span class="form-label">{{contact.form_phone_label}} *</span>
-            <input class="input" type="tel" name="phone" autocomplete="tel" placeholder="{{contact.form_phone_placeholder}}" required>
+            <input class="input phone-number-input" id="contact-phone" type="tel" name="phone" autocomplete="tel-national" placeholder="{{contact.form_phone_placeholder}}" required>
           </label>
           <label class="form-group">
             <span class="form-label">{{contact.form_subject_label}} *</span>
@@ -466,6 +467,7 @@
 {{/if}}
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.0.5/dist/js/intlTelInput.min.js"></script>
   <script src="/assets/vendor/phone.js"></script>
   <script src="/script.js"></script>
   <script id="superflowToolbarScript" data-sf-platform="other-manual" async src="https://cdn.velt.dev/lib/superflow.js?apiKey=OjNo4BCjdWHMOnnygDAd&projectId=1086230342273239"></script>

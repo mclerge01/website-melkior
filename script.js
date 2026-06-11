@@ -639,6 +639,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((name) => contactForm.elements[name])
       .filter(Boolean);
     const phoneTools = window.melkiorPhone || null;
+    const phoneField = contactForm.elements.phone;
+    const phoneLibraryVersion = "29.0.5";
+    let phoneInputController = null;
+    let phoneInputReady = Promise.resolve();
+    let phonePlusSyncTimer = 0;
     const formStatus = document.createElement("p");
     formStatus.className = "form-status";
     formStatus.setAttribute("role", "alert");
@@ -697,11 +702,68 @@ document.addEventListener("DOMContentLoaded", () => {
         && typeof phoneTools.formatContactPhoneNumber === "function";
     }
 
+    function canUseInternationalPhoneInput() {
+      return phoneInputController
+        && typeof phoneInputController.isValidNumber === "function"
+        && typeof phoneInputController.getNumber === "function";
+    }
+
+    function setupInternationalPhoneInput() {
+      if (!phoneField || typeof window.intlTelInput !== "function") return;
+      phoneInputController = window.intlTelInput(phoneField, {
+        initialCountry: "ca",
+        separateDialCode: true,
+        countrySearch: true,
+        countryOrder: ["ca", "us", "fr", "gb", "be", "ch", "de", "es", "it", "pt", "mx", "br", "in", "cn", "jp", "kr", "ph", "vn", "au"],
+        countryNameLocale: isEnglishForm ? "en" : "fr",
+        numberDisplayFormat: "NATIONAL",
+        loadUtils: () => import(`https://cdn.jsdelivr.net/npm/intl-tel-input@${phoneLibraryVersion}/dist/js/utils.js`),
+      });
+      phoneInputReady = phoneInputController.promise || Promise.resolve();
+    }
+
     function formatPhoneField(field) {
       if (!field || !field.value.trim()) return;
+      if (canUseInternationalPhoneInput()) {
+        try {
+          if (phoneInputController.isValidNumber()) {
+            const formatted = phoneInputController.getNumber("NATIONAL");
+            if (formatted) field.value = formatted;
+          }
+          return;
+        } catch {
+          // Fall back to the lightweight formatter below until intl-tel-input utils are ready.
+        }
+      }
       if (!canParsePhoneNumbers()) return;
       const formatted = phoneTools.formatContactPhoneNumber(field.value);
       if (formatted && formatted !== field.value.trim()) field.value = formatted;
+    }
+
+    function syncPhoneCountryFromPlusNumber(field) {
+      if (!field || !canUseInternationalPhoneInput()) return;
+      const value = field.value.trim();
+      if (!value.startsWith("+")) return;
+      window.clearTimeout(phonePlusSyncTimer);
+      phonePlusSyncTimer = window.setTimeout(() => {
+        try {
+          phoneInputController.setNumber(value);
+        } catch {
+          // Ignore partial international prefixes while the user is still typing.
+        }
+      }, 120);
+    }
+
+    function normalizedPhoneForSubmit(field) {
+      if (!field || !field.value.trim()) return "";
+      if (canUseInternationalPhoneInput()) {
+        try {
+          if (phoneInputController.isValidNumber()) return phoneInputController.getNumber("INTERNATIONAL");
+        } catch {
+          // Fall back to the visible value if the external utils script is unavailable.
+        }
+      }
+      return field.value.trim();
     }
 
     function getFieldValidationMessage(field) {
@@ -710,8 +772,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (field.name === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         return validationMessages.emailInvalid;
       }
-      if (field.name === "phone" && value && canParsePhoneNumbers() && !phoneTools.isValidContactPhoneNumber(value)) {
-        return validationMessages.phoneInvalid;
+      if (field.name === "phone" && value) {
+        if (canUseInternationalPhoneInput()) {
+          try {
+            if (!phoneInputController.isValidNumber()) return validationMessages.phoneInvalid;
+            return "";
+          } catch {
+            // Fall through to the local validator until intl-tel-input utils are ready.
+          }
+        }
+        if (canParsePhoneNumbers() && !phoneTools.isValidContactPhoneNumber(value)) {
+          return validationMessages.phoneInvalid;
+        }
       }
       return "";
     }
@@ -785,8 +857,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    const phoneField = contactForm.elements.phone;
+    setupInternationalPhoneInput();
     if (phoneField) {
+      phoneField.addEventListener("input", () => {
+        syncPhoneCountryFromPlusNumber(phoneField);
+      });
       phoneField.addEventListener("blur", () => {
         formatPhoneField(phoneField);
         if (phoneField.getAttribute("aria-invalid") === "true") validateField(phoneField);
@@ -795,6 +870,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     contactForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+      await phoneInputReady.catch(() => null);
       formatPhoneField(phoneField);
       const formData = new FormData(contactForm);
       const data = {};
@@ -813,6 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
         focusInvalidControl(firstInvalid);
         return;
       }
+      data.phone = normalizedPhoneForSubmit(phoneField);
 
       const token = getTurnstileToken();
       if (token) data.turnstileToken = token;

@@ -1596,6 +1596,47 @@ p {
   resize: vertical;
 }
 
+.iti {
+  width: 100%;
+  --iti-border-color: var(--color-border);
+  --iti-dialcode-color: var(--color-text-light);
+  --iti-dropdown-bg: var(--color-white);
+  --iti-hover-color: var(--color-bg-soft);
+  --iti-spacer-horizontal: var(--space-3);
+}
+
+.iti .phone-number-input {
+  width: 100%;
+}
+
+.iti__selected-country {
+  border-radius: var(--rounded-sm);
+  font-weight: 800;
+  transition: background-color var(--transition);
+}
+
+.iti__selected-country:hover,
+.iti__selected-country:focus-visible {
+  background: var(--color-bg-soft);
+}
+
+.iti__dropdown-content {
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded);
+  color: var(--color-text);
+  box-shadow: var(--shadow-lg);
+}
+
+.iti__search-input {
+  min-height: 2.75rem;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.iti__country {
+  min-height: 2.4rem;
+}
+
 .input:focus,
 .select:focus,
 .textarea:focus {
