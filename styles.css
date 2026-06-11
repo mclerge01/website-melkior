@@ -1811,14 +1811,29 @@ p {
 }
 
 .iti__selected-country {
+  padding: 0 var(--field-gap) 0 0;
   border-radius: var(--rounded-sm);
   font-weight: 800;
   transition: background-color var(--transition);
 }
 
+.iti__selected-country-primary {
+  padding-inline: var(--space-2) var(--field-gap);
+  background: transparent;
+}
+
+.iti__selected-dial-code {
+  margin-left: var(--space-1);
+}
+
 .iti__selected-country:hover,
 .iti__selected-country:focus-visible {
   background: var(--color-bg-light);
+}
+
+.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country-primary:hover,
+.iti--has-country-selector .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) .iti__selected-country:has(+ .iti__country-selector:hover) .iti__selected-country-primary {
+  background: transparent;
 }
 
 .iti__dropdown-content {
