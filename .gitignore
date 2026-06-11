@@ -50,3 +50,8 @@ Desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Local Codex / agent tooling
+.codex/
+.agents/
+skills-lock.json

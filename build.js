@@ -236,5 +236,61 @@ write("index.html", `<!DOCTYPE html>
 </html>
 `);
 write("sitemap.xml", generateSitemap(settings));
-write("robots.txt", `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${settings.site.domain}/sitemap.xml\n`);
+write("robots.txt", `# Search and indexing crawlers are welcome.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# AI training crawlers are not permitted.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Google-CloudVertexBot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: *
+Content-Signal: search=yes,ai-train=no
+Allow: /
+Disallow: /admin/
+
+Sitemap: ${settings.site.domain}/sitemap.xml
+`);
 console.log("Build complete.");
