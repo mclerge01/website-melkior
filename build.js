@@ -6,12 +6,11 @@ import { minify as minifyJs } from "terser";
 import { fileURLToPath } from "url";
 import {
   LOCALES,
-  alternateLocale,
   canonicalUrl,
-  equivalentPath,
   pagePath,
 } from "./lib/i18n.mjs";
-import { normalizeInstagramEmbed, processMarkdown, render } from "./lib/render.mjs";
+import { prepareLocaleData } from "./lib/page-data.mjs";
+import { processMarkdown, render } from "./lib/render.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(ROOT, "dist");
@@ -172,12 +171,6 @@ async function minifyHtmlInlineAssets() {
   }
 }
 
-function themeStyle(theme) {
-  return Object.entries(theme || {})
-    .map(([key, value]) => `      --color-${key.replace(/_/g, "-")}: ${value};`)
-    .join(" ");
-}
-
 function gitOutput(args) {
   try {
     return execFileSync("git", args, {
@@ -213,53 +206,53 @@ function formatPageUpdated(locale, fallback, sourcePaths) {
   return `${prefix}${separator}${formattedDate}`;
 }
 
-function prepareLocaleData(settings, locale, page = "home") {
-  const current = LOCALES[locale];
-  const otherLocale = alternateLocale(locale);
-  const other = LOCALES[otherLocale];
-  const localized = settings.locales[locale];
-  const instagramEmbed = normalizeInstagramEmbed(settings.shared);
-  const media = {
-    ...localized.media,
-    instagram_embed_url: instagramEmbed.url,
-    instagram_embed_title: instagramEmbed.title,
-  };
-  const path = pagePath(locale, page);
-  const altPath = equivalentPath(path, otherLocale);
-  const domain = settings.site.domain;
+function legalPageData(settings, locale, page, homeData) {
+  const pageContent = page === "privacy" ? homeData.privacy_page : homeData.legal_page;
 
   return {
-    ...localized,
-    media,
-    site: settings.site,
-    shared: settings.shared,
-    theme: settings.theme,
-    theme_style: themeStyle(settings.theme),
-    turnstile_sitekey: turnstileSiteKey(),
-    locale,
-    locale_slug: current.slug,
-    html_lang: current.htmlLang,
+    ...prepareLocaleData(settings, locale, page),
+    page_robots: "index, follow",
+    page_main_class: "legal-page",
+    page_content_class: "legal-content",
+    page_body_class: "rich-text",
+    page_eyebrow: homeData.header.site_name,
+    page_title: pageContent.title,
+    page_updated: formatPageUpdated(locale, pageContent.updated, ["content/settings.json", "template-legal.html"]),
+    page_body: pageContent.body,
+  };
+}
+
+function notFoundPageData(settings, locale, path = pagePath(locale, "not_found")) {
+  const homeData = prepareLocaleData(settings, locale, "not_found");
+  const current = LOCALES[locale];
+  const copy = locale.startsWith("en")
+    ? {
+        summary: "Page not found",
+        body: "The page you requested is no longer available or the address may contain a typo.",
+        primary: "Back to home",
+      }
+    : {
+        summary: "Page introuvable",
+        body: "La page demandée n'est plus disponible ou l'adresse contient peut-être une erreur.",
+        primary: "Retour à l'accueil",
+      };
+
+  return {
+    ...homeData,
     page_path: path,
-    canonical_url: canonicalUrl(domain, path),
-    alternate_fr: canonicalUrl(domain, pagePath("fr-CA", page)),
-    alternate_en: canonicalUrl(domain, pagePath("en-CA", page)),
-    x_default: canonicalUrl(domain, "/"),
-    language_switch: {
-      href: altPath,
-      label: current.switchLabel,
-      code: other.slug.toUpperCase(),
-      locale: otherLocale,
-    },
-    privacy_path: current.privacyPath,
-    legal_path: current.legalPath,
-    admin_path: "/admin/",
-    nav_about_href: `${current.homePath}#about`,
-    nav_services_href: `${current.homePath}#services`,
-    nav_guide_href: `${current.homePath}#guide`,
-    nav_calculator_href: `${current.homePath}#calculator`,
-    nav_testimonials_href: `${current.homePath}#testimonials`,
-    nav_media_href: `${current.homePath}#media`,
-    nav_contact_href: `${current.homePath}#contact`,
+    canonical_url: canonicalUrl(settings.site.domain, path),
+    alternate_fr: canonicalUrl(settings.site.domain, pagePath("fr-CA", "not_found")),
+    alternate_en: canonicalUrl(settings.site.domain, pagePath("en-CA", "not_found")),
+    page_robots: "noindex, follow",
+    page_main_class: "not-found-page",
+    page_content_class: "not-found-content",
+    page_body_class: "not-found-body",
+    page_title: "404",
+    page_summary: copy.summary,
+    page_body: copy.body,
+    page_actions: [
+      { label: copy.primary, href: current.homePath, class: "btn-primary" },
+    ],
   };
 }
 
@@ -303,27 +296,19 @@ await minifyStaticAssets();
 write("admin/preview-template.txt", template);
 
 for (const locale of settings.site.locales) {
-  const homeData = prepareLocaleData(settings, locale, "home");
+  const homeData = prepareLocaleData(settings, locale, "home", { turnstileSiteKey: turnstileSiteKey() });
   write(`${LOCALES[locale].slug}/index.html`, render(template, homeData));
 
   const privacyPath = `${LOCALES[locale].privacyPath.slice(1)}index.html`;
-  const privacyData = {
-    ...prepareLocaleData(settings, locale, "privacy"),
-    page_title: homeData.privacy_page.title,
-    page_updated: formatPageUpdated(locale, homeData.privacy_page.updated, ["content/settings.json", "template-legal.html"]),
-    page_body: homeData.privacy_page.body,
-  };
-  write(privacyPath, render(legalTemplate, privacyData));
+  write(privacyPath, render(legalTemplate, legalPageData(settings, locale, "privacy", homeData)));
 
   const legalPath = `${LOCALES[locale].legalPath.slice(1)}index.html`;
-  const legalData = {
-    ...prepareLocaleData(settings, locale, "legal"),
-    page_title: homeData.legal_page.title,
-    page_updated: formatPageUpdated(locale, homeData.legal_page.updated, ["content/settings.json", "template-legal.html"]),
-    page_body: homeData.legal_page.body,
-  };
-  write(legalPath, render(legalTemplate, legalData));
+  write(legalPath, render(legalTemplate, legalPageData(settings, locale, "legal", homeData)));
+
+  write(`${LOCALES[locale].slug}/404.html`, render(legalTemplate, notFoundPageData(settings, locale)));
 }
+
+write("404.html", render(legalTemplate, notFoundPageData(settings, "fr-CA", "/404.html")));
 
 write("index.html", `<!DOCTYPE html>
 <html lang="fr-CA">

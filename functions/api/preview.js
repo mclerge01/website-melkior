@@ -1,54 +1,8 @@
-import { LOCALES, alternateLocale, canonicalUrl, equivalentPath, pagePath } from "../../lib/i18n.mjs";
-import { normalizeInstagramEmbed, processMarkdown, render } from "../../lib/render.mjs";
 import { htmlResponse, jsonResponse, requireAdmin } from "../../lib/admin-auth.mjs";
+import { prepareLocaleData } from "../../lib/page-data.mjs";
+import { processMarkdown, render } from "../../lib/render.mjs";
 
-function themeStyle(theme) {
-  return Object.entries(theme || {})
-    .map(([key, value]) => `      --color-${key.replace(/_/g, "-")}: ${value};`)
-    .join("\n");
-}
-
-function prepareLocaleData(settings, locale) {
-  const current = LOCALES[locale] || LOCALES["fr-CA"];
-  const otherLocale = alternateLocale(locale);
-  const other = LOCALES[otherLocale];
-  const localized = settings.locales[locale];
-  const instagramEmbed = normalizeInstagramEmbed(settings.shared);
-  const media = {
-    ...localized.media,
-    instagram_embed_url: instagramEmbed.url,
-    instagram_embed_title: instagramEmbed.title,
-  };
-  const path = current.homePath;
-
-  return {
-    ...localized,
-    media,
-    site: settings.site,
-    shared: settings.shared,
-    theme: settings.theme,
-    theme_style: themeStyle(settings.theme),
-    turnstile_sitekey: "1x00000000000000000000AA",
-    locale,
-    locale_slug: current.slug,
-    html_lang: current.htmlLang,
-    page_path: path,
-    canonical_url: canonicalUrl(settings.site.domain, path),
-    alternate_fr: canonicalUrl(settings.site.domain, pagePath("fr-CA")),
-    alternate_en: canonicalUrl(settings.site.domain, pagePath("en-CA")),
-    x_default: canonicalUrl(settings.site.domain, "/"),
-    privacy_path: current.privacyPath,
-    legal_path: current.legalPath,
-    admin_path: "/admin/",
-    language_switch: {
-      href: equivalentPath(path, otherLocale),
-      label: current.switchLabel,
-      code: other.slug.toUpperCase(),
-      locale: otherLocale,
-    },
-    nav_contact_href: `${current.homePath}#contact`,
-  };
-}
+const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
 
 export async function onRequestPost(context) {
   const auth = await requireAdmin(context, { csrf: true });
@@ -73,6 +27,6 @@ export async function onRequestPost(context) {
 
   const template = await templateResponse.text();
   const settings = processMarkdown(data.content);
-  const html = render(template, prepareLocaleData(settings, locale));
+  const html = render(template, prepareLocaleData(settings, locale, "home", { turnstileSiteKey: TURNSTILE_TEST_SITE_KEY }));
   return htmlResponse(html, { headers: auth.headers });
 }

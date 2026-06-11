@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{page_title}} | {{header.site_name}}</title>
   <meta name="description" content="{{seo.description}}">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="{{page_robots}}">
   <link rel="canonical" href="{{canonical_url}}">
   <link rel="alternate" hreflang="fr" href="{{alternate_fr}}">
   <link rel="alternate" hreflang="fr-CA" href="{{alternate_fr}}">
@@ -57,12 +57,23 @@
       </nav>
     </div>
   </header>
-  <main class="legal-page section flex-1">
-    <article class="container legal-content">
-      <p class="eyebrow">{{header.site_name}}</p>
+  <main class="{{page_main_class}} section flex-1">
+    <article class="container {{page_content_class}}">
+      {{#if page_eyebrow}}<p class="eyebrow">{{page_eyebrow}}</p>{{/if}}
       <h1>{{page_title}}</h1>
-      <p class="text-light">{{page_updated}}</p>
-      <div class="rich-text">{{page_body}}</div>
+      {{#if page_summary}}<p class="text-light">{{page_summary}}</p>{{/if}}
+      {{#if page_updated}}<p class="text-light">{{page_updated}}</p>{{/if}}
+      <div class="{{page_body_class}}">{{page_body}}</div>
+      {{#if page_actions}}
+      <div class="not-found-actions">
+        {{#each page_actions}}<a class="btn {{class}}" href="{{href}}">{{label}}</a>{{/each}}
+      </div>
+      {{/if}}
+      {{#if page_links}}
+      <nav class="not-found-links" aria-label="{{page_links_label}}">
+        {{#each page_links}}<a href="{{href}}">{{label}}</a>{{/each}}
+      </nav>
+      {{/if}}
     </article>
   </main>
   <footer class="footer bg-dark text-white">
@@ -101,6 +112,5 @@
     </div>
   </footer>
   <script src="/script.js"></script>
-  <script id="superflowToolbarScript" data-sf-platform="other-manual" async src="https://cdn.velt.dev/lib/superflow.js?apiKey=OjNo4BCjdWHMOnnygDAd&projectId=1086230342273239"></script>
 </body>
 </html>

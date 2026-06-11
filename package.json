@@ -7,8 +7,7 @@
   "scripts": {
     "build": "node build.js && node scripts/sync-runtime-secrets.mjs",
     "dev": "node build.js --dev && wrangler dev --port 8788",
-    "preview": "node build.js",
-    "test": "node --test"
+    "preview": "node build.js"
   },
   "dependencies": {
     "libphonenumber-js": "^1.13.6",
