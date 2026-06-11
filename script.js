@@ -638,9 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const validationFields = ["name", "email", "phone", "subject", "message"]
       .map((name) => contactForm.elements[name])
       .filter(Boolean);
-    const phoneTools = window.melkiorPhone || null;
     const phoneField = contactForm.elements.phone;
-    const phoneLibraryVersion = "29.0.5";
     let phoneInputController = null;
     let phoneInputReady = Promise.resolve();
     let phonePlusSyncTimer = 0;
@@ -696,12 +694,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    function canParsePhoneNumbers() {
-      return phoneTools
-        && typeof phoneTools.isValidContactPhoneNumber === "function"
-        && typeof phoneTools.formatContactPhoneNumber === "function";
-    }
-
     function canUseInternationalPhoneInput() {
       return phoneInputController
         && typeof phoneInputController.isValidNumber === "function"
@@ -709,15 +701,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function setupInternationalPhoneInput() {
-      if (!phoneField || typeof window.intlTelInput !== "function") return;
-      phoneInputController = window.intlTelInput(phoneField, {
+      const intlTelInputFactory = window.intlTelInput || globalThis.intlTelInput;
+      if (!phoneField || typeof intlTelInputFactory !== "function") {
+        if (phoneField) console.warn("intl-tel-input did not load; using fallback phone validation.");
+        return;
+      }
+      phoneInputController = intlTelInputFactory(phoneField, {
         initialCountry: "ca",
+        countrySelectorMode: "DROPDOWN",
         separateDialCode: true,
         countrySearch: true,
         countryOrder: ["ca", "us", "fr", "gb", "be", "ch", "de", "es", "it", "pt", "mx", "br", "in", "cn", "jp", "kr", "ph", "vn", "au"],
         countryNameLocale: isEnglishForm ? "en" : "fr",
+        placeholderNumberPolicy: "AGGRESSIVE",
+        placeholderNumberType: "FIXED_LINE_OR_MOBILE",
         numberDisplayFormat: "NATIONAL",
-        loadUtils: () => import(`https://cdn.jsdelivr.net/npm/intl-tel-input@${phoneLibraryVersion}/dist/js/utils.js`),
       });
       phoneInputReady = phoneInputController.promise || Promise.resolve();
     }
@@ -732,12 +730,9 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           return;
         } catch {
-          // Fall back to the lightweight formatter below until intl-tel-input utils are ready.
+          return;
         }
       }
-      if (!canParsePhoneNumbers()) return;
-      const formatted = phoneTools.formatContactPhoneNumber(field.value);
-      if (formatted && formatted !== field.value.trim()) field.value = formatted;
     }
 
     function syncPhoneCountryFromPlusNumber(field) {
@@ -778,11 +773,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!phoneInputController.isValidNumber()) return validationMessages.phoneInvalid;
             return "";
           } catch {
-            // Fall through to the local validator until intl-tel-input utils are ready.
+            return validationMessages.phoneInvalid;
           }
-        }
-        if (canParsePhoneNumbers() && !phoneTools.isValidContactPhoneNumber(value)) {
-          return validationMessages.phoneInvalid;
         }
       }
       return "";
