@@ -34,7 +34,11 @@
       "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
       "multi_prets_logo": "/assets/images/multi-prets-logo-dark-en.svg",
-      "multi_prets_logo_plain": "/assets/images/multi-prets-logo-light-en.svg"
+      "multi_prets_logo_plain": "/assets/images/multi-prets-logo-light-en.svg",
+      "multi_prets_logo_dark_fr": "/assets/images/multi-prets-logo-dark-fr.svg",
+      "multi_prets_logo_light_fr": "/assets/images/multi-prets-logo-light-fr.svg",
+      "multi_prets_logo_dark_en": "/assets/images/multi-prets-logo-dark-en.svg",
+      "multi_prets_logo_light_en": "/assets/images/multi-prets-logo-light-en.svg"
     },
     "social": {
       "facebook": "https://www.facebook.com/profile.php?id=100052481268194",
@@ -43,6 +47,10 @@
       "instagram_embed_title": "Carousel Instagram Feed",
       "linkedin": "https://ca.linkedin.com/in/melkior-clerg%C3%A9-36aa7a132",
       "tiktok": "https://www.tiktok.com/@melkior.mr..hypot"
+    },
+    "profile_urls": {
+      "fr-CA": "https://www.multi-prets.com/fr/courtier-hypothecaire/melkior-clerge/",
+      "en-CA": "https://www.multi-prets.com/en/mortgage-broker/melkior-clerge/"
     }
   },
   "locales": {
@@ -56,8 +64,8 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Courtier hypothécaire",
-        "cta_text": "Me contacter",
-        "cta_link": "#contact"
+        "cta_text": "Réserver une consultation",
+        "cta_link": "#contact-form"
       },
       "nav": {
         "services": "Services",
@@ -79,8 +87,10 @@
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
         "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
-        "primary_cta": "Consultation gratuite",
-        "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire"
+        "primary_cta": "Réserver une consultation",
+        "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire",
+        "highlight": "Pour un service en or, contactez Melkior.",
+        "primary_cta_link": "#contact-form"
       },
       "stats": {
         "items": [
@@ -89,12 +99,12 @@
             "label": "Courtier depuis"
           },
           {
-            "value": "20+",
+            "value": "32",
             "label": "Institutions accessibles"
           },
           {
-            "value": "3",
-            "label": "Grandes régions desservies"
+            "value": "QC",
+            "label": "Partout au Québec"
           },
           {
             "value": "1",
@@ -131,24 +141,24 @@
         "monthly_label": "Mensuel (12/an)",
         "biweekly_label": "Aux deux semaines (26/an)",
         "result_label": "Paiement estimé",
-        "cta_text": "Me contacter",
+        "cta_text": "Réserver une consultation",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "Comment puis-je *vous aider?*",
+        "heading": "Besoin d'une stratégie, pas juste d'un taux ?",
         "items": [
-          {
-            "title": "Achat de propriété",
-            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
-            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
-          },
           {
             "title": "Préautorisation",
             "description": "Clarifiez votre capacité d'emprunt avant de visiter. Vous saurez quoi viser, quoi négocier et comment protéger votre taux.",
             "icon_path": "M12 2L3 5.5V11.5C3 17.05 6.84 22.24 12 23C17.16 22.24 21 17.05 21 11.5V5.5L12 2M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"
+          },
+          {
+            "title": "Achat de propriété",
+            "description": "Premier achat, nouvelle résidence ou investissement: je vous aide à obtenir une solution hypothécaire adaptée et à avancer avec confiance.",
+            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
           },
           {
             "title": "Renouvellement",
@@ -160,7 +170,9 @@
             "description": "Rénovations, projets, investissements ou consolidation: je vous aide à évaluer les stratégies possibles avec votre équité.",
             "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
-        ]
+        ],
+        "cta_text": "Réserver une consultation",
+        "cta_link": "#contact-form"
       },
       "guide": {
         "eyebrow": "Guide",
@@ -211,28 +223,28 @@
         "next_label": "Témoignage suivant",
         "items": [
           {
-            "quote": "Ajoutez ici un avis Google ou un commentaire client validé avant publication.",
-            "initials": "AA",
-            "name": "Avis à ajouter 1",
-            "context": "Client vérifié"
+            "quote": "Service impeccable de la part de mon courtier hypothécaire monsieur Melkior. Notre dossier n'était pas simple, mais son expertise et sa persévérance nous ont permis de concrétiser notre projet. Achat de notre première maison, efficace et proactif, il a su trouver des solutions là où d'autres ont échoué. Merci encore pour tout!",
+            "initials": "AS",
+            "name": "Client vérifié",
+            "context": "Achat de première maison"
           },
           {
-            "quote": "Remplacez ce texte par un témoignage court qui explique le contexte du projet et l'accompagnement reçu.",
-            "initials": "AV",
-            "name": "Avis à ajouter 2",
-            "context": "Client vérifié"
+            "quote": "Rapidité, efficacité, sont les deux qualités qui décrivent le mieux Melkior. Le traitement de mon dossier a été plus que parfait. Je le recommande sans hésiter.",
+            "initials": "RE",
+            "name": "Client vérifié",
+            "context": "Dossier hypothécaire"
           },
           {
-            "quote": "Utilisez cette carte pour un avis client réel lorsque Melkior aura approuvé le contenu à publier.",
-            "initials": "AC",
-            "name": "Avis à ajouter 3",
-            "context": "Client vérifié"
+            "quote": "J'ai eu recours aux services de Melkior à deux reprises au cours de la dernière année. J'ai toujours reçu un excellent service. Non seulement il est professionnel, mais mes besoins étaient au coeur de ses démarches. Il a pris le temps nécessaire pour répondre à mes questions et me fournir les explications nécessaires afin que je puisse prendre les meilleures décisions. Je le recommande fortement. Merci.",
+            "initials": "DR",
+            "name": "Client vérifié",
+            "context": "Accompagnement récurrent"
           },
           {
-            "quote": "Cet espace est prêt à mettre en valeur la satisfaction des clients sans inventer d'avis.",
-            "initials": "MP",
-            "name": "Avis à ajouter 4",
-            "context": "Expérience client"
+            "quote": "Très bon service. Un accompagnement adapté et professionnel tout au long du processus d'achat de notre maison. Nous recommandons Melkior sans hésiter.",
+            "initials": "MA",
+            "name": "Client vérifié",
+            "context": "Achat de maison"
           }
         ]
       },
@@ -316,7 +328,9 @@
           {
             "title": "Autre"
           }
-        ]
+        ],
+        "privacy_notice": "Les renseignements transmis servent uniquement à répondre à votre demande, à préparer votre consultation et à protéger le formulaire.",
+        "privacy_link_label": "Consultez la politique de confidentialité pour connaître vos droits d'accès, de rectification et de retrait de consentement."
       },
       "footer": {
         "business_name": "Melkior Clergé",
@@ -350,8 +364,8 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Mortgage Broker",
-        "cta_text": "Contact me",
-        "cta_link": "#contact"
+        "cta_text": "Book a meeting",
+        "cta_link": "#contact-form"
       },
       "nav": {
         "services": "Services",
@@ -373,8 +387,10 @@
         "eyebrow": "Mortgage Broker | Multi-Prêts",
         "title": "Your real estate **project** *deserves a clear strategy.*",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
-        "primary_cta": "Get a free consultation",
-        "image_alt": "Portrait of Melkior Clergé, mortgage broker"
+        "primary_cta": "Book a meeting",
+        "image_alt": "Portrait of Melkior Clergé, mortgage broker",
+        "highlight": "For gold-standard service, contact Melkior.",
+        "primary_cta_link": "#contact-form"
       },
       "stats": {
         "items": [
@@ -383,12 +399,12 @@
             "label": "Mortgage broker since"
           },
           {
-            "value": "20+",
+            "value": "32",
             "label": "Accessible institutions"
           },
           {
-            "value": "3",
-            "label": "Major regions served"
+            "value": "QC",
+            "label": "Across Quebec"
           },
           {
             "value": "1",
@@ -425,24 +441,24 @@
         "monthly_label": "Monthly (12/year)",
         "biweekly_label": "Biweekly (26/year)",
         "result_label": "Estimated payment",
-        "cta_text": "Contact me",
+        "cta_text": "Book a meeting",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
       },
       "services": {
         "eyebrow": "Services",
-        "heading": "How can I *help you?*",
+        "heading": "Need a strategy, not just a rate?",
         "items": [
-          {
-            "title": "Property purchase",
-            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
-            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
-          },
           {
             "title": "Pre-approval",
             "description": "Clarify your borrowing capacity before you shop, so you know what to target and how to protect your rate.",
             "icon_path": "M12 2L3 5.5V11.5C3 17.05 6.84 22.24 12 23C17.16 22.24 21 17.05 21 11.5V5.5L12 2M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"
+          },
+          {
+            "title": "Property purchase",
+            "description": "First home, next home, or investment property: I help you find a mortgage solution that fits your plan.",
+            "icon_path": "M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"
           },
           {
             "title": "Renewal",
@@ -454,7 +470,9 @@
             "description": "Renovations, projects, investments, or consolidation: I help evaluate possible strategies using your equity.",
             "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
-        ]
+        ],
+        "cta_text": "Book a meeting",
+        "cta_link": "#contact-form"
       },
       "guide": {
         "eyebrow": "Guide",
@@ -610,7 +628,9 @@
           {
             "title": "Other"
           }
-        ]
+        ],
+        "privacy_notice": "The information you submit is used only to respond to your request, prepare your consultation, and protect the form.",
+        "privacy_link_label": "Read the privacy policy to understand your access, correction, and consent-withdrawal rights."
       },
       "footer": {
         "business_name": "Melkior Clergé",

@@ -76,7 +76,7 @@
         <a class="nav-link" href="#media">{{nav.media}}</a>
         <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
-        <a class="btn btn-primary nav-cta" href="#contact">{{header.cta_text}}</a>
+        <a class="btn btn-primary nav-cta" href="{{header.cta_link}}">{{header.cta_text}}</a>
       </nav>
     </div>
   </header>
@@ -89,8 +89,9 @@
           <p class="eyebrow">{{hero.eyebrow}}</p>
           <h1 class="hero-title">{{hero.title}}</h1>
           <p class="hero-subtitle">{{hero.subtitle}}</p>
+          <p class="hero-highlight">{{hero.highlight}}</p>
           <div class="hero-actions">
-            <a class="btn btn-primary btn-lg" href="#contact">
+            <a class="btn btn-primary btn-lg" href="{{hero.primary_cta_link}}">
               <span>{{hero.primary_cta}}</span>
               <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4L10.6 5.4L16.2 11H4V13H16.2L10.6 18.6L12 20L20 12L12 4Z"></path></svg>
             </a>
@@ -118,8 +119,8 @@
       </div>
     </section>
 
-    <section class="teaser-section" aria-label="{{calculator.heading}}">
-      <div class="container">
+    <section id="services" class="section services-section text-white">
+      <div class="container services-stack">
         <a class="calculator-teaser card card-glass reveal-on-scroll reveal-scale" href="#calculator">
           <span class="teaser-icon icon-tile" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -132,11 +133,6 @@
           </span>
           <span class="teaser-action">{{nav.calculator}}</span>
         </a>
-      </div>
-    </section>
-
-    <section id="services" class="section bg-primary-dark text-white">
-      <div class="container">
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow eyebrow-light">{{services.eyebrow}}</p>
           <h2 class="section-title">{{services.heading}}</h2>
@@ -151,6 +147,9 @@
             <div class="text-white-muted">{{description}}</div>
           </article>
 {{/each}}
+        </div>
+        <div class="services-action reveal-on-scroll">
+          <a class="btn btn-accent btn-lg" href="{{services.cta_link}}">{{services.cta_text}}</a>
         </div>
       </div>
     </section>
@@ -314,7 +313,7 @@
             <span>{{calculator.result_label}}</span>
             <strong data-payment-result>$0</strong>
           </div>
-          <a class="btn btn-primary w-full" href="#contact">{{calculator.cta_text}}</a>
+          <a class="btn btn-primary w-full" href="{{header.cta_link}}">{{calculator.cta_text}}</a>
         </form>
       </div>
     </section>
@@ -349,6 +348,7 @@
           <p class="eyebrow">{{nav.contact}}</p>
           <h2 class="section-title">{{contact.heading}}</h2>
           <p class="section-lead">{{contact.subtitle}}</p>
+          <p class="privacy-note">{{contact.privacy_notice}} <a href="{{privacy_path}}">{{contact.privacy_link_label}}</a></p>
           <div class="contact-info card stack-4">
             <h3>{{contact.info_heading}}</h3>
             <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a></p>
