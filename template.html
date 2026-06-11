@@ -348,7 +348,6 @@
           <p class="eyebrow">{{nav.contact}}</p>
           <h2 class="section-title">{{contact.heading}}</h2>
           <p class="section-lead">{{contact.subtitle}}</p>
-          <p class="privacy-note">{{contact.privacy_notice}} <a href="{{privacy_path}}">{{contact.privacy_link_label}}</a></p>
           <div class="contact-info card stack-4">
             <h3>{{contact.info_heading}}</h3>
             <p><strong>{{contact.phone_label}}</strong><a href="tel:{{shared.phone_href}}" data-phone-number="{{shared.phone}}">{{shared.phone}}</a></p>
@@ -356,9 +355,14 @@
             <p><strong>{{contact.address_label}}</strong><a href="https://www.google.com/maps/search/?api=1&query={{shared.office_address}}" target="_blank" rel="noopener">{{shared.office_address}}</a></p>
             <p><strong>{{contact.regions_label}}</strong><span>{{shared.regions}}</span></p>
           </div>
-          <div class="consultation-note card">
-            <h3>{{contact.consultation_heading}}</h3>
-            <p>{{contact.consultation_text}}</p>
+          <div class="contact-disclaimers stack-4">
+            <div class="contact-note card">
+              <h3>{{contact.consultation_heading}}</h3>
+              <p>{{contact.consultation_text}}</p>
+            </div>
+            <div class="contact-note privacy-note card">
+              <p>{{contact.privacy_notice}} <a href="{{privacy_path}}">{{contact.privacy_link_label}}</a></p>
+            </div>
           </div>
         </div>
         <form id="contact-form" class="contact-form card stack-5 reveal-on-scroll reveal-from-right" novalidate data-locale="{{locale}}" data-sending="{{contact.form_sending}}" data-success="{{contact.form_success}}" data-error="{{contact.form_error}}" data-network-error="{{contact.form_network_error}}">

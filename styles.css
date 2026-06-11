@@ -1684,7 +1684,7 @@ p {
 }
 
 .contact-info,
-.consultation-note {
+.contact-note {
   padding: var(--space-6);
 }
 
@@ -1692,13 +1692,24 @@ p {
   margin-top: var(--space-8);
 }
 
-.privacy-note {
-  max-width: var(--measure-prose);
+.contact-disclaimers {
   margin-top: var(--space-5);
-  padding: var(--space-4);
+}
+
+.contact-note {
+  max-width: var(--measure-prose);
   border-left: 3px solid var(--color-accent);
   color: var(--color-text-light);
-  background: var(--color-white);
+  border-color: var(--color-bg-dark-tint-border);
+  background: var(--color-bg-dark-tint);
+}
+
+.contact-note h3 {
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+}
+
+.privacy-note {
   font-size: var(--text-sm);
 }
 
@@ -1715,16 +1726,6 @@ p {
 .contact-info a {
   color: var(--color-primary);
   font-weight: 700;
-}
-
-.consultation-note {
-  margin-top: var(--space-5);
-  border-color: var(--color-bg-dark-tint-border);
-  background: var(--color-bg-dark-tint);
-}
-
-.consultation-note h3 {
-  margin-bottom: var(--space-2);
 }
 
 .form-group {
@@ -2542,6 +2543,10 @@ p {
   }
 
   .calculator-grid {
+    align-items: center;
+  }
+
+  .contact-grid {
     align-items: center;
   }
 
