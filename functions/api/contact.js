@@ -1,3 +1,5 @@
+import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../lib/phone.mjs";
+
 const MESSAGES = {
   "fr-CA": {
     invalidBody: "Le corps de la requete est invalide.",
@@ -5,6 +7,7 @@ const MESSAGES = {
     email: "Le champ courriel est requis.",
     emailInvalid: "L'adresse courriel est invalide.",
     phone: "Le champ telephone est requis.",
+    phoneInvalid: "Le numero de telephone est invalide.",
     subject: "Le champ sujet est requis.",
     message: "Le champ message est requis.",
     turnstile: "La verification Turnstile est requise.",
@@ -21,6 +24,7 @@ const MESSAGES = {
     email: "Email is required.",
     emailInvalid: "Email address is invalid.",
     phone: "Phone number is required.",
+    phoneInvalid: "Phone number is invalid.",
     subject: "Subject is required.",
     message: "Message is required.",
     turnstile: "Turnstile verification is required.",
@@ -143,9 +147,11 @@ export async function onRequestPost(context) {
   if (!email) return errorResponse(msg.email);
   if (!isValidEmail(email)) return errorResponse(msg.emailInvalid);
   if (!phone) return errorResponse(msg.phone);
+  if (!getValidContactPhoneNumber(phone)) return errorResponse(msg.phoneInvalid);
   if (!subject) return errorResponse(msg.subject);
   if (!message) return errorResponse(msg.message);
   if (!turnstileToken) return errorResponse(msg.turnstile, 403);
+  const formattedPhone = formatContactPhoneNumber(phone);
 
   if (!context.env.TURNSTILE_SECRET) return errorResponse(msg.config, 500);
 
@@ -185,7 +191,7 @@ export async function onRequestPost(context) {
     `  Locale : ${locale}`,
     `  Nom / Name : ${name}`,
     `  Email : ${email}`,
-    `  Telephone / Phone : ${phone}`,
+    `  Telephone / Phone : ${formattedPhone}`,
     `  Sujet / Subject : ${subject}`,
     referral ? `  Source : ${referral}` : null,
     "",
@@ -219,7 +225,7 @@ export async function onRequestPost(context) {
         locale,
         subject,
         referral: referral || "not_provided",
-        hasPhone: Boolean(phone),
+        hasPhone: Boolean(formattedPhone),
         emailDomain: email.includes("@") ? email.split("@").pop() : "",
         messageLength: message.length,
       });

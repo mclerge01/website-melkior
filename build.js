@@ -1,4 +1,5 @@
 import { execFileSync } from "child_process";
+import { buildSync } from "esbuild";
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -64,6 +65,20 @@ function themeStyle(theme) {
   return Object.entries(theme || {})
     .map(([key, value]) => `      --color-${key.replace(/_/g, "-")}: ${value};`)
     .join(" ");
+}
+
+function buildBrowserPhoneBundle() {
+  const outfile = join(OUT_DIR, "assets/vendor/phone.js");
+  mkdirSync(dirname(outfile), { recursive: true });
+  buildSync({
+    entryPoints: [join(ROOT, "lib/phone-browser.mjs")],
+    bundle: true,
+    outfile,
+    format: "iife",
+    minify: true,
+    target: "es2020",
+  });
+  console.log("Generated:", "assets/vendor/phone.js");
 }
 
 function gitOutput(args) {
@@ -187,6 +202,7 @@ const legalTemplate = read("template-legal.html");
 for (const path of ["styles.css", "script.js", "favicon.svg", "_headers", "assets", "admin"]) {
   copyStatic(path);
 }
+buildBrowserPhoneBundle();
 
 for (const locale of settings.site.locales) {
   const homeData = prepareLocaleData(settings, locale, "home");

@@ -620,6 +620,7 @@ document.addEventListener("DOMContentLoaded", () => {
           email: "Enter your email address.",
           emailInvalid: "Enter a valid email address.",
           phone: "Enter your phone number.",
+          phoneInvalid: "Enter a valid phone number.",
           subject: "Select a subject.",
           message: "Write a short message.",
           turnstile: "Complete the verification before sending.",
@@ -628,6 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name: "Entrez votre nom complet.",
           email: "Entrez votre courriel.",
           emailInvalid: "Entrez une adresse courriel valide.",
+          phoneInvalid: "Entrez un numéro de téléphone valide.",
           phone: "Entrez votre numéro de téléphone.",
           subject: "Sélectionnez un sujet.",
           message: "Écrivez un court message.",
@@ -636,6 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const validationFields = ["name", "email", "phone", "subject", "message"]
       .map((name) => contactForm.elements[name])
       .filter(Boolean);
+    const phoneTools = window.melkiorPhone || null;
     const formStatus = document.createElement("p");
     formStatus.className = "form-status";
     formStatus.setAttribute("role", "alert");
@@ -688,11 +691,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    function canParsePhoneNumbers() {
+      return phoneTools
+        && typeof phoneTools.isValidContactPhoneNumber === "function"
+        && typeof phoneTools.formatContactPhoneNumber === "function";
+    }
+
+    function formatPhoneField(field) {
+      if (!field || !field.value.trim()) return;
+      if (!canParsePhoneNumbers()) return;
+      const formatted = phoneTools.formatContactPhoneNumber(field.value);
+      if (formatted && formatted !== field.value.trim()) field.value = formatted;
+    }
+
     function getFieldValidationMessage(field) {
       const value = field.value.trim();
       if (field.required && !value) return validationMessages[field.name] || messages.error;
       if (field.name === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         return validationMessages.emailInvalid;
+      }
+      if (field.name === "phone" && value && canParsePhoneNumbers() && !phoneTools.isValidContactPhoneNumber(value)) {
+        return validationMessages.phoneInvalid;
       }
       return "";
     }
@@ -766,8 +785,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    const phoneField = contactForm.elements.phone;
+    if (phoneField) {
+      phoneField.addEventListener("blur", () => {
+        formatPhoneField(phoneField);
+        if (phoneField.getAttribute("aria-invalid") === "true") validateField(phoneField);
+      });
+    }
+
     contactForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+      formatPhoneField(phoneField);
       const formData = new FormData(contactForm);
       const data = {};
       formData.forEach((value, key) => {
