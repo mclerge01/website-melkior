@@ -69,12 +69,9 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
-        <a class="nav-link" href="#services">{{nav.services}}</a>
-        <a class="nav-link" href="#guide">{{nav.guide}}</a>
-        <a class="nav-link" href="#about">{{nav.about}}</a>
-        <a class="nav-link" href="#testimonials">{{nav.testimonials}}</a>
-        <a class="nav-link" href="#media">{{nav.media}}</a>
-        <a class="nav-link" href="#calculator">{{nav.calculator}}</a>
+{{#each nav.items}}
+        <a class="nav-link" href="{{href}}">{{label}}</a>
+{{/each}}
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="{{header.cta_link}}">{{header.cta_text}}</a>
       </nav>
@@ -131,7 +128,7 @@
             <strong>{{calculator.heading}}</strong>
             <small>{{calculator.description}}</small>
           </span>
-          <span class="teaser-action">{{nav.calculator}}</span>
+          <span class="teaser-action">{{nav.calculator_label}}</span>
         </a>
         <div class="section-heading reveal-on-scroll">
           <p class="eyebrow">{{services.eyebrow}}</p>
@@ -354,7 +351,7 @@
       </div>
       <div class="section bg-light">
         <div class="container contact-content">
-          <p class="eyebrow contact-eyebrow reveal-on-scroll reveal-from-left">{{nav.contact}}</p>
+          <p class="eyebrow contact-eyebrow reveal-on-scroll reveal-from-left">{{contact.eyebrow}}</p>
           <div class="contact-grid split-grid">
             <div class="contact-copy reveal-on-scroll reveal-from-left">
               <h2 class="section-title">{{contact.heading}}</h2>
@@ -436,17 +433,16 @@
       </div>
       <nav class="footer-nav" aria-label="{{footer.pages_heading}}">
         <h2 class="footer-column-title">{{footer.pages_heading}}</h2>
-        <a href="#services">{{nav.services}}</a>
-        <a href="#guide">{{nav.guide}}</a>
-        <a href="#about">{{nav.about}}</a>
-        <a href="#calculator">{{nav.calculator}}</a>
-        <a href="#contact">{{nav.contact}}</a>
+{{#each nav.items}}
+        <a href="{{href}}">{{label}}</a>
+{{/each}}
       </nav>
       <div class="footer-admin-column">
         <nav class="footer-legal" aria-label="{{footer.legal_heading}}">
           <h2 class="footer-column-title">{{footer.legal_heading}}</h2>
           <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
           <a href="{{legal_path}}">{{footer.legal_label}}</a>
+          <a href="/admin/">{{footer.admin_label}}</a>
         </nav>
         <nav class="footer-language" aria-label="{{footer.language_heading}}">
           <h2 class="footer-column-title">{{footer.language_heading}}</h2>

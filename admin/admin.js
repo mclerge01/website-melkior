@@ -82,14 +82,16 @@ const CONTENT_SECTIONS = [
   {
     key: "nav",
     label: "Navigation",
-    fields: [
-      { key: "services", label: "Services" },
-      { key: "guide", label: "Guide" },
-      { key: "calculator", label: "Calculateur" },
-      { key: "about", label: "À propos" },
-      { key: "testimonials", label: "Témoignages" },
-      { key: "media", label: "Médias" },
-      { key: "contact", label: "Contact" },
+    description: "Ces liens alimentent à la fois la barre de navigation et le pied de page.",
+    lists: [
+      {
+        key: "items",
+        label: "Liens principaux",
+        fields: [
+          { key: "label", label: "Libellé" },
+          { key: "href", label: "Lien" },
+        ],
+      },
     ],
   },
   {
@@ -273,6 +275,7 @@ const CONTENT_SECTIONS = [
     key: "contact",
     label: "Contact",
     fields: [
+      { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre" },
       { key: "subtitle", label: "Introduction", type: "textarea", full: true },
       { key: "info_heading", label: "Titre des coordonnées" },
@@ -326,6 +329,7 @@ const CONTENT_SECTIONS = [
       { key: "language_heading", label: "Titre langue" },
       { key: "privacy_label", label: "Politique de confidentialité" },
       { key: "legal_label", label: "Mentions légales" },
+      { key: "admin_label", label: "Administration" },
       { key: "copyright", label: "Droits d’auteur", full: true },
     ],
   },

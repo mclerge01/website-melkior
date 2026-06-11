@@ -46,12 +46,9 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav-menu" aria-label="Navigation">
-        <a class="nav-link" href="{{nav_services_href}}">{{nav.services}}</a>
-        <a class="nav-link" href="{{nav_guide_href}}">{{nav.guide}}</a>
-        <a class="nav-link" href="{{nav_about_href}}">{{nav.about}}</a>
-        <a class="nav-link" href="{{nav_testimonials_href}}">{{nav.testimonials}}</a>
-        <a class="nav-link" href="{{nav_media_href}}">{{nav.media}}</a>
-        <a class="nav-link" href="{{nav_calculator_href}}">{{nav.calculator}}</a>
+{{#each nav.items}}
+        <a class="nav-link" href="{{href}}">{{label}}</a>
+{{/each}}
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="{{nav_contact_href}}">{{header.cta_text}}</a>
       </nav>
@@ -87,17 +84,16 @@
       </div>
       <nav class="footer-nav" aria-label="{{footer.pages_heading}}">
         <h2 class="footer-column-title">{{footer.pages_heading}}</h2>
-        <a href="{{nav_calculator_href}}">{{nav.calculator}}</a>
-        <a href="{{nav_services_href}}">{{nav.services}}</a>
-        <a href="{{nav_guide_href}}">{{nav.guide}}</a>
-        <a href="{{nav_about_href}}">{{nav.about}}</a>
-        <a href="{{nav_contact_href}}">{{nav.contact}}</a>
+{{#each nav.items}}
+        <a href="{{href}}">{{label}}</a>
+{{/each}}
       </nav>
       <div class="footer-admin-column">
         <nav class="footer-legal" aria-label="{{footer.legal_heading}}">
           <h2 class="footer-column-title">{{footer.legal_heading}}</h2>
           <a href="{{privacy_path}}">{{footer.privacy_label}}</a>
           <a href="{{legal_path}}">{{footer.legal_label}}</a>
+          <a href="/admin/">{{footer.admin_label}}</a>
         </nav>
         <nav class="footer-language" aria-label="{{footer.language_heading}}">
           <h2 class="footer-column-title">{{footer.language_heading}}</h2>

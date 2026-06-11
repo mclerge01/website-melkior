@@ -70,13 +70,32 @@
       },
       "regions": "Partout au Québec",
       "nav": {
-        "services": "Services",
-        "guide": "Guide",
-        "calculator": "Calculateur",
-        "about": "À propos",
-        "testimonials": "Témoignages",
-        "media": "Médias",
-        "contact": "Contact"
+        "items": [
+          {
+            "href": "#services",
+            "label": "Services"
+          },
+          {
+            "href": "#guide",
+            "label": "Guide"
+          },
+          {
+            "href": "#about",
+            "label": "Mon histoire"
+          },
+          {
+            "href": "#testimonials",
+            "label": "Témoignages"
+          },
+          {
+            "href": "#media",
+            "label": "Médias"
+          },
+          {
+            "href": "#calculator",
+            "label": "Calculateur"
+          }
+        ]
       },
       "popup": {
         "enabled": false,
@@ -268,6 +287,7 @@
         "phone_text": "Appelez Melkior directement pour clarifier vos prochaines étapes."
       },
       "contact": {
+        "eyebrow": "Contact",
         "heading": "Consultation hypothécaire",
         "subtitle": "Remplissez le formulaire avec les détails de votre achat, renouvellement ou refinancement. Melkior vous répondra dans les meilleurs délais.",
         "info_heading": "Coordonnées",
@@ -347,6 +367,7 @@
         "language_heading": "Langue",
         "privacy_label": "Politique de confidentialité",
         "legal_label": "Mentions légales",
+        "admin_label": "Administration",
         "copyright": "Tous droits réservés."
       },
       "privacy_page": {
@@ -375,13 +396,32 @@
       },
       "regions": "Across Quebec",
       "nav": {
-        "services": "Services",
-        "guide": "Guide",
-        "calculator": "Calculator",
-        "about": "About",
-        "testimonials": "Testimonials",
-        "media": "Media",
-        "contact": "Contact"
+        "items": [
+          {
+            "href": "#services",
+            "label": "Services"
+          },
+          {
+            "href": "#guide",
+            "label": "Guide"
+          },
+          {
+            "href": "#about",
+            "label": "My story"
+          },
+          {
+            "href": "#testimonials",
+            "label": "Testimonials"
+          },
+          {
+            "href": "#media",
+            "label": "Media"
+          },
+          {
+            "href": "#calculator",
+            "label": "Calculator"
+          }
+        ]
       },
       "popup": {
         "enabled": false,
@@ -577,6 +617,7 @@
         "phone_text": "Call Melkior directly to clarify your next steps."
       },
       "contact": {
+        "eyebrow": "Contact",
         "heading": "Mortgage consultation",
         "subtitle": "Fill out the form with details about your purchase, renewal, or refinance. Melkior will reply as soon as possible.",
         "info_heading": "Contact details",
@@ -656,6 +697,7 @@
         "language_heading": "Language",
         "privacy_label": "Privacy Policy",
         "legal_label": "Legal Notice",
+        "admin_label": "Administration",
         "copyright": "All rights reserved."
       },
       "privacy_page": {
