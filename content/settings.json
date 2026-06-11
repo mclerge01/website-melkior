@@ -30,9 +30,9 @@
     "profile_url": "https://www.multi-prets.com/en/mortgage-broker/melkior-clerge/",
     "images": {
       "hero_background": "/assets/images/hero-background-unsplash.webp",
-      "hero": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
-      "portrait": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
-      "og": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+      "hero": "/assets/images/melkior-clerge-portrait-1920w.webp",
+      "portrait": "/assets/images/melkior-clerge-portrait-1920w.webp",
+      "og": "/assets/images/melkior-clerge-og-1200w.webp",
       "multi_prets_logo": "/assets/images/multi-prets-logo-dark-en.svg",
       "multi_prets_logo_plain": "/assets/images/multi-prets-logo-light-en.svg",
       "multi_prets_logo_dark_fr": "/assets/images/multi-prets-logo-dark-fr.svg",
@@ -58,7 +58,7 @@
       "seo": {
         "title": "Melkior Clergé | Courtier hypothécaire Multi-Prêts à Montréal",
         "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
-        "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+        "og_image": "/assets/images/melkior-clerge-og-1200w.webp",
         "favicon": "/favicon.svg"
       },
       "header": {
@@ -359,7 +359,7 @@
       "seo": {
         "title": "Melkior Clergé | Multi-Prêts Mortgage Broker in Montreal",
         "description": "Melkior Clergé, Multi-Prêts mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
-        "og_image": "https://www.mortgageboss.ca/FileLibrary/Client_2/_Agent_Photo_Fr/Melkior_Clerg%C3%A9.jpg",
+        "og_image": "/assets/images/melkior-clerge-og-1200w.webp",
         "favicon": "/favicon.svg"
       },
       "header": {

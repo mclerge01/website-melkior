@@ -83,7 +83,7 @@
 
   <main>
     <section id="hero" class="hero section">
-      <img class="hero-bg-image" src="{{shared.images.hero_background}}" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+      <img class="hero-bg-image" src="{{shared.images.hero_background}}"{{#if shared.images.hero_background_srcset}} srcset="{{shared.images.hero_background_srcset}}" sizes="{{shared.images.hero_background_sizes}}"{{/if}} alt="" aria-hidden="true" decoding="async" fetchpriority="high">
       <div class="container hero-grid">
         <div class="hero-copy reveal-on-scroll reveal-from-left">
           <p class="eyebrow">{{hero.eyebrow}}</p>
@@ -102,7 +102,7 @@
           </div>
         </div>
         <div class="hero-portrait reveal-on-scroll reveal-from-right">
-          <img src="{{shared.images.hero}}" alt="{{hero.image_alt}}" width="520" height="620">
+          <img src="{{shared.images.hero}}"{{#if shared.images.hero_srcset}} srcset="{{shared.images.hero_srcset}}" sizes="{{shared.images.hero_sizes}}"{{/if}} alt="{{hero.image_alt}}" width="520" height="620">
         </div>
       </div>
       <a class="scroll-cue" href="#services" aria-label="Scroll to services"><span></span></a>
@@ -176,7 +176,7 @@
       <div class="container about-grid split-grid lg:items-stretch">
         <div class="about-image lg:h-full reveal-on-scroll reveal-from-left">
           <div class="about-image-frame">
-            <img class="lg:h-full" src="{{shared.images.portrait}}" alt="{{about.image_alt}}" loading="lazy">
+            <img class="lg:h-full" src="{{shared.images.portrait}}"{{#if shared.images.portrait_srcset}} srcset="{{shared.images.portrait_srcset}}" sizes="{{shared.images.portrait_sizes}}"{{/if}} alt="{{about.image_alt}}" loading="lazy">
           </div>
           <div class="about-socials cluster" aria-label="Profil professionnel">
             <a class="icon-button" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Multi-Prêts">

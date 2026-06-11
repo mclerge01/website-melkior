@@ -11,6 +11,12 @@ const API = {
   logout: "/api/auth/logout",
 };
 
+const RESPONSIVE_IMAGE_WIDTHS = Object.freeze([480, 960, 1440, 1920, 2560, 3840]);
+const STANDARD_IMAGE_WIDTHS = Object.freeze([480, 960, 1440, 1920]);
+const BACKGROUND_IMAGE_WIDTHS = Object.freeze([960, 1440, 1920, 2560, 3840]);
+const OG_IMAGE_WIDTHS = Object.freeze([480, 960, 1200]);
+const WEBP_IMAGE_QUALITY = 0.82;
+
 const LOCALES = [
   { key: "fr-CA", label: "Français", sitePath: "/fr/" },
   { key: "en-CA", label: "English", sitePath: "/en/" },
@@ -956,10 +962,10 @@ function renderImageInput(group, path, value) {
     if (!file.files?.[0]) return;
     try {
       setStatus("saving", "Preparation de l'image...", file.files[0].name);
-      const upload = await prepareImageUpload(file.files[0]);
+      const upload = await prepareImageUpload(file.files[0], path);
       const nextPath = `/${upload.path}`;
-      pendingImages = pendingImages.filter((item) => item.path !== upload.path);
-      pendingImages.push(upload);
+      pendingImages = pendingImages.filter((item) => item.fieldPath !== path);
+      pendingImages.push(...upload.uploads);
       if (upload.previewUrl) {
         pendingImagePreviews.set(nextPath, upload.previewUrl);
         pendingImagePreviews.set(upload.path, upload.previewUrl);
@@ -968,7 +974,7 @@ function renderImageInput(group, path, value) {
       input.value = nextPath;
       preview.src = upload.previewUrl || nextPath;
       setStatus("saving", "Modifications non publiees", "L'image sera envoyee sur GitHub au moment de publier.");
-      showToast("Image preparee. Cliquez sur Publier pour l'envoyer sur GitHub.");
+      showToast(`${upload.variantCount} fichier${upload.variantCount > 1 ? "s" : ""} image prepare${upload.variantCount > 1 ? "s" : ""}. Cliquez sur Publier pour l'envoyer sur GitHub.`);
     } catch (error) {
       showToast(error.message, "error");
       setStatus("error", "Erreur d’image", error.message);
@@ -979,7 +985,7 @@ function renderImageInput(group, path, value) {
   upload.appendChild(file);
   const hint = document.createElement("p");
   hint.className = "admin-hint";
-  hint.textContent = "JPG, PNG et autres images raster sont convertis en WebP. SVG et ICO sont conserves apres validation. L'envoi se fait avec Publier.";
+  hint.textContent = "JPG, PNG et autres images raster sont convertis en fichiers WebP responsives. SVG et ICO sont conserves apres validation. L'envoi se fait avec Publier.";
   controls.append(input, upload, hint);
   wrapper.append(preview, controls);
   group.appendChild(wrapper);
@@ -1405,17 +1411,33 @@ function fileToBase64(file) {
   });
 }
 
-function cleanFileName(name) {
+function cleanFileBase(name) {
   const dot = name.lastIndexOf(".");
   const base = dot > 0 ? name.slice(0, dot) : name;
-  const ext = dot > 0 ? name.slice(dot + 1).toLowerCase() : "jpg";
-  const safe = base
+  return base
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9._-]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
+}
+
+function cleanFileName(name) {
+  const dot = name.lastIndexOf(".");
+  const ext = dot > 0 ? name.slice(dot + 1).toLowerCase() : "jpg";
+  const safe = cleanFileBase(name);
   return `${safe || "image"}-${Date.now().toString(36)}.${ext}`;
+}
+
+function responsiveWidthsForPath(path) {
+  const value = String(path || "");
+  if (value === "shared.images.hero_background") return BACKGROUND_IMAGE_WIDTHS;
+  if (value === "shared.images.og" || /\.seo\.og_image$/.test(value)) return OG_IMAGE_WIDTHS;
+  return STANDARD_IMAGE_WIDTHS;
+}
+
+function uniqueResponsiveImageBase(fileName) {
+  return `${cleanFileBase(fileName) || "image"}-${Date.now().toString(36)}`;
 }
 
 async function commitImageUpload(upload) {
@@ -1426,28 +1448,39 @@ async function commitImageUpload(upload) {
   });
 }
 
-async function prepareImageUpload(file) {
+async function prepareImageUpload(file, fieldPath = "") {
   const isSvg = file.type === "image/svg+xml" || /\.svg$/i.test(file.name);
   const isIco = /(?:image\/x-icon|image\/vnd\.microsoft\.icon)/i.test(file.type) || /\.ico$/i.test(file.name);
   if (isSvg || isIco) {
     const name = cleanFileName(file.name);
-    return {
+    const upload = {
       name,
       path: `assets/images/${name}`,
       contentBase64: await fileToBase64(file),
       previewUrl: URL.createObjectURL(file),
+      fieldPath,
     };
+    return { ...upload, uploads: [upload], variantCount: 1 };
   }
 
-  const dot = file.name.lastIndexOf(".");
-  const baseName = dot > 0 ? file.name.slice(0, dot) : file.name;
-  const contentBase64 = await compressToWebP(file);
-  const name = cleanFileName(`${baseName}.webp`);
+  const base = uniqueResponsiveImageBase(file.name);
+  const variants = await compressToWebPVariants(file, responsiveWidthsForPath(fieldPath));
+  const uploads = variants.map((variant) => {
+    const name = `${base}-${variant.width}w.webp`;
+    return {
+      name,
+      path: `assets/images/${name}`,
+      contentBase64: variant.contentBase64,
+      fieldPath,
+    };
+  });
+  const defaultUpload = uploads[uploads.length - 1];
+  const preview = variants.find((variant) => variant.width <= 960) || variants[0];
   return {
-    name,
-    path: `assets/images/${name}`,
-    contentBase64,
-    previewUrl: `data:image/webp;base64,${contentBase64}`,
+    ...defaultUpload,
+    uploads,
+    previewUrl: `data:image/webp;base64,${preview.contentBase64}`,
+    variantCount: uploads.length,
   };
 }
 
@@ -1460,16 +1493,32 @@ function normalizeLocalImagePath(value) {
   return path.startsWith("assets/images/") ? path : "";
 }
 
+function responsiveImageSiblingPaths(path) {
+  const match = String(path || "").match(/^(assets\/images\/.+)-(\d+)w\.webp$/i);
+  if (!match) return [];
+  const maxWidth = Number.parseInt(match[2], 10);
+  if (!Number.isFinite(maxWidth) || maxWidth <= 0) return [];
+  const widths = RESPONSIVE_IMAGE_WIDTHS.filter((width) => width <= maxWidth);
+  if (!widths.includes(maxWidth)) widths.push(maxWidth);
+  return [...new Set(widths)].sort((a, b) => a - b).map((width) => `${match[1]}-${width}w.webp`);
+}
+
+function addLocalImagePath(paths, path) {
+  if (!path) return;
+  paths.add(path);
+  for (const sibling of responsiveImageSiblingPaths(path)) paths.add(sibling);
+}
+
 function collectLocalImagePaths(source, paths = new Set(), seen = new Set()) {
   if (source == null) return paths;
   if (typeof source === "string") {
     const matches = source.match(/\/?assets\/images\/[^\s"'<>),]+/gi) || [];
     for (const match of matches) {
       const path = normalizeLocalImagePath(match);
-      if (path) paths.add(path);
+      addLocalImagePath(paths, path);
     }
     const directPath = normalizeLocalImagePath(source);
-    if (directPath) paths.add(directPath);
+    addLocalImagePath(paths, directPath);
     return paths;
   }
   if (typeof source !== "object" || seen.has(source)) return paths;
@@ -1617,45 +1666,66 @@ async function deleteUnusedImages(images, target, cleanupButton) {
   await renderImageGallery(target, cleanupButton);
 }
 
-function compressToWebP(file, maxDimension = 1920, quality = 0.82) {
+function responsiveTargetWidths(sourceWidth, requestedWidths) {
+  const source = Math.max(1, Math.round(sourceWidth));
+  const maxRequested = Math.max(...requestedWidths);
+  const widths = requestedWidths
+    .map((width) => Math.min(width, source))
+    .filter((width, index, list) => width > 0 && list.indexOf(width) === index)
+    .sort((a, b) => a - b);
+  if (!widths.includes(source) && source < maxRequested) widths.push(source);
+  return widths;
+}
+
+function canvasToWebP(canvas, quality = WEBP_IMAGE_QUALITY) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("Impossible de convertir l'image en WebP."));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
+      reader.onerror = () => reject(new Error("Impossible de lire l'image convertie."));
+      reader.readAsDataURL(blob);
+    }, "image/webp", quality);
+  });
+}
+
+function loadImageFile(file) {
   return new Promise((resolve, reject) => {
     const image = new Image();
     const url = URL.createObjectURL(file);
     image.onload = () => {
       URL.revokeObjectURL(url);
-      let { width, height } = image;
-      if (width > maxDimension || height > maxDimension) {
-        const ratio = Math.min(maxDimension / width, maxDimension / height);
-        width = Math.round(width * ratio);
-        height = Math.round(height * ratio);
-      }
-
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const context = canvas.getContext("2d");
-      if (!context) {
-        reject(new Error("Impossible de préparer l’image."));
-        return;
-      }
-      context.drawImage(image, 0, 0, width, height);
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          reject(new Error("Impossible de convertir l’image en WebP."));
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
-        reader.onerror = () => reject(new Error("Impossible de lire l’image convertie."));
-        reader.readAsDataURL(blob);
-      }, "image/webp", quality);
+      resolve(image);
     };
     image.onerror = () => {
       URL.revokeObjectURL(url);
-      reject(new Error("Impossible de charger l’image."));
+      reject(new Error("Impossible de charger l'image."));
     };
     image.src = url;
   });
+}
+
+async function compressToWebPVariants(file, requestedWidths, quality = WEBP_IMAGE_QUALITY) {
+  const image = await loadImageFile(file);
+  const sourceWidth = image.naturalWidth || image.width;
+  const sourceHeight = image.naturalHeight || image.height;
+  const widths = responsiveTargetWidths(sourceWidth, requestedWidths);
+  const variants = [];
+  for (const width of widths) {
+    const ratio = width / sourceWidth;
+    const height = Math.max(1, Math.round(sourceHeight * ratio));
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Impossible de preparer l'image.");
+    context.drawImage(image, 0, 0, width, height);
+    variants.push({ width, contentBase64: await canvasToWebP(canvas, quality) });
+  }
+  return variants;
 }
 
 async function renderImageGallery(target, cleanupButton = null) {
