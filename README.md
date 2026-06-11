@@ -169,7 +169,16 @@ The public contact form posts to:
 /api/contact
 ```
 
-The Pages Function validates required fields, verifies Turnstile server-side, sanitizes values, and sends an email from `consultation@melkiorclerge.ca` to the secret `CONTACT_DESTINATION` mailbox through the `EMAIL_WORKER` binding.
+The Pages Function validates required fields, verifies Turnstile server-side, sanitizes values, and schedules the handoff from `consultation@melkiorclerge.ca` to the `EMAIL_WORKER` binding in the background. The visitor receives success as soon as that handoff is queued by the website, not after Cloudflare Email Sending finishes delivery.
+
+If handoff or background delivery fails, the Workers log `contact_email_handoff_failed` or `email_delivery_failed` and rethrow through `ctx.waitUntil` so the failure is visible in Cloudflare Workers Logs/Observability. For direct notification outside the email path, configure the same HTTPS webhook secret on both the main site Worker and the `email-sender` Worker:
+
+```bash
+npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config wrangler.toml
+npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config workers/email-sender/wrangler.toml
+```
+
+Use a Slack, Discord, Google Chat, PagerDuty, or monitoring webhook URL. The Worker posts both `text` and `content` fields so common webhook receivers can notify Melkior even when email delivery itself is broken.
 
 Local dev can run without a connected email worker, but full delivery testing requires Cloudflare bindings and valid `.dev.vars` values.
 

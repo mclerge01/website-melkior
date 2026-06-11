@@ -1,22 +1,23 @@
+import { emailDomain, errorSummary, notifyEmailFailure } from "../../lib/email-alert.mjs";
 import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../lib/phone.mjs";
 
 const MESSAGES = {
   "fr-CA": {
-    invalidBody: "Le corps de la requete est invalide.",
+    invalidBody: "Le corps de la requête est invalide.",
     name: "Le champ nom est requis.",
     email: "Le champ courriel est requis.",
     emailInvalid: "L'adresse courriel est invalide.",
-    phone: "Le champ telephone est requis.",
-    phoneInvalid: "Le numero de telephone est invalide.",
+    phone: "Le champ téléphone est requis.",
+    phoneInvalid: "Le numéro de téléphone est invalide.",
     subject: "Le champ sujet est requis.",
     message: "Le champ message est requis.",
-    turnstile: "La verification Turnstile est requise.",
-    turnstileFailed: "La verification Turnstile a echoue. Veuillez reessayer.",
+    turnstile: "La vérification Turnstile est requise.",
+    turnstileFailed: "La vérification Turnstile a échoué. Veuillez réessayer.",
     config: "La configuration courriel du serveur est manquante.",
-    internal: "Une erreur interne est survenue. Veuillez reessayer plus tard.",
-    success: "Votre message a bien ete envoye.",
+    internal: "Une erreur interne est survenue. Veuillez réessayer plus tard.",
+    success: "Votre message a bien été envoyé.",
     emailTitle: "Nouveau message via le formulaire de contact",
-    received: "Recu le",
+    received: "Reçu le",
   },
   "en-CA": {
     invalidBody: "The request body is invalid.",
@@ -54,6 +55,11 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function isLocalDevelopmentRequest(request) {
+  const hostname = new URL(request.url).hostname;
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+}
+
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
 
 function jsonResponse(body, status = 200) {
@@ -74,6 +80,34 @@ function base64Utf8(value) {
     binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
   }
   return btoa(binary);
+}
+
+async function dispatchContactEmail(context, payload, metadata) {
+  try {
+    const response = await context.env.EMAIL_WORKER.fetch("https://email-worker/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error(`Email worker rejected message with status ${response.status}`);
+    console.log({ event: "contact_email_handoff", ...metadata });
+  } catch (error) {
+    const failure = {
+      event: "contact_email_handoff_failed",
+      from_domain: emailDomain(payload.from),
+      to_domain: emailDomain(payload.to),
+      raw_bytes: payload.raw.length,
+      error: errorSummary(error),
+      ...metadata,
+    };
+    console.error(failure);
+    await notifyEmailFailure(
+      context.env,
+      failure,
+      "Melkior contact email handoff or forwarding failed. Check Cloudflare Workers Logs for event=contact_email_handoff_failed."
+    );
+    throw error;
+  }
 }
 
 function createMimeMessage({ from, to, replyTo, subject, body }) {
@@ -191,7 +225,7 @@ export async function onRequestPost(context) {
     `  Locale : ${locale}`,
     `  Nom / Name : ${name}`,
     `  Email : ${email}`,
-    `  Telephone / Phone : ${formattedPhone}`,
+    `  Téléphone / Phone : ${formattedPhone}`,
     `  Sujet / Subject : ${subject}`,
     referral ? `  Source : ${referral}` : null,
     "",
@@ -214,20 +248,22 @@ export async function onRequestPost(context) {
 
   try {
     if (context.env.EMAIL_WORKER) {
-      const response = await context.env.EMAIL_WORKER.fetch("https://email-worker/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ from: fromEmail, to: toEmail, raw }),
-      });
-      if (!response.ok) throw new Error("Email worker rejected message");
-      console.log({
-        event: "contact_email_handoff",
-        locale,
-        subject,
-        referral: referral || "not_provided",
-        message_length: message.length,
-      });
-    } else {
+      const handoff = dispatchContactEmail(
+        context,
+        { from: fromEmail, to: toEmail, raw },
+        {
+          locale,
+          subject,
+          referral: referral || "not_provided",
+          message_length: message.length,
+        }
+      );
+      if (context.waitUntil) {
+        context.waitUntil(handoff);
+      } else {
+        await handoff;
+      }
+    } else if (isLocalDevelopmentRequest(context.request)) {
       console.log("Contact form dev mode:", {
         locale,
         subject,
@@ -236,6 +272,8 @@ export async function onRequestPost(context) {
         emailDomain: email.includes("@") ? email.split("@").pop() : "",
         messageLength: message.length,
       });
+    } else {
+      return errorResponse(msg.config, 500);
     }
   } catch (error) {
     console.error("Contact email error:", error);
