@@ -25,6 +25,7 @@
     "phone": "+1 (514) 836-6736",
     "phone_href": "+15148366736",
     "email": "consultation@melkiorclerge.ca",
+    "booking_url": "https://calendly.com/melkiorcourtierhypothecaire/consultation-gratuite-30-minutes",
     "office_address": "6799 boulevard St-Laurent, Montréal, QC, H2S 3C8",
     "regions": "Partout au Québec",
     "profile_url": "https://www.multi-prets.com/en/mortgage-broker/melkior-clerge/",
@@ -65,7 +66,7 @@
         "site_name": "Melkior Clergé",
         "credential": "Courtier hypothécaire",
         "cta_text": "Réserver une consultation",
-        "cta_link": "#contact-form"
+        "cta_link": "#contact"
       },
       "regions": "Partout au Québec",
       "nav": {
@@ -91,7 +92,7 @@
         "primary_cta": "Réserver une consultation",
         "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire",
         "highlight": "Pour un service en or, contactez Melkior.",
-        "primary_cta_link": "#contact-form"
+        "primary_cta_link": "#contact"
       },
       "stats": {
         "items": [
@@ -173,7 +174,7 @@
           }
         ],
         "cta_text": "Réserver une consultation",
-        "cta_link": "#contact-form"
+        "cta_link": "#contact"
       },
       "guide": {
         "eyebrow": "Guide",
@@ -258,9 +259,13 @@
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
         "heading": "Votre prochain chapitre *immobilier* commence ici.",
-        "description": "Réservez une consultation gratuite ou appelez directement Melkior.",
-        "primary_cta": "Consultation gratuite",
-        "secondary_cta": "Appelez directement pour clarifier vos prochaines étapes."
+        "description": "Choisissez la façon la plus simple de joindre Melkior: réserver en ligne, écrire un message ou appeler directement.",
+        "booking_cta": "Réserver en ligne",
+        "booking_text": "Ouvre Calendly pour choisir un créneau de 30 minutes.",
+        "email_cta": "Écrire un message",
+        "email_text": "Descend au formulaire sécurisé de consultation.",
+        "phone_cta": "Appeler Melkior",
+        "phone_text": "Lance un appel direct pour clarifier vos prochaines étapes."
       },
       "contact": {
         "heading": "Consultation hypothécaire",
@@ -366,7 +371,7 @@
         "site_name": "Melkior Clergé",
         "credential": "Mortgage Broker",
         "cta_text": "Book a consultation",
-        "cta_link": "#contact-form"
+        "cta_link": "#contact"
       },
       "regions": "Across Quebec",
       "nav": {
@@ -392,7 +397,7 @@
         "primary_cta": "Book a consultation",
         "image_alt": "Portrait of Melkior Clergé, mortgage broker",
         "highlight": "For gold-standard service, contact Melkior.",
-        "primary_cta_link": "#contact-form"
+        "primary_cta_link": "#contact"
       },
       "stats": {
         "items": [
@@ -474,7 +479,7 @@
           }
         ],
         "cta_text": "Book a consultation",
-        "cta_link": "#contact-form"
+        "cta_link": "#contact"
       },
       "guide": {
         "eyebrow": "Guide",
@@ -559,9 +564,13 @@
       "final_cta": {
         "eyebrow": "Mortgage consultation",
         "heading": "Your next real estate *chapter* starts here.",
-        "description": "Book a free consultation or call Melkior directly.",
-        "primary_cta": "Free consultation",
-        "secondary_cta": "Call directly to clarify your next steps."
+        "description": "Choose the easiest way to reach Melkior: book online, send a message, or call directly.",
+        "booking_cta": "Book online",
+        "booking_text": "Opens Calendly so you can choose a 30-minute time slot.",
+        "email_cta": "Send a message",
+        "email_text": "Jumps to the secure consultation form.",
+        "phone_cta": "Call Melkior",
+        "phone_text": "Starts a direct call to clarify your next steps."
       },
       "contact": {
         "heading": "Mortgage consultation",
