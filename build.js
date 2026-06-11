@@ -16,6 +16,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(ROOT, "dist");
 const read = (path) => readFileSync(join(ROOT, path), "utf-8");
 const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
+const IS_DEV_BUILD = process.argv.includes("--dev");
 
 function loadLocalEnv() {
   const envPath = join(ROOT, ".dev.vars");
@@ -42,7 +43,8 @@ function readWranglerVar(name) {
 }
 
 function turnstileSiteKey() {
-  return process.env.TURNSTILE_SITE_KEY || readWranglerVar("TURNSTILE_SITE_KEY") || TURNSTILE_TEST_SITE_KEY;
+  if (IS_DEV_BUILD) return process.env.TURNSTILE_SITE_KEY || TURNSTILE_TEST_SITE_KEY;
+  return readWranglerVar("TURNSTILE_SITE_KEY") || process.env.TURNSTILE_SITE_KEY || TURNSTILE_TEST_SITE_KEY;
 }
 
 function write(path, content) {
@@ -181,7 +183,7 @@ function generateSitemap(settings) {
     .join("\n")}\n</urlset>\n`;
 }
 
-if (process.argv.includes("--dev")) loadLocalEnv();
+if (IS_DEV_BUILD) loadLocalEnv();
 
 rmSync(OUT_DIR, { recursive: true, force: true });
 mkdirSync(OUT_DIR, { recursive: true });
