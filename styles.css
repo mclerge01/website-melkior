@@ -2670,8 +2670,20 @@ img.testimonial-avatar {
     grid-template-columns: minmax(20rem, 0.8fr) minmax(0, 1.2fr);
   }
 
+  .about-image {
+    align-self: stretch;
+    min-height: 0;
+  }
+
   .about-image-frame {
-    min-height: 100%;
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .about-image img {
+    height: 100%;
+    aspect-ratio: auto;
   }
 
   .service-grid {
