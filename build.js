@@ -14,6 +14,7 @@ import { normalizeInstagramEmbed, processMarkdown, render } from "./lib/render.m
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(ROOT, "dist");
 const read = (path) => readFileSync(join(ROOT, path), "utf-8");
+const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
 
 function loadLocalEnv() {
   const envPath = join(ROOT, ".dev.vars");
@@ -30,6 +31,17 @@ function loadLocalEnv() {
     }
     if (/^[A-Z_][A-Z0-9_]*$/.test(key) && process.env[key] === undefined) process.env[key] = value;
   }
+}
+
+function readWranglerVar(name) {
+  if (!existsSync(join(ROOT, "wrangler.toml"))) return "";
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = read("wrangler.toml").match(new RegExp(`^\\s*${escaped}\\s*=\\s*"([^"]+)"`, "m"));
+  return match?.[1] || "";
+}
+
+function turnstileSiteKey() {
+  return process.env.TURNSTILE_SITE_KEY || readWranglerVar("TURNSTILE_SITE_KEY") || TURNSTILE_TEST_SITE_KEY;
 }
 
 function write(path, content) {
@@ -111,7 +123,7 @@ function prepareLocaleData(settings, locale, page = "home") {
     shared: settings.shared,
     theme: settings.theme,
     theme_style: themeStyle(settings.theme),
-    turnstile_sitekey: process.env.TURNSTILE_SITE_KEY || "1x00000000000000000000AA",
+    turnstile_sitekey: turnstileSiteKey(),
     locale,
     locale_slug: current.slug,
     html_lang: current.htmlLang,
@@ -154,7 +166,7 @@ function generateSitemap(settings) {
     .join("\n")}\n</urlset>\n`;
 }
 
-loadLocalEnv();
+if (process.argv.includes("--dev")) loadLocalEnv();
 
 rmSync(OUT_DIR, { recursive: true, force: true });
 mkdirSync(OUT_DIR, { recursive: true });
