@@ -236,6 +236,9 @@
 {{#each testimonials.items}}
             <article class="testimonial-card card">
               <div class="testimonial-stars" aria-hidden="true">*****</div>
+{{#if translation_note}}
+              <span class="translation-badge testimonial-translation-note">{{translation_note}}</span>
+{{/if}}
               <p>{{quote}}</p>
               <div class="testimonial-person">
                 <span>{{initials}}</span>

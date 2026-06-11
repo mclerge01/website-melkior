@@ -205,6 +205,7 @@ const CONTENT_SECTIONS = [
           { key: "initials", label: "Initiales" },
           { key: "name", label: "Nom" },
           { key: "context", label: "Contexte" },
+          { key: "translation_note", label: "Badge de traduction" },
         ],
       },
     ],
