@@ -1,4 +1,5 @@
 import { emailDomain, errorSummary, notifyEmailFailure } from "../../lib/email-alert.mjs";
+import { jsonResponse } from "../../lib/http.mjs";
 import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../lib/phone.mjs";
 
 const MESSAGES = {
@@ -60,15 +61,6 @@ function isLocalDevelopmentRequest(request) {
   return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
 }
 
-const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
-
-function jsonResponse(body, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: JSON_HEADERS,
-  });
-}
-
 function errorResponse(error, status = 400) {
   return jsonResponse({ success: false, error }, status);
 }
@@ -82,6 +74,14 @@ function base64Utf8(value) {
   return btoa(binary);
 }
 
+/**
+ * Hand off the prepared MIME message to the email Worker service binding.
+ *
+ * @param {{env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{from: string, to: string, raw: string}} payload - Email sender, recipient, and raw MIME body.
+ * @param {Record<string, unknown>} metadata - Log-safe contact form metadata.
+ * @returns {Promise<void>} Resolves when the email Worker accepts the handoff.
+ */
 async function dispatchContactEmail(context, payload, metadata) {
   try {
     const response = await context.env.EMAIL_WORKER.fetch("https://email-worker/send", {
@@ -110,6 +110,12 @@ async function dispatchContactEmail(context, payload, metadata) {
   }
 }
 
+/**
+ * Build the raw multipart MIME message sent through Cloudflare Email Sending.
+ *
+ * @param {{from: string, to: string, replyTo: string, subject: string, body: string}} message - Email fields.
+ * @returns {string} Raw RFC 5322/MIME message.
+ */
 function createMimeMessage({ from, to, replyTo, subject, body }) {
   const boundary = `----=_Melkior_${Date.now().toString(36)}`;
   const headers = [
@@ -152,10 +158,21 @@ function createMimeMessage({ from, to, replyTo, subject, body }) {
   return [headers, "", plainPart, htmlPart, `--${boundary}--`].join("\r\n");
 }
 
+/**
+ * Respond to CORS/preflight probes for the contact endpoint.
+ *
+ * @returns {Response} Empty OPTIONS response.
+ */
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: { Allow: "POST, OPTIONS" } });
 }
 
+/**
+ * Validate a contact submission, verify Turnstile, and queue email handoff.
+ *
+ * @param {{request: Request, env: Record<string, unknown>, waitUntil?: Function}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON contact form result.
+ */
 export async function onRequestPost(context) {
   let data;
   try {

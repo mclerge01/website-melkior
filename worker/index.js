@@ -8,6 +8,7 @@ import { onRequestGet as adminContentGet, onRequestPut as adminContentPut } from
 import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } from "../functions/api/admin/image.js";
 import { onRequestGet as adminImagesGet } from "../functions/api/admin/images.js";
 import { onRequestGet as adminSessionGet } from "../functions/api/admin/session.js";
+import { jsonResponse } from "../lib/http.mjs";
 
 const API_ROUTES = [
   { path: /^\/api\/contact\/?$/, handlers: { OPTIONS: contactOptions, POST: contactPost } },
@@ -24,12 +25,14 @@ const API_ROUTES = [
 const SUPERFLOW_SCRIPT = '<script id="superflowToolbarScript" data-sf-platform="other-manual" async src="https://cdn.velt.dev/lib/superflow.js?apiKey=OjNo4BCjdWHMOnnygDAd&projectId=1086230342273239"></script>';
 const REVIEW_CONTENT_SECURITY_POLICY = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://cdn.velt.dev https://*.velt.dev https://*.api.velt.dev https://*.googleapis.com https://apis.google.com https://www.google.com https://*.firebaseio.com wss://*.firebaseio.com wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdn.velt.dev; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdn.velt.dev; img-src 'self' data: https:; media-src 'self'; frame-src https://challenges.cloudflare.com https://emb.fouita.com https://*.velt.dev https://*.firebaseio.com https://*.firebasedatabase.app https://*.googleapis.com https://www.google.com; connect-src 'self' https://challenges.cloudflare.com https://*.velt.dev https://*.api.velt.dev https://*.googleapis.com https://www.google.com https://*.firebaseio.com wss://*.firebaseio.com wss://*.firebasedatabase.app";
 
-function jsonResponse(body, init = {}) {
-  const headers = new Headers(init.headers || {});
-  headers.set("Content-Type", "application/json; charset=utf-8");
-  return new Response(JSON.stringify(body), { ...init, headers });
-}
-
+/**
+ * Adapt the Worker runtime inputs to the Pages Function context shape.
+ *
+ * @param {Request} request - Incoming request.
+ * @param {Record<string, unknown>} env - Worker environment.
+ * @param {{waitUntil: Function}} ctx - Worker execution context.
+ * @returns {{request: Request, env: Record<string, unknown>, params: Record<string, string>, waitUntil: Function}} Pages-like context.
+ */
 function pagesContext(request, env, ctx) {
   return {
     request,
@@ -39,6 +42,14 @@ function pagesContext(request, env, ctx) {
   };
 }
 
+/**
+ * Route API requests to their Pages Function-compatible handlers.
+ *
+ * @param {Request} request - Incoming API request.
+ * @param {Record<string, unknown>} env - Worker environment.
+ * @param {{waitUntil: Function}} ctx - Worker execution context.
+ * @returns {Promise<Response>} API response.
+ */
 async function handleApiRequest(request, env, ctx) {
   const url = new URL(request.url);
   const route = API_ROUTES.find((candidate) => candidate.path.test(url.pathname));
@@ -53,7 +64,7 @@ async function handleApiRequest(request, env, ctx) {
   }
 
   const response = await handler(pagesContext(request, env, ctx));
-  if (url.pathname.startsWith("/api/auth/") || url.pathname.startsWith("/api/admin/")) {
+  if (isPrivateApiPath(url.pathname)) {
     const headers = new Headers(response.headers);
     headers.set("Cache-Control", "no-store");
     headers.set("X-Robots-Tag", "noindex, nofollow");
@@ -63,6 +74,14 @@ async function handleApiRequest(request, env, ctx) {
   return response;
 }
 
+/**
+ * Build the middleware context that serves static assets through env.ASSETS.
+ *
+ * @param {Request} request - Incoming non-API request.
+ * @param {Record<string, unknown>} env - Worker environment.
+ * @param {{waitUntil: Function}} ctx - Worker execution context.
+ * @returns {Record<string, unknown>} Pages middleware context.
+ */
 function middlewareContext(request, env, ctx) {
   return {
     ...pagesContext(request, env, ctx),
@@ -70,17 +89,32 @@ function middlewareContext(request, env, ctx) {
   };
 }
 
-function isReviewRequest(request, url) {
-  if (request.method !== "GET" && request.method !== "HEAD") return false;
-  if (!url.searchParams.has("review")) return false;
-  const value = url.searchParams.get("review").trim().toLowerCase();
-  return value === "" || value === "true" || value === "1";
+/**
+ * Check whether an API route must be treated as private and non-cacheable.
+ *
+ * @param {string} pathname - Request URL path.
+ * @returns {boolean} Whether no-store/noindex headers are required.
+ */
+function isPrivateApiPath(pathname) {
+  return pathname.startsWith("/api/auth/") || pathname.startsWith("/api/admin/") || /^\/api\/preview\/?$/.test(pathname);
 }
 
+/**
+ * Check if a response body is HTML and safe to mutate.
+ *
+ * @param {Response} response - Candidate response.
+ * @returns {boolean} Whether the content type is HTML.
+ */
 function isHtmlResponse(response) {
   return response.headers.get("Content-Type")?.toLowerCase().includes("text/html");
 }
 
+/**
+ * Build the no-store/noindex headers needed while Superflow is active.
+ *
+ * @param {Response} response - Original HTML response.
+ * @returns {Headers} Mutated headers.
+ */
 function reviewHeaders(response) {
   const headers = new Headers(response.headers);
   headers.set("Cache-Control", "no-store");
@@ -91,6 +125,13 @@ function reviewHeaders(response) {
   return headers;
 }
 
+/**
+ * Inject Superflow into public HTML responses during the client review period.
+ *
+ * @param {Request} request - Incoming request.
+ * @param {Response} response - Original asset response.
+ * @returns {Promise<Response>} Original or injected response.
+ */
 async function withReviewToolbar(request, response) {
   if (!response.ok || !isHtmlResponse(response)) return response;
 
@@ -106,13 +147,20 @@ async function withReviewToolbar(request, response) {
 }
 
 export default {
+  /**
+   * Serve API routes, static assets, and temporary Superflow review tooling.
+   *
+   * @param {Request} request - Incoming request.
+   * @param {Record<string, unknown>} env - Worker environment.
+   * @param {{waitUntil: Function}} ctx - Worker execution context.
+   * @returns {Promise<Response>} Worker response.
+   */
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    if (url.pathname.startsWith("/api/")) {
+    if (new URL(request.url).pathname.startsWith("/api/")) {
       return handleApiRequest(request, env, ctx);
     }
 
     const response = await handleMiddleware(middlewareContext(request, env, ctx));
-    return isReviewRequest(request, url) ? withReviewToolbar(request, response) : response;
+    return withReviewToolbar(request, response);
   },
 };

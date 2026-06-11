@@ -1,5 +1,11 @@
 import { addSetCookies, createOauthChallenge, jsonResponse } from "../../../lib/admin-auth.mjs";
 
+/**
+ * Start GitHub OAuth with PKCE for the admin panel.
+ *
+ * @param {{request: Request, env: Record<string, string>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} Redirect to GitHub OAuth.
+ */
 export async function onRequestGet(context) {
   const clientId = context.env.GITHUB_CLIENT_ID;
   if (!clientId) {

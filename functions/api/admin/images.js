@@ -1,5 +1,11 @@
 import { IMAGES_PATH, githubContentsQuery, githubFetch, isAllowedImageName, jsonResponse, requireAdmin } from "../../../lib/admin-auth.mjs";
 
+/**
+ * List admin-manageable images stored in the GitHub assets directory.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON image listing.
+ */
 export async function onRequestGet(context) {
   const auth = await requireAdmin(context);
   if (!auth.ok) return auth.response;

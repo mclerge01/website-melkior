@@ -8,6 +8,14 @@ import {
   verifyRepoWriteAccess,
 } from "../../../lib/admin-auth.mjs";
 
+/**
+ * Redirect back to the admin UI with an OAuth error code.
+ *
+ * @param {Request} request - OAuth callback request.
+ * @param {string} error - Admin UI error code.
+ * @param {string[]} [cookies] - Cookies to clear on the redirect.
+ * @returns {Response} Redirect response.
+ */
 function redirectWithError(request, error, cookies = []) {
   const url = new URL("/admin/", request.url);
   url.searchParams.set("error", error);
@@ -15,6 +23,12 @@ function redirectWithError(request, error, cookies = []) {
   return new Response(null, { status: 302, headers });
 }
 
+/**
+ * Complete GitHub OAuth, verify repo access, and create an admin session.
+ *
+ * @param {{request: Request, env: Record<string, string>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} Redirect back to the admin UI.
+ */
 export async function onRequestGet(context) {
   const request = context.request;
   const url = new URL(request.url);

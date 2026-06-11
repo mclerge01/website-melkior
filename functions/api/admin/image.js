@@ -2,23 +2,25 @@ import {
   githubBranch,
   githubContentsQuery,
   githubContentsUrl,
+  githubErrorResponse,
   githubFetch,
   jsonResponse,
   requireAdmin,
+  requireAdminJsonBody,
   validateImageName,
   validateImageUpload,
 } from "../../../lib/admin-auth.mjs";
 
+/**
+ * Validate and upload an admin-managed image to GitHub.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON upload result.
+ */
 export async function onRequestPut(context) {
-  const auth = await requireAdmin(context, { csrf: true, freshPermission: true });
-  if (!auth.ok) return auth.response;
-
-  let data;
-  try {
-    data = await context.request.json();
-  } catch {
-    return jsonResponse({ success: false, error: "Invalid JSON body." }, { status: 400, headers: auth.headers });
-  }
+  const adminRequest = await requireAdminJsonBody(context, { csrf: true, freshPermission: true });
+  if (!adminRequest.ok) return adminRequest.response;
+  const { auth, data } = adminRequest;
 
   let image;
   try {
@@ -47,24 +49,23 @@ export async function onRequestPut(context) {
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    return jsonResponse({ success: false, error: error.message || "Unable to upload image." }, { status: response.status, headers: auth.headers });
+    return githubErrorResponse(response, "Unable to upload image.", auth.headers);
   }
 
-  const result = await response.json();
-  return jsonResponse({ success: true, path: image.path, sha: result.content?.sha || "" }, { headers: auth.headers });
+  const upload = await response.json();
+  return jsonResponse({ success: true, path: image.path, sha: upload.content?.sha || "" }, { headers: auth.headers });
 }
 
+/**
+ * Delete an admin-managed image from GitHub by name and SHA.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON deletion result.
+ */
 export async function onRequestDelete(context) {
-  const auth = await requireAdmin(context, { csrf: true, freshPermission: true });
-  if (!auth.ok) return auth.response;
-
-  let data;
-  try {
-    data = await context.request.json();
-  } catch {
-    return jsonResponse({ success: false, error: "Invalid JSON body." }, { status: 400, headers: auth.headers });
-  }
+  const adminRequest = await requireAdminJsonBody(context, { csrf: true, freshPermission: true });
+  if (!adminRequest.ok) return adminRequest.response;
+  const { auth, data } = adminRequest;
 
   let image;
   try {
@@ -87,8 +88,7 @@ export async function onRequestDelete(context) {
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    return jsonResponse({ success: false, error: error.message || "Unable to delete image." }, { status: response.status, headers: auth.headers });
+    return githubErrorResponse(response, "Unable to delete image.", auth.headers);
   }
 
   return jsonResponse({ success: true }, { headers: auth.headers });

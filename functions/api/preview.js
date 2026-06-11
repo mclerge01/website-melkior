@@ -1,19 +1,19 @@
-import { htmlResponse, jsonResponse, requireAdmin } from "../../lib/admin-auth.mjs";
+import { htmlResponse, jsonResponse, requireAdminJsonBody } from "../../lib/admin-auth.mjs";
 import { prepareLocaleData } from "../../lib/page-data.mjs";
 import { processMarkdown, render } from "../../lib/render.mjs";
 
 const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
 
+/**
+ * Render an authenticated draft preview without publishing content.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} Rendered preview HTML or JSON error.
+ */
 export async function onRequestPost(context) {
-  const auth = await requireAdmin(context, { csrf: true });
-  if (!auth.ok) return auth.response;
-
-  let data;
-  try {
-    data = await context.request.json();
-  } catch {
-    return jsonResponse({ success: false, error: "Invalid JSON body." }, { status: 400, headers: auth.headers });
-  }
+  const adminRequest = await requireAdminJsonBody(context, { csrf: true });
+  if (!adminRequest.ok) return adminRequest.response;
+  const { auth, data } = adminRequest;
 
   const locale = data.locale === "en-CA" ? "en-CA" : "fr-CA";
   if (!data.content || typeof data.content !== "object") {

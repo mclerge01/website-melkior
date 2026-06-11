@@ -1,5 +1,11 @@
 import { jsonResponse, requireAdmin } from "../../../lib/admin-auth.mjs";
 
+/**
+ * Return the current authenticated admin session metadata.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON session payload.
+ */
 export async function onRequestGet(context) {
   const auth = await requireAdmin(context);
   if (!auth.ok) return auth.response;

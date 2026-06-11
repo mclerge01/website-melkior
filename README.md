@@ -11,12 +11,12 @@ The site is intentionally small and framework-free: static HTML generated from J
 - `marked` for build-time Markdown rendering
 - Cloudflare Pages Functions for routing, admin auth, previews, and contact form handling
 - Cloudflare Turnstile for contact form anti-spam verification
-- Cloudflare Email Routing Worker for sending contact emails
+- Cloudflare Email Sending Worker for contact emails
 - Fouita Instagram widget embed for the media section
 - GitHub OAuth for admin login
 - EasyMDE for admin-only Markdown editing
 
-No frontend framework or Tailwind package is used. The public website has no browser-side libraries; the admin panel loads pinned EasyMDE assets for Markdown editing.
+No frontend framework or Tailwind package is used. The public website loads pinned CDN assets only where needed: Cloudflare Turnstile, `intl-tel-input` for phone entry, and Superflow on public HTML pages during the client review period. The admin panel loads pinned EasyMDE assets for Markdown editing.
 
 ## Project Structure
 
@@ -83,11 +83,18 @@ CONTACT_DESTINATION
 EMAIL_WORKER service binding
 ```
 
+Optional alerting value:
+
+```text
+EMAIL_FAILURE_WEBHOOK_URL
+```
+
 For the public contact identity, use:
 
 ```text
 CONTACT_EMAIL=consultation@melkiorclerge.ca
 CONTACT_DESTINATION=<set as a local `.dev.vars` value and a Cloudflare Pages secret>
+EMAIL_FAILURE_WEBHOOK_URL=<optional HTTPS webhook for delivery failures>
 ```
 
 `.dev.vars` must never be committed.

@@ -4,12 +4,20 @@ import {
   githubBranch,
   githubContentsQuery,
   githubContentsUrl,
+  githubErrorResponse,
   githubFetch,
   jsonResponse,
   requireAdmin,
+  requireAdminJsonBody,
   textToBase64,
 } from "../../../lib/admin-auth.mjs";
 
+/**
+ * Return the current editable site content from GitHub.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON content payload.
+ */
 export async function onRequestGet(context) {
   const auth = await requireAdmin(context);
   if (!auth.ok) return auth.response;
@@ -23,16 +31,16 @@ export async function onRequestGet(context) {
   return jsonResponse({ content: JSON.parse(base64ToText(file.content)), sha: file.sha }, { headers: auth.headers });
 }
 
+/**
+ * Commit updated site content to GitHub after admin and CSRF checks.
+ *
+ * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @returns {Promise<Response>} JSON update result.
+ */
 export async function onRequestPut(context) {
-  const auth = await requireAdmin(context, { csrf: true, freshPermission: true });
-  if (!auth.ok) return auth.response;
-
-  let data;
-  try {
-    data = await context.request.json();
-  } catch {
-    return jsonResponse({ success: false, error: "Invalid JSON body." }, { status: 400, headers: auth.headers });
-  }
+  const adminRequest = await requireAdminJsonBody(context, { csrf: true, freshPermission: true });
+  if (!adminRequest.ok) return adminRequest.response;
+  const { auth, data } = adminRequest;
 
   if (!data?.content || typeof data.content !== "object") {
     return jsonResponse({ success: false, error: "Content object is required." }, { status: 400, headers: auth.headers });
@@ -53,11 +61,7 @@ export async function onRequestPut(context) {
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    return jsonResponse(
-      { success: false, error: error.message || "Unable to update content." },
-      { status: response.status, headers: auth.headers }
-    );
+    return githubErrorResponse(response, "Unable to update content.", auth.headers);
   }
 
   const result = await response.json();

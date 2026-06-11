@@ -1,13 +1,14 @@
 import { EmailMessage } from "cloudflare:email";
 import { emailDomain, errorSummary, notifyEmailFailure } from "../../lib/email-alert.mjs";
+import { jsonResponse } from "../../lib/http.mjs";
 
-function jsonResponse(body, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
+/**
+ * Deliver a raw MIME email through Cloudflare Email Sending and alert on failure.
+ *
+ * @param {{SEND_EMAIL: {send: Function}} & Record<string, unknown>} env - Email Worker environment.
+ * @param {{from: string, to: string, raw: string}} payload - Sender, recipient, and raw MIME message.
+ * @returns {Promise<void>} Resolves after Email Sending accepts the message.
+ */
 async function deliverEmail(env, payload) {
   const { from, to, raw } = payload;
   const metadata = {
@@ -32,6 +33,14 @@ async function deliverEmail(env, payload) {
 }
 
 export default {
+  /**
+   * Accept email handoffs and schedule delivery in the background.
+   *
+   * @param {Request} request - Service binding request from the main Worker.
+   * @param {Record<string, unknown>} env - Worker environment.
+   * @param {{waitUntil?: Function}} ctx - Worker execution context.
+   * @returns {Promise<Response>} Immediate acceptance or validation error response.
+   */
   async fetch(request, env, ctx) {
     if (request.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
