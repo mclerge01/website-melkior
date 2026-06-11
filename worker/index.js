@@ -52,7 +52,15 @@ async function handleApiRequest(request, env, ctx) {
     });
   }
 
-  return handler(pagesContext(request, env, ctx));
+  const response = await handler(pagesContext(request, env, ctx));
+  if (url.pathname.startsWith("/api/auth/") || url.pathname.startsWith("/api/admin/")) {
+    const headers = new Headers(response.headers);
+    headers.set("Cache-Control", "no-store");
+    headers.set("X-Robots-Tag", "noindex, nofollow");
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+  }
+
+  return response;
 }
 
 function middlewareContext(request, env, ctx) {

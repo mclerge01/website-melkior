@@ -323,11 +323,10 @@
         "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts à Montréal, Rive-Sud et Laval/Rive-Nord: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "description_heading": "Résumé",
         "pages_heading": "Navigation",
-        "admin_heading": "Administration",
+        "legal_heading": "Légal",
         "language_heading": "Langue",
         "privacy_label": "Politique de confidentialité",
         "legal_label": "Mentions légales",
-        "admin_label": "Administration",
         "copyright": "Tous droits réservés."
       },
       "privacy_page": {
@@ -618,11 +617,10 @@
         "description": "Melkior Clergé, Multi-Prêts mortgage broker in Montreal, South Shore and Laval/North Shore: purchase, pre-approval, renewal, refinancing, debt consolidation.",
         "description_heading": "Summary",
         "pages_heading": "Navigation",
-        "admin_heading": "Administration",
+        "legal_heading": "Legal",
         "language_heading": "Language",
         "privacy_label": "Privacy Policy",
         "legal_label": "Legal Notice",
-        "admin_label": "Administration",
         "copyright": "All rights reserved."
       },
       "privacy_page": {
