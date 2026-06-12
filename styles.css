@@ -1725,6 +1725,10 @@ img.testimonial-avatar {
   margin-bottom: 0;
 }
 
+.media-section .section-title {
+  color: var(--color-accent-dark);
+}
+
 .instagram-widget {
   overflow: hidden;
   width: min(100%, 68rem);
@@ -2258,9 +2262,13 @@ img.testimonial-avatar {
   display: grid;
   justify-items: center;
   gap: var(--field-gap);
-  color: var(--color-primary);
+  color: var(--color-text);
   font-size: var(--text-3xl);
   line-height: 1.1;
+}
+
+.modal-phone .form-modal-icon span {
+  color: var(--color-accent-dark);
 }
 
 .modal-phone-icon {
@@ -2275,7 +2283,7 @@ img.testimonial-avatar {
 }
 
 .modal-phone.modal-success .form-modal-icon {
-  color: var(--color-primary);
+  color: var(--color-text);
 }
 
 .modal-error .form-modal-icon {
