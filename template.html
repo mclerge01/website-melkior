@@ -103,7 +103,7 @@
           </div>
         </div>
         <div class="hero-portrait reveal-on-scroll reveal-from-right">
-          <img src="{{shared.images.hero}}"{{#if shared.images.hero_srcset}} srcset="{{shared.images.hero_srcset}}" sizes="{{shared.images.hero_sizes}}"{{/if}} alt="{{hero.image_alt}}" width="520" height="620">
+          <img src="{{shared.images.hero}}"{{#if shared.images.hero_srcset}} srcset="{{shared.images.hero_srcset}}" sizes="{{shared.images.hero_sizes}}"{{/if}} alt="{{hero.image_alt}}" width="520" height="520">
         </div>
       </div>
       <a class="scroll-cue" href="#services" aria-label="Scroll to services"><span></span></a>
@@ -156,19 +156,21 @@
     </section>
 
     <section id="guide" class="section guide-section">
-      <div class="container guide-grid split-grid">
-        <div class="reveal-on-scroll reveal-from-left">
-          <p class="eyebrow">{{guide.eyebrow}}</p>
-          <h2 class="section-title">{{guide.heading}}</h2>
-          <p class="section-lead">{{guide.intro}}</p>
-        </div>
-        <div class="guide-list stack-4 reveal-stagger">
+      <div class="container">
+        <p class="eyebrow">{{guide.eyebrow}}</p>
+        <div class="guide-grid split-grid">
+          <div class="reveal-on-scroll reveal-from-left">
+            <h2 class="section-title">{{guide.heading}}</h2>
+            <p class="section-lead">{{guide.intro}}</p>
+          </div>
+          <div class="guide-list stack-4 reveal-stagger">
 {{#each guide.items}}
-          <article class="guide-item card reveal-on-scroll">
-            <h3>{{title}}</h3>
-            <div class="text-light">{{description}}</div>
-          </article>
+            <article class="guide-item card reveal-on-scroll">
+              <h3>{{title}}</h3>
+              <div class="text-light">{{description}}</div>
+            </article>
 {{/each}}
+          </div>
         </div>
       </div>
     </section>
@@ -277,53 +279,55 @@
     </section>
 
     <section id="calculator" class="section calculator-section">
-      <div class="container calculator-grid split-grid">
-        <div class="reveal-on-scroll reveal-from-left">
-          <p class="eyebrow">{{calculator.eyebrow}}</p>
-          <h2 class="section-title">{{calculator.heading}}</h2>
-          <p class="section-lead">{{calculator.description}}</p>
-          <div class="calculator-info stack-4">
-            <div class="calculator-rate-note side-note stack-2">
-              <strong>{{calculator.rate_note_title}}</strong>
-              <p>{{calculator.rate_note}}</p>
-              <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
-            </div>
-            <div class="calculator-detail-list grid reveal-stagger">
-{{#each calculator.details}}
-              <div class="calculator-detail side-note reveal-on-scroll">
-                <strong>{{title}}</strong>
-                <p>{{description}}</p>
+      <div class="container">
+        <p class="eyebrow">{{calculator.eyebrow}}</p>
+        <div class="calculator-grid split-grid">
+          <div class="reveal-on-scroll reveal-from-left">
+            <h2 class="section-title">{{calculator.heading}}</h2>
+            <p class="section-lead">{{calculator.description}}</p>
+            <div class="calculator-info stack-4">
+              <div class="calculator-rate-note side-note stack-2">
+                <strong>{{calculator.rate_note_title}}</strong>
+                <p>{{calculator.rate_note}}</p>
+                <a href="{{calculator.rate_link_url}}" target="_blank" rel="noopener">{{calculator.rate_link_label}}</a>
               </div>
+              <div class="calculator-detail-list grid reveal-stagger">
+{{#each calculator.details}}
+                <div class="calculator-detail side-note reveal-on-scroll">
+                  <strong>{{title}}</strong>
+                  <p>{{description}}</p>
+                </div>
 {{/each}}
+              </div>
             </div>
           </div>
+          <form class="calculator-card card stack-5 reveal-on-scroll reveal-from-right" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
+            <label class="form-group">
+              <span class="form-label">{{calculator.amount_label}}</span>
+              <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
+            </label>
+            <label class="form-group">
+              <span class="form-label">{{calculator.rate_label}}</span>
+              <input class="input" type="text" inputmode="decimal" name="rate" value="{{calculator.default_rate}}" data-percent-input>
+            </label>
+            <label class="form-group">
+              <span class="form-label">{{calculator.amortization_label}}</span>
+              <input class="input" type="text" inputmode="numeric" name="years" value="{{calculator.default_years}}" data-years-input>
+            </label>
+            <label class="form-group">
+              <span class="form-label">{{calculator.frequency_label}}</span>
+              <select class="select" name="frequency">
+                <option value="monthly">{{calculator.monthly_label}}</option>
+                <option value="biweekly">{{calculator.biweekly_label}}</option>
+              </select>
+            </label>
+            <div class="calculator-result">
+              <span>{{calculator.result_label}}</span>
+              <strong data-payment-result>$0</strong>
+            </div>
+            <a class="btn btn-primary w-full" href="{{header.cta_link}}">{{calculator.cta_text}}</a>
+          </form>
         </div>
-        <form class="calculator-card card stack-5 reveal-on-scroll reveal-from-right" data-monthly-label="{{calculator.monthly_label}}" data-biweekly-label="{{calculator.biweekly_label}}">
-          <label class="form-group">
-            <span class="form-label">{{calculator.amount_label}}</span>
-            <input class="input" type="text" inputmode="numeric" name="amount" value="{{calculator.default_amount}}" data-money-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.rate_label}}</span>
-            <input class="input" type="text" inputmode="decimal" name="rate" value="{{calculator.default_rate}}" data-percent-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.amortization_label}}</span>
-            <input class="input" type="text" inputmode="numeric" name="years" value="{{calculator.default_years}}" data-years-input>
-          </label>
-          <label class="form-group">
-            <span class="form-label">{{calculator.frequency_label}}</span>
-            <select class="select" name="frequency">
-              <option value="monthly">{{calculator.monthly_label}}</option>
-              <option value="biweekly">{{calculator.biweekly_label}}</option>
-            </select>
-          </label>
-          <div class="calculator-result">
-            <span>{{calculator.result_label}}</span>
-            <strong data-payment-result>$0</strong>
-          </div>
-          <a class="btn btn-primary w-full" href="{{header.cta_link}}">{{calculator.cta_text}}</a>
-        </form>
       </div>
     </section>
 
@@ -373,10 +377,6 @@
                 <p><strong>{{contact.regions_label}}</strong><span>{{shared.regions}}</span></p>
               </div>
               <div class="contact-disclaimers stack-4">
-                <div class="contact-note card">
-                  <h3>{{contact.consultation_heading}}</h3>
-                  <p>{{contact.consultation_text}}</p>
-                </div>
                 <div class="contact-note regulatory-note card">
                   <h3>{{contact.regulatory_heading}}</h3>
                   <p>{{contact.regulatory_text}} <a href="{{shared.amf_register_url}}" target="_blank" rel="noopener">{{contact.regulatory_link_label}}</a></p>
@@ -464,7 +464,6 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <div>{{footer.service_area}}</div>
       <p>© {{currentYear}} {{footer.business_name}}. {{footer.copyright}}</p>
     </div>
   </footer>

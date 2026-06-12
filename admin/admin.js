@@ -240,7 +240,7 @@ const CONTENT_SECTIONS = [
   },
   {
     key: "calculator",
-    label: "Calculateur",
+    label: "Calculatrice",
     fields: [
       { key: "eyebrow", label: "Surtitre" },
       { key: "heading", label: "Titre", type: "markdown", full: true },
@@ -284,8 +284,6 @@ const CONTENT_SECTIONS = [
       { key: "email_label", label: "Libellé courriel" },
       { key: "address_label", label: "Libellé bureau" },
       { key: "regions_label", label: "Libellé régions" },
-      { key: "consultation_heading", label: "Encart consultation - titre" },
-      { key: "consultation_text", label: "Encart consultation - texte", type: "textarea", full: true },
       { key: "form_name_label", label: "Formulaire - nom" },
       { key: "form_name_placeholder", label: "Placeholder nom" },
       { key: "form_email_label", label: "Formulaire - courriel" },

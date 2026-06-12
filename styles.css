@@ -486,7 +486,7 @@ p {
   width: 7rem;
   height: 3rem;
   border-radius: var(--rounded-sm);
-  transition: transform var(--transition), opacity var(--transition);
+  transition: opacity var(--transition);
 }
 
 .nav-menu-network-logo {
@@ -497,7 +497,6 @@ p {
 .network-logo-link:focus-visible {
   color: inherit;
   text-decoration: none;
-  transform: translateY(-1px);
 }
 
 .network-logo {
@@ -588,8 +587,7 @@ p {
     color var(--transition),
     background-color var(--transition),
     border-color var(--transition),
-    box-shadow var(--transition),
-    transform var(--transition);
+    box-shadow var(--transition);
 }
 
 .language-link:hover,
@@ -598,7 +596,6 @@ p {
   border-color: currentColor;
   background: color-mix(in srgb, currentColor 18%, transparent);
   box-shadow: 0 0 0 1px currentColor;
-  transform: translateY(-1px);
 }
 
 .hamburger {
@@ -741,6 +738,19 @@ p {
   --button-hover-color: var(--color-primary-dark);
 }
 
+.hero .btn-outline {
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-color: var(--color-white);
+  --button-border: rgba(255, 255, 255, 0.34);
+  --button-hover-bg: rgba(255, 255, 255, 0.16);
+  --button-hover-border: rgba(255, 255, 255, 0.52);
+  --button-hover-color: var(--color-white);
+
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
 .site-nav.menu-open .nav-cta,
 .site-nav:has(.nav-menu.active) .nav-cta {
   --button-bg: var(--color-secondary-bright);
@@ -798,9 +808,10 @@ p {
   object-position: center top;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: var(--rounded-full);
-  background:
-    radial-gradient(circle at 50% 24%, rgba(var(--color-accent-rgb), 0.98), rgba(var(--color-accent-rgb), 0.74) 42%, rgba(var(--color-primary-rgb), 0.86) 100%);
-  box-shadow: 0 0 0 1px rgba(var(--color-accent-rgb), 0.18), 0 1.5rem 3rem rgba(0, 0, 0, 0.34);
+  background-color: var(--color-accent);
+  background-image:
+    radial-gradient(circle at 50% 22%, color-mix(in srgb, var(--color-accent) 86%, var(--color-white) 14%) 0%, var(--color-accent) 48%, color-mix(in srgb, var(--color-primary) 88%, var(--color-accent) 12%) 100%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 32%, transparent), 0 1.5rem 3rem rgba(0, 0, 0, 0.34);
 }
 
 .scroll-cue {
@@ -1033,7 +1044,11 @@ p {
 }
 
 .calculator-section .calculator-card {
-  color: var(--color-text);
+  border-color: var(--color-white-border);
+  color: var(--color-white);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    var(--color-white-subtle);
 }
 
 .calculator-section {
@@ -1911,6 +1926,8 @@ img.testimonial-avatar {
   border-left: 4px solid var(--color-accent-dark);
   border-radius: 0;
   color: var(--color-text-light);
+  font-size: var(--text-base);
+  line-height: 1.65;
   border-left-color: var(--color-accent-dark);
   background:
     linear-gradient(135deg, rgba(var(--color-secondary-rgb), 0.08), transparent 48%),
@@ -1924,16 +1941,9 @@ img.testimonial-avatar {
 }
 
 .contact-note a {
-  display: inline-block;
-  max-width: 100%;
-  min-height: 3rem;
-  padding-block: var(--space-2);
+  display: inline;
   color: var(--color-primary);
   font-weight: 800;
-}
-
-.privacy-note {
-  font-size: var(--text-sm);
 }
 
 .contact-info p {
@@ -2171,11 +2181,17 @@ img.testimonial-avatar {
   display: flex;
   flex-direction: column;
   gap: var(--content-gap-compact);
-  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: flex-end;
   margin-top: var(--component-gap);
   padding-top: var(--component-gap-compact);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
+  text-align: right;
+}
+
+.footer-bottom p {
+  white-space: nowrap;
 }
 
 .modal-backdrop {
@@ -2833,14 +2849,6 @@ img.testimonial-avatar {
   .guide-grid,
   .contact-grid {
     grid-template-columns: minmax(0, 0.85fr) minmax(24rem, 1fr);
-    align-items: start;
-  }
-
-  .calculator-grid {
-    align-items: center;
-  }
-
-  .contact-grid {
     align-items: center;
   }
 
@@ -2892,6 +2900,16 @@ img.testimonial-avatar {
 
   .footer-grid {
     grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+  .footer a {
+    min-height: auto;
+  }
+
+  .footer-nav,
+  .footer-legal,
+  .footer-language {
+    gap: var(--space-2);
   }
 
   .lg\:h-full { height: 100%; }
