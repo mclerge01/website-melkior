@@ -54,7 +54,7 @@
       <div class="nav-brand">
         <a class="site-logo" href="/{{locale_slug}}/">
           <span class="logo-mark">MC</span>
-          <span>
+          <span class="site-logo-text">
             <strong>{{header.site_name}}</strong>
             <small>{{header.credential}}</small>
           </span>
@@ -103,6 +103,7 @@
           </div>
         </div>
         <div class="hero-portrait reveal-on-scroll reveal-from-right">
+          <span class="hero-portrait-bg" aria-hidden="true"></span>
           <img src="{{shared.images.hero}}"{{#if shared.images.hero_srcset}} srcset="{{shared.images.hero_srcset}}" sizes="{{shared.images.hero_sizes}}"{{/if}} alt="{{hero.image_alt}}" width="520" height="520">
         </div>
       </div>

@@ -439,6 +439,12 @@ p {
   display: block;
 }
 
+.site-logo-text {
+  display: grid;
+  gap: 0.05rem;
+  line-height: 1.1;
+}
+
 .site-logo strong {
   font-size: var(--text-base);
   line-height: 1.1;
@@ -448,6 +454,7 @@ p {
   color: currentColor;
   opacity: 0.72;
   font-size: var(--text-xs);
+  line-height: 1.2;
   white-space: nowrap;
 }
 
@@ -786,12 +793,15 @@ p {
 }
 
 .hero-portrait {
+  --hero-portrait-size: clamp(13rem, 52vw, 21rem);
+
   position: relative;
   display: grid;
   order: 1;
   width: 100%;
   justify-self: center;
   place-items: center;
+  isolation: isolate;
 }
 
 .hero-portrait::before,
@@ -799,20 +809,37 @@ p {
   display: none;
 }
 
+.hero-portrait-bg {
+  position: absolute;
+  z-index: 0;
+  width: var(--hero-portrait-size);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--rounded-full);
+  background-color: var(--color-white);
+  background-image:
+    radial-gradient(
+      circle at center,
+      var(--color-white) 0%,
+      var(--color-white) 28%,
+      color-mix(in srgb, var(--color-white) 86%, transparent) 38%,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 56%,
+      color-mix(in srgb, var(--color-primary) 46%, transparent) 76%,
+      color-mix(in srgb, var(--color-primary) 64%, transparent) 100%
+    );
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 32%, transparent), 0 1.5rem 3rem rgba(0, 0, 0, 0.34);
+}
+
 .hero-portrait img {
   position: relative;
   z-index: 1;
-  width: clamp(13rem, 52vw, 21rem);
+  width: var(--hero-portrait-size);
   height: auto;
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center top;
-  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: var(--rounded-full);
-  background-color: var(--color-accent);
-  background-image:
-    radial-gradient(circle at 50% 22%, color-mix(in srgb, var(--color-accent) 86%, var(--color-white) 14%) 0%, var(--color-accent) 48%, color-mix(in srgb, var(--color-primary) 88%, var(--color-accent) 12%) 100%);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 32%, transparent), 0 1.5rem 3rem rgba(0, 0, 0, 0.34);
+  background: transparent;
 }
 
 .scroll-cue {
@@ -2893,12 +2920,13 @@ img.testimonial-avatar {
   }
 
   .hero-portrait {
+    --hero-portrait-size: min(100%, 31rem);
+
     width: min(100%, 34rem);
     justify-self: center;
   }
 
   .hero-portrait img {
-    width: min(100%, 31rem);
     height: auto;
     aspect-ratio: 1;
     border-radius: var(--rounded-full);
