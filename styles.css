@@ -914,6 +914,8 @@ p {
   grid-column: 1 / -1;
   display: inline-flex;
   justify-content: center;
+  justify-self: center;
+  width: min(100%, 18rem);
   min-height: 2.5rem;
   align-items: center;
   padding-inline: var(--space-5);
@@ -2704,6 +2706,8 @@ img.testimonial-avatar {
 
   .teaser-action {
     grid-column: auto;
+    justify-self: end;
+    width: auto;
   }
 
   .contact-action-grid {
