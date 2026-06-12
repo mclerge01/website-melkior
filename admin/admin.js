@@ -400,6 +400,8 @@ function loginErrorMessage(error) {
     invalid_state: "La session de connexion a expiré. Réessayez.",
     oauth_not_configured: "L'application GitHub OAuth n'est pas configurée.",
     token_exchange_failed: "GitHub n'a pas retourné de jeton valide.",
+    token_code_invalid: "Le code GitHub a expiré ou a déjà été utilisé. Réessayez.",
+    oauth_redirect_mismatch: "L'URL de rappel GitHub ne correspond pas à la configuration OAuth.",
     not_contributor: "Ce compte GitHub n'a pas accès en écriture au dépôt.",
     login_failed: "La connexion a échoué.",
   };

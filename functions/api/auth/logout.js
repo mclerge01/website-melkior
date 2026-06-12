@@ -12,6 +12,6 @@ export async function onRequestPost(context) {
 
   return jsonResponse(
     { success: true },
-    { headers: { "Set-Cookie": clearSessionCookie(context.request) } }
+    { headers: { "Set-Cookie": clearSessionCookie(context.request, context.env) } }
   );
 }

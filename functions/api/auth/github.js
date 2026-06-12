@@ -1,4 +1,4 @@
-import { addSetCookies, createOauthChallenge, jsonResponse } from "../../../lib/admin-auth.mjs";
+import { addSetCookies, adminPublicUrl, createOauthChallenge, jsonResponse } from "../../../lib/admin-auth.mjs";
 
 /**
  * Start GitHub OAuth with PKCE for the admin panel.
@@ -12,8 +12,8 @@ export async function onRequestGet(context) {
     return jsonResponse({ success: false, error: "GITHUB_CLIENT_ID is not configured." }, { status: 500 });
   }
 
-  const challenge = await createOauthChallenge(context.request);
-  const redirectUri = new URL("/api/auth/callback", context.request.url).toString();
+  const challenge = await createOauthChallenge(context.request, context.env);
+  const redirectUri = adminPublicUrl(context.env, context.request, "/api/auth/callback");
   const url = new URL("https://github.com/login/oauth/authorize");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", redirectUri);
