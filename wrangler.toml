@@ -16,18 +16,29 @@ persist = true
 [vars]
 GITHUB_CLIENT_ID = "Ov23lii7Cd2Hi6BAk24W"
 TURNSTILE_SITE_KEY = "0x4AAAAAADiKO0ta5fWUPZ6z"
-CONTACT_EMAIL = "consultation@melkiorclerge.ca"
+
+[secrets]
+required = [
+  "ADMIN_SESSION_SECRET",
+  "CONTACT_DESTINATION",
+  "GITHUB_CLIENT_SECRET",
+  "TURNSTILE_SECRET",
+]
 
 [assets]
 directory = "./dist"
 binding = "ASSETS"
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
-run_worker_first = ["/api/*", "/", "/fr", "/fr/*", "/en", "/en/*"]
+run_worker_first = ["/*"]
 
-[[services]]
-binding = "EMAIL_WORKER"
-service = "email-sender"
+[[send_email]]
+name = "SEND_EMAIL"
+allowed_sender_addresses = ["consultation@melkiorclerge.ca"]
+
+[[kv_namespaces]]
+binding = "CONTACT_HEALTH"
+id = "51fe960e1a294781a99db54697a02076"
 
 [[routes]]
 pattern = "melkiorclerge.ca"

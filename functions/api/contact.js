@@ -1,5 +1,9 @@
+import { EmailMessage } from "cloudflare:email";
+import { CONTACT_FORM_FROM_EMAIL } from "../../lib/email-config.mjs";
+import { recordContactFormFailure } from "../../lib/contact-health.mjs";
 import { emailDomain, errorSummary, notifyEmailFailure } from "../../lib/email-alert.mjs";
 import { jsonResponse } from "../../lib/http.mjs";
+import { createMultipartEmail } from "../../lib/mime-email.mjs";
 import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../lib/phone.mjs";
 
 const MESSAGES = {
@@ -65,69 +69,64 @@ function errorResponse(error, status = 400) {
   return jsonResponse({ success: false, error }, status);
 }
 
-function base64Utf8(value) {
-  const bytes = new TextEncoder().encode(value);
-  let binary = "";
-  for (let i = 0; i < bytes.length; i += 0x8000) {
-    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+function contactLogMetadata({ locale, subject, referral, message }) {
+  return {
+    locale,
+    subject_length: subject.length,
+    referral_provided: Boolean(referral),
+    message_length: message.length,
+  };
+}
+
+function trackContactFormFailure(context, failure) {
+  const tracking = recordContactFormFailure(context.env, failure);
+  if (context.waitUntil) {
+    context.waitUntil(tracking);
+    return;
   }
-  return btoa(binary);
+  tracking.catch((error) => {
+    console.error({ event: "contact_form_failure_tracking_unhandled", error: errorSummary(error) });
+  });
 }
 
 /**
- * Hand off the prepared MIME message to the email Worker service binding.
+ * Send the prepared MIME message through Cloudflare Email Sending.
  *
- * @param {{env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{env: Record<string, unknown>}} context - Worker handler context.
  * @param {{from: string, to: string, raw: string}} payload - Email sender, recipient, and raw MIME body.
  * @param {Record<string, unknown>} metadata - Log-safe contact form metadata.
- * @returns {Promise<void>} Resolves when the email Worker accepts the handoff.
+ * @returns {Promise<void>} Resolves after Email Sending accepts the message.
  */
-async function dispatchContactEmail(context, payload, metadata) {
+async function deliverContactEmail(context, payload, metadata) {
+  const deliveryMetadata = {
+    from_domain: emailDomain(payload.from),
+    to_domain: emailDomain(payload.to),
+    raw_bytes: payload.raw.length,
+    ...metadata,
+  };
+
   try {
-    const response = await context.env.EMAIL_WORKER.fetch("https://email-worker/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) throw new Error(`Email worker rejected message with status ${response.status}`);
-    console.log({ event: "contact_email_handoff", ...metadata });
+    await context.env.SEND_EMAIL.send(new EmailMessage(payload.from, payload.to, payload.raw));
+    console.log({ event: "contact_email_sent", ...deliveryMetadata });
   } catch (error) {
     const failure = {
-      event: "contact_email_handoff_failed",
-      from_domain: emailDomain(payload.from),
-      to_domain: emailDomain(payload.to),
-      raw_bytes: payload.raw.length,
+      event: "contact_email_delivery_failed",
+      reason: "email_send_failed",
       error: errorSummary(error),
-      ...metadata,
+      ...deliveryMetadata,
     };
     console.error(failure);
+    await recordContactFormFailure(context.env, failure);
     await notifyEmailFailure(
       context.env,
       failure,
-      "Melkior contact email handoff or forwarding failed. Check Cloudflare Workers Logs for event=contact_email_handoff_failed."
+      "Melkior contact email failed. Check Cloudflare Workers Logs for event=contact_email_delivery_failed."
     );
     throw error;
   }
 }
 
-/**
- * Build the raw multipart MIME message sent through Cloudflare Email Sending.
- *
- * @param {{from: string, to: string, replyTo: string, subject: string, body: string}} message - Email fields.
- * @returns {string} Raw RFC 5322/MIME message.
- */
-function createMimeMessage({ from, to, replyTo, subject, body }) {
-  const boundary = `----=_Melkior_${Date.now().toString(36)}`;
-  const headers = [
-    `From: Formulaire Melkior <${from}>`,
-    `To: ${to}`,
-    replyTo ? `Reply-To: ${replyTo}` : "",
-    `Subject: =?UTF-8?B?${base64Utf8(subject)}?=`,
-    `Date: ${new Date().toUTCString()}`,
-    "MIME-Version: 1.0",
-    `Content-Type: multipart/alternative; boundary="${boundary}"`,
-  ].filter(Boolean).join("\r\n");
-
+function contactHtmlFromBody(body) {
   const html = body
     .split("\n")
     .map((line) => {
@@ -139,23 +138,7 @@ function createMimeMessage({ from, to, replyTo, subject, body }) {
     })
     .join("\n");
 
-  const plainPart = [
-    `--${boundary}`,
-    "Content-Type: text/plain; charset=UTF-8",
-    "Content-Transfer-Encoding: 8bit",
-    "",
-    body,
-  ].join("\r\n");
-
-  const htmlPart = [
-    `--${boundary}`,
-    "Content-Type: text/html; charset=UTF-8",
-    "Content-Transfer-Encoding: 8bit",
-    "",
-    `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;color:#181818">${html}</body></html>`,
-  ].join("\r\n");
-
-  return [headers, "", plainPart, htmlPart, `--${boundary}--`].join("\r\n");
+  return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;color:#181818">${html}</body></html>`;
 }
 
 /**
@@ -204,7 +187,14 @@ export async function onRequestPost(context) {
   if (!turnstileToken) return errorResponse(msg.turnstile, 403);
   const formattedPhone = formatContactPhoneNumber(phone);
 
-  if (!context.env.TURNSTILE_SECRET) return errorResponse(msg.config, 500);
+  if (!context.env.TURNSTILE_SECRET) {
+    trackContactFormFailure(context, {
+      event: "contact_form_unavailable",
+      reason: "missing_turnstile_secret",
+      locale,
+    });
+    return errorResponse(msg.config, 500);
+  }
 
   let turnstileData;
   try {
@@ -217,17 +207,38 @@ export async function onRequestPost(context) {
         remoteip: context.request.headers.get("CF-Connecting-IP"),
       }),
     });
-    if (!turnstileRes.ok) return errorResponse(msg.turnstileFailed, 403);
+    if (!turnstileRes.ok) {
+      trackContactFormFailure(context, {
+        event: "contact_form_unavailable",
+        reason: "turnstile_http_error",
+        error: `Turnstile HTTP ${turnstileRes.status}`,
+        locale,
+      });
+      return errorResponse(msg.turnstileFailed, 403);
+    }
     turnstileData = await turnstileRes.json();
   } catch (error) {
     console.error("Turnstile verification error:", error);
+    trackContactFormFailure(context, {
+      event: "contact_form_unavailable",
+      reason: "turnstile_request_failed",
+      error: errorSummary(error),
+      locale,
+    });
     return errorResponse(msg.internal, 500);
   }
   if (!turnstileData.success) return errorResponse(msg.turnstileFailed, 403);
 
-  const fromEmail = context.env.CONTACT_EMAIL;
+  const fromEmail = CONTACT_FORM_FROM_EMAIL;
   const toEmail = context.env.CONTACT_DESTINATION;
-  if (!fromEmail || !toEmail) return errorResponse(msg.config, 500);
+  if (!toEmail) {
+    trackContactFormFailure(context, {
+      event: "contact_form_unavailable",
+      reason: "missing_contact_destination",
+      locale,
+    });
+    return errorResponse(msg.config, 500);
+  }
 
   const timestamp = new Date().toLocaleString(locale === "fr-CA" ? "fr-CA" : "en-CA", {
     timeZone: "America/Toronto",
@@ -255,41 +266,44 @@ export async function onRequestPost(context) {
     `${msg.received} ${timestamp}`,
   ].filter(Boolean).join("\n");
 
-  const raw = createMimeMessage({
+  const raw = createMultipartEmail({
     from: fromEmail,
     to: toEmail,
+    fromName: "Formulaire Melkior",
     replyTo: email,
     subject: `${msg.emailTitle} - ${name}`,
-    body,
+    text: body,
+    html: contactHtmlFromBody(body),
+    xMailer: "Melkior Contact Form",
   });
 
   try {
-    if (context.env.EMAIL_WORKER) {
-      const handoff = dispatchContactEmail(
+    if (context.env.SEND_EMAIL) {
+      const delivery = deliverContactEmail(
         context,
         { from: fromEmail, to: toEmail, raw },
-        {
-          locale,
-          subject,
-          referral: referral || "not_provided",
-          message_length: message.length,
-        }
+        contactLogMetadata({ locale, subject, referral, message })
       );
       if (context.waitUntil) {
-        context.waitUntil(handoff);
+        context.waitUntil(delivery);
       } else {
-        await handoff;
+        await delivery;
       }
     } else if (isLocalDevelopmentRequest(context.request)) {
       console.log("Contact form dev mode:", {
         locale,
-        subject,
-        referral: referral || "not_provided",
+        subjectLength: subject.length,
+        referralProvided: Boolean(referral),
         hasPhone: Boolean(formattedPhone),
         emailDomain: email.includes("@") ? email.split("@").pop() : "",
         messageLength: message.length,
       });
     } else {
+      trackContactFormFailure(context, {
+        event: "contact_form_unavailable",
+        reason: "missing_send_email_binding",
+        locale,
+      });
       return errorResponse(msg.config, 500);
     }
   } catch (error) {

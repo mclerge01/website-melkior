@@ -1,0 +1,14 @@
+# Copy this file to .dev.vars in this directory for local health-check testing.
+# .dev.vars is gitignored. Never commit secrets.
+
+# Private final recipient mailbox. Do not use the public contact alias here.
+CONTACT_DESTINATION=
+
+# Optional alert recipient override; defaults to CONTACT_DESTINATION.
+EMAIL_HEALTH_CHECK_RECIPIENT=
+
+# Token with Cloudflare Analytics Read permission for the melkiorclerge.ca zone.
+CLOUDFLARE_ANALYTICS_TOKEN=
+
+# Optional HTTPS webhook for alert-delivery failures.
+EMAIL_FAILURE_WEBHOOK_URL=

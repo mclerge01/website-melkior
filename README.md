@@ -2,21 +2,33 @@
 
 Bilingual, lightweight website for Melkior Clergé, mortgage broker with Multi-Prêts.
 
-The site is intentionally small and framework-free: static HTML generated from JSON content, hand-written CSS, vanilla JavaScript, Cloudflare Pages Functions, and a GitHub-backed admin area.
+The site is intentionally small and framework-free: static HTML generated from JSON content, hand-written CSS, vanilla JavaScript, Cloudflare Worker handlers, and a GitHub-backed admin area.
 
 ## Stack
 
 - Node.js build script
 - Vanilla HTML, CSS, and JavaScript
 - `marked` for build-time Markdown rendering
-- Cloudflare Pages Functions for routing, admin auth, previews, and contact form handling
+- Cloudflare Worker with static assets for routing, admin auth, previews, security headers, and contact form handling
 - Cloudflare Turnstile for contact form anti-spam verification
-- Cloudflare Email Sending Worker for contact emails
+- Cloudflare Email Sending for contact emails
 - Fouita Instagram widget embed for the media section
 - GitHub OAuth for admin login
 - EasyMDE for admin-only Markdown editing
 
 No frontend framework or Tailwind package is used. The public website loads pinned CDN assets only where needed: Cloudflare Turnstile, `intl-tel-input` for phone entry, and Superflow on public HTML pages during the client review period. The admin panel loads pinned EasyMDE assets for Markdown editing.
+
+## Production Architecture
+
+The public website is a Cloudflare Worker serving generated static assets from `dist/` through the `ASSETS` binding. `run_worker_first = ["/*"]` in `wrangler.toml` sends every website request through `worker/index.js` before static asset fallback, so security headers and route-specific CSP are applied consistently to public pages, admin pages, API responses, and static files.
+
+API handlers still live under `functions/` using a Pages Function-compatible shape, but they are dispatched by the Worker. Contact-form email is sent directly from the main Worker through the Cloudflare Email Sending `SEND_EMAIL` binding. The previous separate email relay service binding is intentionally removed.
+
+A separate scheduled-only Worker lives under `workers/email-health-check/`. It has no public route and exists only to run the weekly Cloudflare Email Service health check. Keeping that monitor separate means the public website Worker does not carry the Cloudflare Analytics API token needed to query Email Service delivery and routing analytics.
+
+Both Workers share the `CONTACT_HEALTH` Workers KV namespace. The public website Worker writes a short, log-safe record when the contact form has a website-side send/configuration failure. The scheduled Worker reads those records in its weekly check. Records contain counts, reason codes, domains, and sizes only; they do not store visitor names, visitor email addresses, subjects, or message bodies.
+
+CSP and static fallback header rules are authored in `lib/security-headers.mjs`. `npm run build` generates `dist/_headers` from that module because Cloudflare requires emitted `_headers` header values to stay on one line.
 
 ## Project Structure
 
@@ -28,13 +40,14 @@ build.js                       Static page, sitemap, and robots generator
 styles.css                     Hand-written utility/component CSS
 script.js                      Public navigation, language, calculator, and form behavior
 admin/                         Admin editor UI
-functions/                     Cloudflare Pages Functions
-lib/                           Rendering, i18n, and admin auth helpers
-workers/email-sender/          Cloudflare Email Routing Worker
-dist/                          Ignored build output served by Cloudflare Pages
+functions/                     Worker-dispatched API handlers
+lib/                           Rendering, i18n, admin auth, and security helpers
+workers/email-health-check/    Scheduled-only Email Service monitoring Worker
+CONTACT_HEALTH KV              Contact-form failure markers shared by both Workers
+dist/                          Ignored build output served by the Worker ASSETS binding
 ```
 
-Generated public HTML, sitemap, robots file, copied assets, and the admin shell are written to `dist/` by `npm run build`. They are not committed.
+Generated public HTML, sitemap, robots file, `_headers`, copied assets, and the admin shell are written to `dist/` by `npm run build`. They are not committed.
 
 ## Local Development
 
@@ -50,7 +63,7 @@ Build static files:
 npm run build
 ```
 
-Run the Cloudflare Pages dev server:
+Run the Wrangler dev server:
 
 ```bash
 npm run dev
@@ -78,9 +91,8 @@ GITHUB_CLIENT_SECRET
 ADMIN_SESSION_SECRET
 TURNSTILE_SITE_KEY
 TURNSTILE_SECRET
-CONTACT_EMAIL
 CONTACT_DESTINATION
-EMAIL_WORKER service binding
+SEND_EMAIL binding
 ```
 
 Optional alerting value:
@@ -89,15 +101,31 @@ Optional alerting value:
 EMAIL_FAILURE_WEBHOOK_URL
 ```
 
-For the public contact identity, use:
+The public contact/sender alias is:
 
 ```text
-CONTACT_EMAIL=consultation@melkiorclerge.ca
-CONTACT_DESTINATION=<set as a local `.dev.vars` value and a Cloudflare Pages secret>
+consultation@melkiorclerge.ca
+```
+
+This is public and is not configured through `.dev.vars`. Keep it aligned in `content/settings.json`, `functions/api/contact.js`, and the `allowed_sender_addresses` entry for the `SEND_EMAIL` binding in `wrangler.toml`.
+
+For the main website Worker, the private destination mailbox is configured only as a local `.dev.vars` value and a Cloudflare Worker secret:
+
+```text
+CONTACT_DESTINATION=<final recipient mailbox; never the public alias>
 EMAIL_FAILURE_WEBHOOK_URL=<optional HTTPS webhook for delivery failures>
 ```
 
 `.dev.vars` must never be committed.
+
+For local testing of the scheduled health-check Worker, copy `workers/email-health-check/.dev.vars.example` to `workers/email-health-check/.dev.vars` and fill in:
+
+```text
+CONTACT_DESTINATION=<final recipient mailbox; never the public alias>
+CLOUDFLARE_ANALYTICS_TOKEN=<API token with Analytics Read permission>
+EMAIL_HEALTH_CHECK_RECIPIENT=<optional alert recipient override; defaults to CONTACT_DESTINATION>
+EMAIL_FAILURE_WEBHOOK_URL=<optional HTTPS webhook for alert-delivery failures>
+```
 
 The Instagram media section uses the Fouita iframe widget URL saved in `content/settings.json` under `shared.social.instagram_embed_url`. The public JavaScript delays loading the iframe until a likely human visitor scrolls or interacts with the page, so crawlers do not spend widget views.
 
@@ -176,34 +204,116 @@ The public contact form posts to:
 /api/contact
 ```
 
-The Pages Function validates required fields, verifies Turnstile server-side, sanitizes values, and schedules the handoff from `consultation@melkiorclerge.ca` to the `EMAIL_WORKER` binding in the background. The visitor receives success as soon as that handoff is queued by the website, not after Cloudflare Email Sending finishes delivery.
+The Worker-dispatched handler validates required fields, verifies Turnstile server-side, sanitizes values, and schedules delivery from `consultation@melkiorclerge.ca` through the `SEND_EMAIL` binding in the background. The visitor receives success as soon as that delivery is queued by the website, not after the destination mailbox places the message in the inbox.
 
-If handoff or background delivery fails, the Workers log `contact_email_handoff_failed` or `email_delivery_failed` and rethrow through `ctx.waitUntil` so the failure is visible in Cloudflare Workers Logs/Observability. For direct notification outside the email path, configure the same HTTPS webhook secret on both the main site Worker and the `email-sender` Worker:
+Set `CONTACT_DESTINATION` to the final recipient mailbox, not to the Cloudflare-routed public alias. Sending to the alias first adds an Email Routing forwarding hop before the message reaches the real mailbox, which can make downstream spam filters more suspicious. The destination mailbox must never be added to public content, committed source, `wrangler.toml` vars, or generated `dist/` files.
+
+If background delivery fails, the Worker logs `contact_email_delivery_failed` and rethrows through `ctx.waitUntil` so the failure is visible in Cloudflare Workers Logs/Observability. For direct notification outside the email path, configure an HTTPS webhook secret on the main site Worker:
 
 ```bash
 npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config wrangler.toml
-npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config workers/email-sender/wrangler.toml
 ```
 
 Use a Slack, Discord, Google Chat, PagerDuty, or monitoring webhook URL. The Worker posts both `text` and `content` fields so common webhook receivers can notify Melkior even when email delivery itself is broken.
 
-Local dev can run without a connected email worker, but full delivery testing requires Cloudflare bindings and valid `.dev.vars` values.
+Local dev can run without a connected email binding, but full delivery testing requires the Cloudflare `SEND_EMAIL` binding and valid `.dev.vars` values. There is no separate email relay Worker to deploy or bind.
+
+### Weekly email health check
+
+The separate `email-health-check` Worker has a weekly scheduled health check every Monday at 15:00 UTC. It queries Cloudflare Email Service analytics and the shared `CONTACT_HEALTH` KV namespace for the previous seven UTC dates. It sends an email only when there is something actionable: contact-form website errors, outbound delivery failures, rejected/failed sends, inbound routing rejections/drops/errors, a query failure, or missing monitoring configuration. A clean week writes a `weekly_email_health_check_ok` log entry and sends no email.
+
+When an alert is sent, it goes to `EMAIL_HEALTH_CHECK_RECIPIENT` when set, otherwise `CONTACT_DESTINATION`. The email is written in French for a non-technical client: it says this is a website email warning, gives easy counts, and tells Melkior to forward it to the website developer if he sees it.
+
+It includes aggregate counts only:
+
+- contact-form website-side errors
+- website emails that could not be sent or delivered
+- forwarded emails that were blocked, dropped, or could not be delivered
+- short technical details for the website developer
+
+It deliberately does not include visitor names, email addresses, subjects, or message bodies. Cloudflare Email Service can report whether a message was delivered to the recipient mail server, bounced, rejected, or failed; it cannot see whether a successfully delivered message landed in the inbox or spam folder.
+
+To enable the weekly health check fully, set its secrets on the health-check Worker:
+
+```bash
+npx wrangler secret put CONTACT_DESTINATION --config workers/email-health-check/wrangler.toml
+npx wrangler secret put CLOUDFLARE_ANALYTICS_TOKEN --config workers/email-health-check/wrangler.toml
+```
+
+Optional health-check Worker secrets:
+
+```bash
+npx wrangler secret put EMAIL_HEALTH_CHECK_RECIPIENT --config workers/email-health-check/wrangler.toml
+npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config workers/email-health-check/wrangler.toml
+```
+
+The analytics token needs Cloudflare Analytics Read permission for the `melkiorclerge.ca` zone. The non-secret `CLOUDFLARE_ZONE_ID` is tracked in `workers/email-health-check/wrangler.toml`. `CONTACT_DESTINATION` is declared as a required Worker secret so deploys cannot publish a monitor with nowhere to send alerts. `CLOUDFLARE_ANALYTICS_TOKEN` is intentionally not deploy-blocking: if it is missing, the weekly scheduled job sends an action-needed configuration alert instead of silently failing.
+
+DMARC reporting is separate from the contact-form health check. The health-check Worker watches emails sent or routed by Cloudflare Email Service. DMARC reports are for a different question: whether other mail providers are seeing anyone try to fake email from `melkiorclerge.ca`. The current Cloudflare DNS record already uses `p=reject` and sends those reports to a Cloudflare-managed reporting address, so there is no extra website code to add. Review those reports in **Cloudflare > Email > DMARC Management** when checking for spoofing or mail-authentication problems.
+
+### Cloudflare security rules
+
+In **Cloudflare > Security > WAF > Rate limiting rules**, configure conservative burst limits:
+
+1. Contact form: match `https://melkiorclerge.ca/api/contact*`, method `POST`, block or managed-challenge after more than 10 requests per minute from the same IP for 10 minutes.
+2. GitHub auth: match `https://melkiorclerge.ca/api/auth/*`, methods `GET` and `POST`, block after more than 30 requests per minute from the same IP for 10 minutes.
+3. Admin API probing: match `https://melkiorclerge.ca/api/admin/*`, all methods, block after more than 120 requests per minute from the same IP for 5 minutes.
+
+Keep Cloudflare Managed Rules and DDoS L7 rulesets enabled. Cloudflare Access is intentionally not part of this setup; the app itself enforces GitHub repository write access before creating admin sessions.
+
+### Deliverability checks
+
+If contact-form messages reach the destination mailbox but land in spam, check the sending reputation and authentication path before changing form logic:
+
+1. Confirm `CONTACT_DESTINATION` points directly to the final mailbox rather than the `consultation@melkiorclerge.ca` public/routing alias.
+2. In Cloudflare, open **Compute & AI > Email Service > Email Sending > Analytics** for `melkiorclerge.ca` and review delivery status, bounces, complaints, spam flags, and authentication results.
+3. Confirm Email Sending DNS records are present, especially the `cf-bounce` SPF/DKIM records Cloudflare shows for the sending domain. Email Routing records alone are not enough for best outbound deliverability.
+4. Keep DMARC at `p=reject`; if legitimate mail starts failing, review the Cloudflare DMARC reports and the Email Sending SPF/DKIM records before relaxing the policy.
+5. Ask the recipient mailbox owner to mark one legitimate contact-form message as "not spam" and add `consultation@melkiorclerge.ca` to trusted senders while domain reputation warms up.
 
 ## Deployment
 
-Recommended Cloudflare Pages build command:
+Build the static assets first:
 
 ```bash
 npm run build
 ```
 
-Recommended output directory:
+Then deploy the Worker and static assets:
 
-```text
-dist
+```bash
+npx wrangler deploy --config wrangler.toml
 ```
 
-Cloudflare Pages should serve the generated `dist/` directory. The repository tracks templates, content, functions, assets, and admin source files only.
+Deploy the scheduled health-check Worker separately:
+
+```bash
+npx wrangler deploy --config workers/email-health-check/wrangler.toml
+```
+
+Required production secrets for the main website Worker:
+
+```bash
+npx wrangler secret put GITHUB_CLIENT_SECRET --config wrangler.toml
+npx wrangler secret put ADMIN_SESSION_SECRET --config wrangler.toml
+npx wrangler secret put TURNSTILE_SECRET --config wrangler.toml
+npx wrangler secret put CONTACT_DESTINATION --config wrangler.toml
+```
+
+Production secrets for the health-check Worker:
+
+```bash
+npx wrangler secret put CONTACT_DESTINATION --config workers/email-health-check/wrangler.toml
+npx wrangler secret put CLOUDFLARE_ANALYTICS_TOKEN --config workers/email-health-check/wrangler.toml
+```
+
+`CONTACT_DESTINATION` must be set before deploy because the monitor needs an alert recipient. `CLOUDFLARE_ANALYTICS_TOKEN` is needed for Email Service analytics, but the Worker can still deploy without it and will send a configuration warning until it is added.
+
+`EMAIL_FAILURE_WEBHOOK_URL` is an optional secret on both Workers. `EMAIL_HEALTH_CHECK_RECIPIENT` is an optional secret on the health-check Worker. `GITHUB_CLIENT_ID`, `TURNSTILE_SITE_KEY`, the `CONTACT_HEALTH` KV namespace id, and the allowed public sender address are non-secret values in `wrangler.toml`; `CLOUDFLARE_ZONE_ID` is a non-secret value in `workers/email-health-check/wrangler.toml`.
+
+The `secrets.required` entries in each Wrangler config list required secret names only. Their values are encrypted Worker secrets and must not be stored in `wrangler.toml`.
+
+Cloudflare serves the generated `dist/` directory through the Worker `ASSETS` binding. The repository tracks templates, content, functions, assets, and admin source files only.
 
 ## Verification Checklist
 
@@ -211,7 +321,9 @@ Before committing meaningful changes:
 
 ```bash
 npm run build
-node --check script.js
+node --check build.js worker/index.js workers/email-health-check/index.js functions/api/contact.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js
+npx wrangler deploy --dry-run --config wrangler.toml
+npx wrangler deploy --dry-run --config workers/email-health-check/wrangler.toml
 git diff --check
 ```
 

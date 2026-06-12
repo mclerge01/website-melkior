@@ -11,6 +11,7 @@ import {
 } from "./lib/i18n.mjs";
 import { prepareLocaleData } from "./lib/page-data.mjs";
 import { processMarkdown, render } from "./lib/render.mjs";
+import { renderHeadersFile } from "./lib/security-headers.mjs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = join(ROOT, "dist");
@@ -316,10 +317,11 @@ const settings = processMarkdown(JSON.parse(read("content/settings.json")));
 const template = read("template.html");
 const legalTemplate = read("template-legal.html");
 
-for (const path of ["styles.css", "script.js", "_headers", "assets", "admin"]) {
+for (const path of ["styles.css", "script.js", "assets", "admin"]) {
   copyStatic(path);
 }
 write("favicon.svg", generateFavicon(settings.theme));
+write("_headers", renderHeadersFile());
 await minifyStaticAssets();
 write("admin/preview-template.txt", template);
 

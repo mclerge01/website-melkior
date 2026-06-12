@@ -2098,7 +2098,7 @@ function showConfirmation({
 function showPublishConfirmation() {
   return showConfirmation({
     title: "Publier les modifications?",
-    message: "Les changements seront enregistrés dans GitHub. Cloudflare Pages redéploiera le site ensuite.",
+    message: "Les changements seront enregistrés dans GitHub. Cloudflare redéploiera le site ensuite.",
     confirmText: "Publier",
   });
 }
@@ -2129,7 +2129,7 @@ async function publish() {
       body: { content, sha: contentSha },
     });
     contentSha = data.sha || contentSha;
-    markClean("connected", "Publié", "Cloudflare Pages redéploiera le site.");
+    markClean("connected", "Publié", "Cloudflare redéploiera le site.");
     showToast("Publié. Le site sera redéployé automatiquement.");
   } catch (error) {
     setStatus("error", "Erreur de publication", error.message);
@@ -2139,11 +2139,13 @@ async function publish() {
 
 async function preview() {
   const locale = content.site?.default_locale || "fr-CA";
-  const previewWindow = window.open("about:blank", "_blank", "noopener");
+  const previewWindow = window.open("about:blank", "_blank");
   if (!previewWindow) {
     showToast("Impossible d’ouvrir l’aperçu. Autorisez les fenêtres pop-up.", "error");
     return;
   }
+  previewWindow.opener = null;
+  writePreviewShell(previewWindow);
 
   try {
     setStatus("saving", "Préparation de l’aperçu...", LOCALES.find((item) => item.key === locale)?.label || locale);
@@ -2152,9 +2154,7 @@ async function preview() {
       csrf: true,
       body: { content, locale },
     });
-    const previewUrl = URL.createObjectURL(new Blob([html], { type: "text/html" }));
-    previewWindow.location.replace(previewUrl);
-    window.setTimeout(() => URL.revokeObjectURL(previewUrl), 60000);
+    renderSandboxedPreview(previewWindow, html);
     if (hasPendingChanges()) {
       markDirty();
     } else {
@@ -2165,6 +2165,48 @@ async function preview() {
     showToast(error.message, "error");
     setStatus("error", "Erreur d’aperçu", error.message);
   }
+}
+
+function writePreviewShell(previewWindow) {
+  const fallbackBg = resolvedColorValue("white");
+  const shellBg = resolvedColorValue("bg-light", fallbackBg);
+  const frameBg = fallbackBg;
+  previewWindow.document.open();
+  previewWindow.document.write(`<!doctype html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apercu</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: ${shellBg};
+    }
+
+    .preview-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: ${frameBg};
+    }
+  </style>
+</head>
+<body>
+  <iframe id="preview-frame" class="preview-frame" title="Apercu du site" sandbox=""></iframe>
+</body>
+</html>`);
+  previewWindow.document.close();
+}
+
+function renderSandboxedPreview(previewWindow, html) {
+  const frame = previewWindow.document.getElementById("preview-frame");
+  if (!frame) throw new Error("La fenetre d'aperçu n'est pas disponible.");
+  frame.srcdoc = html;
 }
 
 async function logout() {

@@ -9,6 +9,14 @@ import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } fr
 import { onRequestGet as adminImagesGet } from "../functions/api/admin/images.js";
 import { onRequestGet as adminSessionGet } from "../functions/api/admin/session.js";
 import { jsonResponse } from "../lib/http.mjs";
+import {
+  ADMIN_CONTENT_SECURITY_POLICY,
+  API_CONTENT_SECURITY_POLICY,
+  PUBLIC_CONTENT_SECURITY_POLICY,
+  REVIEW_CONTENT_SECURITY_POLICY,
+  SECURITY_HEADERS,
+  SVG_CONTENT_SECURITY_POLICY,
+} from "../lib/security-headers.mjs";
 
 const API_ROUTES = [
   { path: /^\/api\/contact\/?$/, handlers: { OPTIONS: contactOptions, POST: contactPost } },
@@ -23,7 +31,6 @@ const API_ROUTES = [
 ];
 
 const SUPERFLOW_SCRIPT = '<script id="superflowToolbarScript" data-sf-platform="other-manual" async src="https://cdn.velt.dev/lib/superflow.js?apiKey=OjNo4BCjdWHMOnnygDAd&projectId=1086230342273239"></script>';
-const REVIEW_CONTENT_SECURITY_POLICY = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://cdn.velt.dev https://*.velt.dev https://*.api.velt.dev https://*.googleapis.com https://apis.google.com https://www.google.com https://*.firebaseio.com wss://*.firebaseio.com wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdn.velt.dev; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdn.velt.dev; img-src 'self' data: https:; media-src 'self'; frame-src https://challenges.cloudflare.com https://emb.fouita.com https://*.velt.dev https://*.firebaseio.com https://*.firebasedatabase.app https://*.googleapis.com https://www.google.com; connect-src 'self' https://challenges.cloudflare.com https://*.velt.dev https://*.api.velt.dev https://*.googleapis.com https://www.google.com https://*.firebaseio.com wss://*.firebaseio.com wss://*.firebasedatabase.app";
 
 /**
  * Adapt the Worker runtime inputs to the Pages Function context shape.
@@ -100,6 +107,52 @@ function isPrivateApiPath(pathname) {
 }
 
 /**
+ * Check whether a request targets the admin shell or admin assets.
+ *
+ * @param {string} pathname - Request URL path.
+ * @returns {boolean} Whether admin-only security headers should apply.
+ */
+function isAdminPath(pathname) {
+  return pathname === "/admin" || pathname.startsWith("/admin/");
+}
+
+/**
+ * Select the CSP that belongs to a route class.
+ *
+ * @param {string} pathname - Request URL path.
+ * @returns {string} Content-Security-Policy value.
+ */
+function contentSecurityPolicyForPath(pathname) {
+  if (pathname.startsWith("/api/")) return API_CONTENT_SECURITY_POLICY;
+  if (isAdminPath(pathname)) return ADMIN_CONTENT_SECURITY_POLICY;
+  if (/^\/assets\/images\/[^/]+\.svg$/i.test(pathname)) return SVG_CONTENT_SECURITY_POLICY;
+  return PUBLIC_CONTENT_SECURITY_POLICY;
+}
+
+/**
+ * Add baseline security headers to every Worker-created response.
+ *
+ * @param {Request} request - Incoming request.
+ * @param {Response} response - Worker or asset response.
+ * @returns {Response} Response with baseline headers preserved or added.
+ */
+function withSecurityHeaders(request, response) {
+  const headers = new Headers(response.headers);
+  const pathname = new URL(request.url).pathname;
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    if (!headers.has(name)) headers.set(name, value);
+  }
+  if (!headers.has("Content-Security-Policy")) {
+    headers.set("Content-Security-Policy", contentSecurityPolicyForPath(pathname));
+  }
+  if (isAdminPath(pathname)) {
+    headers.set("Cache-Control", "no-store");
+    headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
+/**
  * Check if a response body is HTML and safe to mutate.
  *
  * @param {Response} response - Candidate response.
@@ -133,6 +186,7 @@ function reviewHeaders(response) {
  * @returns {Promise<Response>} Original or injected response.
  */
 async function withReviewToolbar(request, response) {
+  if (isAdminPath(new URL(request.url).pathname)) return response;
   if (!response.ok || !isHtmlResponse(response)) return response;
 
   const headers = reviewHeaders(response);
@@ -154,13 +208,13 @@ export default {
    * @param {Record<string, unknown>} env - Worker environment.
    * @param {{waitUntil: Function}} ctx - Worker execution context.
    * @returns {Promise<Response>} Worker response.
-   */
+  */
   async fetch(request, env, ctx) {
     if (new URL(request.url).pathname.startsWith("/api/")) {
-      return handleApiRequest(request, env, ctx);
+      return withSecurityHeaders(request, await handleApiRequest(request, env, ctx));
     }
 
     const response = await handleMiddleware(middlewareContext(request, env, ctx));
-    return withReviewToolbar(request, response);
+    return withSecurityHeaders(request, await withReviewToolbar(request, response));
   },
 };

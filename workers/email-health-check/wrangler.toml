@@ -1,0 +1,31 @@
+name = "email-health-check"
+main = "index.js"
+compatibility_date = "2026-06-12"
+workers_dev = false
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+persist = true
+
+[triggers]
+crons = ["0 15 * * MON"]
+
+[vars]
+CLOUDFLARE_ZONE_ID = "0c0dd4cd5c7176dd471e7687f3b9dc12"
+
+[secrets]
+required = ["CONTACT_DESTINATION"]
+
+[[send_email]]
+name = "SEND_EMAIL"
+allowed_sender_addresses = ["consultation@melkiorclerge.ca"]
+
+[[kv_namespaces]]
+binding = "CONTACT_HEALTH"
+id = "51fe960e1a294781a99db54697a02076"

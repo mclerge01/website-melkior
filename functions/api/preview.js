@@ -1,8 +1,23 @@
-import { htmlResponse, jsonResponse, requireAdminJsonBody } from "../../lib/admin-auth.mjs";
+import { adminPublicOrigin, htmlResponse, jsonResponse, requireAdminJsonBody } from "../../lib/admin-auth.mjs";
 import { prepareLocaleData } from "../../lib/page-data.mjs";
 import { processMarkdown, render } from "../../lib/render.mjs";
 
 const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
+
+function escapeHtmlAttribute(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function injectPreviewBase(html, baseHref) {
+  const base = `<base href="${escapeHtmlAttribute(baseHref)}">`;
+  if (/<base\b/i.test(html)) return html.replace(/<base\b[^>]*>/i, base);
+  if (/<head(\s[^>]*)?>/i.test(html)) return html.replace(/<head(\s[^>]*)?>/i, (match) => `${match}\n  ${base}`);
+  return `<head>\n  ${base}\n</head>${html}`;
+}
 
 /**
  * Render an authenticated draft preview without publishing content.
@@ -27,6 +42,9 @@ export async function onRequestPost(context) {
 
   const template = await templateResponse.text();
   const settings = processMarkdown(data.content);
-  const html = render(template, prepareLocaleData(settings, locale, "home", { turnstileSiteKey: TURNSTILE_TEST_SITE_KEY }));
+  const html = injectPreviewBase(
+    render(template, prepareLocaleData(settings, locale, "home", { turnstileSiteKey: TURNSTILE_TEST_SITE_KEY })),
+    `${adminPublicOrigin(context.env, context.request)}/`,
+  );
   return htmlResponse(html, { headers: auth.headers });
 }
