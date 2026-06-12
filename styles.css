@@ -2058,16 +2058,17 @@ img.testimonial-avatar {
 }
 
 .input-with-unit {
+  --input-unit-width: 3rem;
   position: relative;
   display: block;
 }
 
 .input-with-unit .input {
-  padding-inline-end: 7rem;
+  padding-inline-end: calc(var(--input-unit-width) + (var(--field-padding-x) * 2));
 }
 
-.input-with-unit[data-unit-size="compact"] .input {
-  padding-inline-end: 5rem;
+.input-with-unit[data-unit-size="compact"] {
+  --input-unit-width: 1rem;
 }
 
 .input-unit {

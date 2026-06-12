@@ -495,6 +495,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return Number(String(value || "").replace(",", ".")) || 0;
     }
 
+    function updateInputUnitSpacing() {
+      calculator.querySelectorAll("[data-input-unit]").forEach((unit) => {
+        const wrapper = unit.closest(".input-with-unit");
+        if (!wrapper) return;
+        wrapper.style.setProperty("--input-unit-width", `${Math.ceil(unit.getBoundingClientRect().width)}px`);
+      });
+    }
+
     function calculatePayment() {
       const amount = parseMoneyInput(calculator.elements.amount.value);
       const annualRate = parsePercentInput(calculator.elements.rate.value);
@@ -523,6 +531,9 @@ document.addEventListener("DOMContentLoaded", () => {
     calculator.querySelectorAll("input, select").forEach((input) => {
       input.addEventListener("input", calculatePayment);
     });
+    updateInputUnitSpacing();
+    window.addEventListener("resize", updateInputUnitSpacing, { passive: true });
+    document.fonts?.ready.then(updateInputUnitSpacing);
     calculatePayment();
   }
 
