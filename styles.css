@@ -96,6 +96,8 @@ p {
   --color-primary-light: #eef7ea;
   --color-secondary: #4d9d34;
   --color-secondary-rgb: 77, 157, 52;
+  --color-secondary-light: #76b82a;
+  --color-secondary-light-rgb: 118, 184, 42;
   --color-accent: #d6b35a;
   --color-accent-rgb: 214, 179, 90;
   --color-accent-dark: #3f7f2b;
@@ -648,8 +650,8 @@ p {
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 14px),
     linear-gradient(115deg, rgba(var(--color-primary-dark-rgb), 0.92) 0%, rgba(var(--color-primary-rgb), 0.86) 42%, rgba(77, 157, 52, 0.76) 100%),
-    radial-gradient(circle at 76% 22%, rgba(214, 179, 90, 0.2), transparent 30%),
-    radial-gradient(circle at 18% 78%, rgba(118, 184, 42, 0.18), transparent 34%);
+    radial-gradient(circle at 76% 22%, rgba(var(--color-secondary-light-rgb), 0.2), transparent 30%),
+    radial-gradient(circle at 18% 78%, rgba(var(--color-secondary-light-rgb), 0.18), transparent 34%);
   pointer-events: none;
 }
 
@@ -685,7 +687,7 @@ p {
 }
 
 .hero-title strong {
-  color: var(--color-accent);
+  color: var(--color-secondary-light);
 }
 
 .hero-title em {
@@ -704,7 +706,7 @@ p {
 .hero-highlight {
   max-width: 42rem;
   margin-top: var(--content-gap);
-  color: var(--color-accent);
+  color: var(--color-secondary-light);
   font-size: var(--text-xl);
   font-weight: 800;
 }
@@ -712,9 +714,9 @@ p {
 .hero .btn-primary,
 .site-nav.menu-open .nav-cta,
 .site-nav:has(.nav-menu.active) .nav-cta {
-  --button-bg: var(--color-accent);
+  --button-bg: var(--color-secondary-light);
   --button-color: var(--color-primary-dark);
-  --button-border: var(--color-accent);
+  --button-border: var(--color-secondary-light);
   --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
   --button-hover-border: var(--button-hover-bg);
   --button-hover-color: var(--color-primary-dark);
