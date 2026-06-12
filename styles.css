@@ -2322,6 +2322,15 @@ img.testimonial-avatar {
   --button-hover-color: var(--color-white);
 }
 
+.nav-cta.btn-primary {
+  --button-bg: var(--color-secondary-light);
+  --button-color: var(--color-primary-dark);
+  --button-border: var(--color-secondary-light);
+  --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
+  --button-hover-border: var(--button-hover-bg);
+  --button-hover-color: var(--color-primary-dark);
+}
+
 .btn-accent {
   --button-bg: var(--color-accent);
   --button-color: var(--color-primary-dark);
