@@ -13,7 +13,6 @@ import {
   ADMIN_CONTENT_SECURITY_POLICY,
   API_CONTENT_SECURITY_POLICY,
   PUBLIC_CONTENT_SECURITY_POLICY,
-  REVIEW_CONTENT_SECURITY_POLICY,
   SECURITY_HEADERS,
   SVG_CONTENT_SECURITY_POLICY,
 } from "../lib/security-headers.mjs";
@@ -29,8 +28,6 @@ const API_ROUTES = [
   { path: /^\/api\/admin\/images\/?$/, handlers: { GET: adminImagesGet } },
   { path: /^\/api\/admin\/session\/?$/, handlers: { GET: adminSessionGet } },
 ];
-
-const SUPERFLOW_SCRIPT = '<script id="superflowToolbarScript" data-sf-platform="other-manual" async src="https://cdn.velt.dev/lib/superflow.js?apiKey=OjNo4BCjdWHMOnnygDAd&projectId=1086230342273239"></script>';
 
 /**
  * Adapt the Worker runtime inputs to the Pages Function context shape.
@@ -152,57 +149,9 @@ function withSecurityHeaders(request, response) {
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
-/**
- * Check if a response body is HTML and safe to mutate.
- *
- * @param {Response} response - Candidate response.
- * @returns {boolean} Whether the content type is HTML.
- */
-function isHtmlResponse(response) {
-  return response.headers.get("Content-Type")?.toLowerCase().includes("text/html");
-}
-
-/**
- * Build the no-store/noindex headers needed while Superflow is active.
- *
- * @param {Response} response - Original HTML response.
- * @returns {Headers} Mutated headers.
- */
-function reviewHeaders(response) {
-  const headers = new Headers(response.headers);
-  headers.set("Cache-Control", "no-store");
-  headers.set("Content-Security-Policy", REVIEW_CONTENT_SECURITY_POLICY);
-  headers.set("X-Robots-Tag", "noindex, nofollow");
-  headers.delete("Content-Length");
-  headers.delete("ETag");
-  return headers;
-}
-
-/**
- * Inject Superflow into public HTML responses during the client review period.
- *
- * @param {Request} request - Incoming request.
- * @param {Response} response - Original asset response.
- * @returns {Promise<Response>} Original or injected response.
- */
-async function withReviewToolbar(request, response) {
-  if (isAdminPath(new URL(request.url).pathname)) return response;
-  if (!response.ok || !isHtmlResponse(response)) return response;
-
-  const headers = reviewHeaders(response);
-  if (request.method === "HEAD") {
-    return new Response(null, { status: response.status, statusText: response.statusText, headers });
-  }
-
-  const html = await response.text();
-  const script = `\n  ${SUPERFLOW_SCRIPT}\n`;
-  const body = /<\/body>/i.test(html) ? html.replace(/<\/body>/i, `${script}</body>`) : `${html}${script}`;
-  return new Response(body, { status: response.status, statusText: response.statusText, headers });
-}
-
 export default {
   /**
-   * Serve API routes, static assets, and temporary Superflow review tooling.
+   * Serve API routes and static assets.
    *
    * @param {Request} request - Incoming request.
    * @param {Record<string, unknown>} env - Worker environment.
@@ -215,6 +164,6 @@ export default {
     }
 
     const response = await handleMiddleware(middlewareContext(request, env, ctx));
-    return withSecurityHeaders(request, await withReviewToolbar(request, response));
+    return withSecurityHeaders(request, response);
   },
 };
