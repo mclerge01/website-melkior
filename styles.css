@@ -95,6 +95,7 @@ p {
   --color-primary-dark-rgb: 7, 19, 29;
   --color-primary-light: #eef7ea;
   --color-secondary: #4d9d34;
+  --color-secondary-rgb: 77, 157, 52;
   --color-accent: #d6b35a;
   --color-accent-rgb: 214, 179, 90;
   --color-accent-dark: #3f7f2b;
@@ -1146,8 +1147,9 @@ p {
 .guide-section {
   color: var(--color-white);
   background:
-    radial-gradient(circle at 15% 18%, rgba(var(--color-accent-rgb), 0.12), transparent 23rem),
-    #070707;
+    radial-gradient(circle at 15% 18%, rgba(var(--color-accent-rgb), 0.13), transparent 23rem),
+    radial-gradient(circle at 84% 82%, rgba(var(--color-primary-rgb), 0.34), transparent 28rem),
+    var(--color-bg-dark);
 }
 
 .guide-section .section-title {
@@ -1356,9 +1358,9 @@ p {
   overflow: hidden;
   color: var(--color-white);
   background:
-    radial-gradient(circle at 14% 18%, rgba(var(--color-accent-rgb), 0.16), transparent 22rem),
-    radial-gradient(circle at 86% 74%, rgba(var(--color-accent-rgb), 0.12), transparent 24rem),
-    #070707;
+    radial-gradient(circle at 14% 18%, rgba(var(--color-accent-rgb), 0.15), transparent 22rem),
+    radial-gradient(circle at 86% 74%, rgba(var(--color-secondary-rgb), 0.14), transparent 24rem),
+    linear-gradient(135deg, var(--color-bg-dark), var(--color-primary-dark));
 }
 
 .testimonial-section::before {
@@ -1441,7 +1443,7 @@ p {
 }
 
 .testimonial-controls .carousel-control {
-  --control-bg: rgba(7, 7, 7, 0.72);
+  --control-bg: rgba(var(--color-primary-dark-rgb), 0.82);
   --control-hover-bg: color-mix(in srgb, var(--control-bg) 66%, #fff 34%);
 
   pointer-events: auto;
@@ -1545,7 +1547,7 @@ p {
 
 .testimonial-section .testimonial-card {
   border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(22, 22, 22, 0.88);
+  background: rgba(var(--color-primary-rgb), 0.9);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.24);
 }
 
@@ -1553,7 +1555,7 @@ p {
   border-color: var(--color-white-border-strong);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.09), transparent 34%),
-    #171717;
+    color-mix(in srgb, var(--color-bg-dark) 88%, var(--color-white) 12%);
   box-shadow: 0 1.75rem 4rem rgba(0, 0, 0, 0.36);
 }
 
@@ -1762,9 +1764,9 @@ img.testimonial-avatar {
   overflow: hidden;
   padding-block: var(--section-padding-y);
   background:
-    radial-gradient(circle at 18% 22%, rgba(var(--color-accent-rgb), 0.14), transparent 24rem),
-    radial-gradient(circle at 80% 80%, rgba(var(--color-accent-rgb), 0.1), transparent 24rem),
-    #070707;
+    radial-gradient(circle at 18% 22%, rgba(var(--color-accent-rgb), 0.13), transparent 24rem),
+    radial-gradient(circle at 80% 80%, rgba(var(--color-secondary-rgb), 0.12), transparent 24rem),
+    linear-gradient(135deg, var(--color-bg-dark), var(--color-primary-dark));
 }
 
 .contact-action::before {
