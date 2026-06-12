@@ -2331,7 +2331,7 @@ img.testimonial-avatar {
 
 .not-found-content h1 {
   margin-bottom: var(--content-gap);
-  color: var(--color-primary);
+  color: var(--color-accent-dark);
   font-size: 7rem;
   font-weight: 800;
   line-height: 0.9;
