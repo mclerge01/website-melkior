@@ -101,6 +101,8 @@ p {
   --color-accent: #d6b35a;
   --color-accent-rgb: 214, 179, 90;
   --color-accent-dark: #3f7f2b;
+  --color-hero-accent: #f0a15d;
+  --color-hero-accent-rgb: 240, 161, 93;
   --color-link-bright: #3f7f2b;
   --color-link-focus-bg: rgba(63, 127, 43, 0.16);
   --color-text: #1f2126;
@@ -687,7 +689,7 @@ p {
 }
 
 .hero-title strong {
-  color: var(--color-secondary-light);
+  color: var(--color-hero-accent);
 }
 
 .hero-title em {
@@ -706,12 +708,24 @@ p {
 .hero-highlight {
   max-width: 42rem;
   margin-top: var(--content-gap);
-  color: var(--color-secondary-light);
+  color: var(--color-hero-accent);
   font-size: var(--text-xl);
   font-weight: 800;
 }
 
-.hero .btn-primary,
+.hero .eyebrow {
+  color: var(--color-hero-accent);
+}
+
+.hero .btn-primary {
+  --button-bg: var(--color-hero-accent);
+  --button-color: var(--color-primary-dark);
+  --button-border: var(--color-hero-accent);
+  --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
+  --button-hover-border: var(--button-hover-bg);
+  --button-hover-color: var(--color-primary-dark);
+}
+
 .site-nav.menu-open .nav-cta,
 .site-nav:has(.nav-menu.active) .nav-cta {
   --button-bg: var(--color-secondary-light);
