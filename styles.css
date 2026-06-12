@@ -2017,6 +2017,31 @@ img.testimonial-avatar {
   padding-inline: var(--field-padding-x);
 }
 
+.input-with-unit {
+  position: relative;
+  display: block;
+}
+
+.input-with-unit .input {
+  padding-inline-end: 7rem;
+}
+
+.input-with-unit[data-unit-size="compact"] .input {
+  padding-inline-end: 5rem;
+}
+
+.input-unit {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 2.65rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-light);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  pointer-events: none;
+}
+
 .textarea {
   min-height: var(--textarea-min-h);
   padding: var(--field-padding-y) var(--field-padding-x);

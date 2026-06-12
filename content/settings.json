@@ -166,7 +166,8 @@
         "cta_text": "Prendre un rendez-vous",
         "default_amount": "450000",
         "default_rate": "4.89",
-        "default_years": "25"
+        "default_years": "25",
+        "years_unit": "années"
       },
       "services": {
         "eyebrow": "Services",
@@ -489,7 +490,8 @@
         "cta_text": "Book a consultation",
         "default_amount": "450000",
         "default_rate": "4.89",
-        "default_years": "25"
+        "default_years": "25",
+        "years_unit": "years"
       },
       "services": {
         "eyebrow": "Services",
