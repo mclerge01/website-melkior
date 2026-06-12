@@ -1863,17 +1863,17 @@ img.testimonial-avatar {
   color: var(--color-text);
 }
 
-.privacy-note {
-  font-size: var(--text-sm);
-}
-
-.privacy-note a {
+.contact-note a {
   display: inline-block;
   max-width: 100%;
   min-height: 3rem;
   padding-block: var(--space-2);
   color: var(--color-primary);
   font-weight: 800;
+}
+
+.privacy-note {
+  font-size: var(--text-sm);
 }
 
 .contact-info p {
