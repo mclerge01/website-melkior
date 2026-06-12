@@ -24,11 +24,28 @@
   <link rel="stylesheet" href="/styles.css">
   <style>
     .admin-login {
+      position: relative;
+      isolation: isolate;
       min-height: 100svh;
       display: grid;
       place-items: center;
       padding: var(--space-6);
-      background: linear-gradient(135deg, var(--color-bg-dark), var(--color-primary-dark));
+      overflow: hidden;
+      background: var(--color-bg-dark);
+    }
+
+    .admin-login::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        repeating-linear-gradient(135deg, rgba(248, 249, 250, 0.035) 0 1px, transparent 1px 14px),
+        linear-gradient(112deg, rgba(var(--color-primary-dark-rgb), 0.96) 0%, rgba(var(--color-primary-rgb), 0.88) 34%, rgba(var(--color-brand-teal-rgb), 0.68) 58%, rgba(var(--color-section-green-rgb), 0.56) 78%, rgba(var(--color-secondary-rgb), 0.46) 100%),
+        radial-gradient(circle at 74% 26%, rgba(var(--color-secondary-bright-rgb), 0.22), transparent 32%),
+        radial-gradient(circle at 88% 78%, rgba(var(--color-secondary-rgb), 0.24), transparent 34%),
+        radial-gradient(circle at 18% 78%, rgba(var(--color-primary-rgb), 0.72), transparent 34%);
+      pointer-events: none;
     }
 
     .admin-login-card,
@@ -43,6 +60,8 @@
     }
 
     .admin-login-card {
+      position: relative;
+      z-index: 1;
       width: min(100%, 28rem);
       padding: var(--space-8);
       text-align: center;
