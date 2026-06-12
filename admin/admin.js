@@ -44,6 +44,11 @@ const COLOR_FIELDS = [
   ["border", "Bordures"],
 ].map(([key, label]) => ({ key, label, type: "color" }));
 
+const SYNCED_LOCALE_FIELD_PATTERNS = [
+  /^locales\.[^.]+\.popup\.enabled$/,
+  /^locales\.[^.]+\.popup\.image$/,
+];
+
 const SHARED_FIELDS = [
   { key: "phone", label: "Téléphone affiché", type: "text" },
   { key: "phone_href", label: "Téléphone technique (lien tel:)", type: "text", hint: "Format recommandé : +15148366736." },
@@ -208,7 +213,7 @@ const CONTENT_SECTIONS = [
           { key: "image_alt", label: "Texte alternatif optionnel", full: true },
           { key: "name", label: "Nom" },
           { key: "context", label: "Contexte" },
-          { key: "translation_note", label: "Badge de traduction" },
+          { key: "translation_note", label: "Badge de traduction", required: false },
         ],
       },
     ],
@@ -372,6 +377,7 @@ const sessionStatus = document.getElementById("session-status");
 const sidebar = document.getElementById("admin-sidebar");
 const mobileTabs = document.getElementById("admin-mobile-tabs");
 const contentEl = document.getElementById("admin-content");
+const completionStatus = document.getElementById("admin-completion-status");
 const statusDot = document.getElementById("status-dot");
 const statusText = document.getElementById("status-text");
 const statusDetail = document.getElementById("status-detail");
@@ -442,12 +448,25 @@ function getPath(path) {
 }
 
 function setPath(path, value, options = {}) {
-  setPathValue(path, value);
+  const syncedPaths = syncedLocalePathsFor(path);
+  if (syncedPaths.length) {
+    for (const syncedPath of syncedPaths) setPathValue(syncedPath, value);
+  } else {
+    setPathValue(path, value);
+  }
   syncAdminStateForPath(path);
   if (!options.silent) {
     hasUnpublishedChanges = true;
     setStatus("saving", "Modifications non publiées", "Cliquez sur Publier pour les mettre en ligne.");
   }
+}
+
+function syncedLocalePathsFor(path) {
+  const value = String(path || "");
+  if (!SYNCED_LOCALE_FIELD_PATTERNS.some((pattern) => pattern.test(value))) return [];
+  const match = value.match(/^locales\.[^.]+\.(.+)$/);
+  if (!match) return [];
+  return LOCALES.map((locale) => `locales.${locale.key}.${match[1]}`);
 }
 
 function setPathValue(path, value) {
@@ -523,11 +542,12 @@ function syncRequiredFieldUi(root = document) {
 }
 
 function updateTranslationSummary() {
-  const status = document.querySelector(".admin-translation-summary");
-  if (!status) return;
-  const missingCount = getMissingFieldCount();
-  status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
-  status.textContent = getTranslationSummary(missingCount);
+  renderCompletionStatus();
+}
+
+function renderCompletionStatus() {
+  if (!completionStatus) return;
+  completionStatus.replaceChildren(renderTranslationStatus());
 }
 
 function setStatus(type, text, detail = "") {
@@ -611,12 +631,62 @@ function renderPageHeader(title, description = "") {
     p.textContent = description;
     copy.appendChild(p);
   }
-  const status = document.createElement("p");
-  const missingCount = getMissingFieldCount();
-  status.className = `admin-translation-summary ${missingCount ? "warning" : "complete"}`;
-  status.textContent = getTranslationSummary(missingCount);
-  header.append(copy, status);
+  header.appendChild(copy);
   return header;
+}
+
+function renderTranslationStatus() {
+  const requiredItems = getRequiredMissingFieldItems();
+  const optionalItems = getOptionalEmptyFieldItems();
+  const requiredCount = requiredItems.length;
+  const optionalCount = optionalItems.length;
+  const statusKind = requiredCount ? "warning" : optionalCount ? "optional" : "complete";
+  const wrapper = document.createElement(requiredCount || optionalCount ? "details" : "div");
+  wrapper.className = `admin-translation-status ${statusKind}`;
+
+  const summary = document.createElement(requiredCount || optionalCount ? "summary" : "p");
+  summary.className = `btn btn-outline admin-translation-summary ${statusKind}`;
+  summary.textContent = formatCompletionSummary(requiredCount, optionalCount);
+  wrapper.appendChild(summary);
+
+  if (requiredCount || optionalCount) {
+    const groups = document.createElement("div");
+    groups.className = "admin-empty-groups";
+    if (requiredCount) groups.appendChild(renderEmptyFieldGroup("Champs obligatoires", requiredItems, "required"));
+    if (optionalCount) groups.appendChild(renderEmptyFieldGroup("Champs optionnels vides", optionalItems, "optional"));
+    wrapper.appendChild(groups);
+  }
+
+  return wrapper;
+}
+
+function formatCompletionSummary(requiredCount, optionalCount) {
+  const requiredLabel = `${requiredCount} champ${requiredCount > 1 ? "s" : ""} obligatoire${requiredCount > 1 ? "s" : ""} à remplir`;
+  const optionalLabel = `${optionalCount} champ${optionalCount > 1 ? "s" : ""} optionnel${optionalCount > 1 ? "s" : ""} vide${optionalCount > 1 ? "s" : ""}`;
+  if (requiredCount && optionalCount) return `${requiredLabel} • ${optionalLabel}`;
+  if (requiredCount) return requiredLabel;
+  if (optionalCount) return optionalLabel;
+  return "Tous les champs obligatoires sont remplis.";
+}
+
+function renderEmptyFieldGroup(title, items, kind) {
+  const group = document.createElement("div");
+  group.className = `admin-empty-group ${kind}`;
+  const heading = document.createElement("p");
+  heading.className = "admin-empty-group-title";
+  heading.textContent = `${title} (${items.length})`;
+  group.appendChild(heading);
+
+  for (const item of items) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "admin-empty-link";
+    button.textContent = formatFieldCompletionLabel(item);
+    button.addEventListener("click", () => scrollToFieldCompletionItem(item));
+    group.appendChild(button);
+  }
+
+  return group;
 }
 
 function renderActiveView() {
@@ -627,6 +697,8 @@ function renderActiveView() {
   else if (activeView === "colors") renderColorView();
   else if (activeView === "images") renderImagesView();
   else if (activeView === "seo") renderSeoView();
+
+  renderCompletionStatus();
 }
 
 function renderLocaleTabs(activeKey, onChange) {
@@ -758,6 +830,15 @@ function renderSectionCard(rootPath, section) {
     copy.appendChild(p);
   }
   header.appendChild(copy);
+  const requiredCount = getFieldCompletionSectionItems(pathPrefix, section, "required").length;
+  const optionalCount = getFieldCompletionSectionItems(pathPrefix, section, "optional").length;
+  if (requiredCount || optionalCount) {
+    const badges = document.createElement("div");
+    badges.className = "admin-section-badges";
+    if (requiredCount) badges.appendChild(createCompletionBadge(`${requiredCount} obligatoire${requiredCount > 1 ? "s" : ""}`, "required"));
+    if (optionalCount) badges.appendChild(createCompletionBadge(`${optionalCount} optionnel${optionalCount > 1 ? "s" : ""}`, "optional"));
+    header.appendChild(badges);
+  }
   card.appendChild(header);
 
   if (section.fields?.length) {
@@ -900,11 +981,12 @@ function renderTextarea(group, path, value, markdown) {
 function renderToggle(group, path, value) {
   const row = document.createElement("span");
   row.className = "admin-toggle-row";
-  const toggle = document.createElement("span");
+  const toggle = document.createElement("label");
   toggle.className = "admin-toggle";
   const input = document.createElement("input");
   input.type = "checkbox";
   input.checked = value;
+  input.setAttribute("aria-label", group.querySelector(".admin-label")?.textContent || "Activer");
   const slider = document.createElement("span");
   input.addEventListener("change", () => setPath(path, input.checked));
   toggle.append(input, slider);
@@ -1335,38 +1417,147 @@ function getTranslationSummary(missing = getMissingFieldCount()) {
     : "Tous les champs sont remplis.";
 }
 
+function createCompletionBadge(text, kind) {
+  const badge = document.createElement("span");
+  badge.className = `admin-completion-badge ${kind}`;
+  badge.textContent = text;
+  return badge;
+}
+
+function getRequiredMissingFieldItems(localeKey = "") {
+  return getFieldCompletionItems("required", localeKey);
+}
+
+function getOptionalEmptyFieldItems(localeKey = "") {
+  return getFieldCompletionItems("optional", localeKey);
+}
+
+function getFieldCompletionItems(kind, localeKey = "") {
+  const locales = localeKey ? LOCALES.filter((locale) => locale.key === localeKey) : LOCALES;
+  return locales.flatMap((locale) =>
+    CONTENT_SECTIONS.flatMap((section) => getFieldCompletionSectionItems(`locales.${locale.key}.${section.key}`, section, kind, locale))
+  );
+}
+
+function getFieldCompletionSectionItems(basePath, section, kind, locale = getLocaleFromPath(basePath)) {
+  if (!locale || !String(basePath || "").startsWith("locales.")) return [];
+  const fieldItems = (section.fields || [])
+    .filter((field) => shouldCollectFieldCompletionItem(`${basePath}.${field.key}`, field, kind))
+    .map((field) => ({
+      kind,
+      path: `${basePath}.${field.key}`,
+      localeKey: locale.key,
+      localeLabel: locale.label,
+      sectionLabel: section.label,
+      fieldLabel: field.label || labelFromKey(field.key),
+    }));
+
+  const listItems = (section.lists || []).flatMap((list) =>
+    getFieldCompletionListItems(`${basePath}.${list.key}`, section, list, kind, locale)
+  );
+
+  return [...fieldItems, ...listItems];
+}
+
+function getFieldCompletionListItems(path, section, list, kind, locale) {
+  const items = getPath(path);
+  if (!Array.isArray(items)) return [];
+  return items.flatMap((item, index) =>
+    (list.fields || [])
+      .filter((field) => shouldCollectFieldCompletionItem(`${path}.${index}.${field.key}`, field, kind))
+      .map((field) => ({
+        kind,
+        path: `${path}.${index}.${field.key}`,
+        localeKey: locale.key,
+        localeLabel: locale.label,
+        sectionLabel: section.label,
+        listPath: path,
+        listLabel: list.label,
+        index,
+        itemTitle: listItemSummary(item, index).title,
+        fieldLabel: field.label || labelFromKey(field.key),
+      }))
+  );
+}
+
+function getLocaleFromPath(path) {
+  const localeKey = String(path || "").split(".")[1];
+  return LOCALES.find((locale) => locale.key === localeKey) || null;
+}
+
+function shouldCollectFieldCompletionItem(path, field, kind) {
+  const required = isRequiredField(field);
+  if (kind === "required") return isPathMissing(path, required);
+  if (kind === "optional") return !required && isOptionalPathEmpty(path, field);
+  return false;
+}
+
+function isOptionalPathEmpty(path, field = {}) {
+  if (!path || !String(path).startsWith("locales.") || field.type === "toggle") return false;
+  if (String(path).endsWith(".image_alt")) {
+    const imagePath = String(path).replace(/\.image_alt$/, ".image");
+    if (!hasMeaningfulValue(getPath(imagePath))) return false;
+  }
+  if (String(path).startsWith("locales.en-CA.")) {
+    const source = getPath(getFrenchSourcePath(path));
+    if (!hasMeaningfulValue(source)) return false;
+  }
+  return !hasMeaningfulValue(getPath(path));
+}
+
+function formatFieldCompletionLabel(item) {
+  const parts = [item.localeLabel, item.sectionLabel];
+  if (item.listLabel) parts.push(`${item.listLabel} ${item.index + 1}: ${item.itemTitle}`);
+  parts.push(item.fieldLabel);
+  return parts.filter(Boolean).join(" / ");
+}
+
+function scrollToFieldCompletionItem(item) {
+  if (!item?.path) return;
+  activeView = "content";
+  activeLocale = item.localeKey || activeLocale;
+  activeListEditor = item.listPath ? { path: item.listPath, index: item.index } : null;
+  renderChrome();
+  renderActiveView();
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const field = document.querySelector(`[data-admin-field-path="${cssEscape(item.path)}"]`);
+      const fallback = item.listPath
+        ? document.querySelector(`[data-admin-list-path="${cssEscape(item.listPath)}"][data-admin-list-index="${cssEscape(item.index)}"]`)
+        : null;
+      const target = field || fallback;
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      target.classList.add("admin-locate-target");
+      setTimeout(() => target.classList.remove("admin-locate-target"), 1800);
+      const control = target.querySelector(".input, .textarea, select, button");
+      if (control) control.focus({ preventScroll: true });
+    });
+  });
+}
+
 function getFrenchSourcePath(path) {
   if (!String(path || "").startsWith("locales.en-CA.")) return "";
   return path.replace(/^locales\.en-CA\./, "locales.fr-CA.");
 }
 
 function getMissingFieldCount() {
-  return LOCALES.reduce((total, locale) => total + getMissingLocaleFieldCount(locale.key), 0);
+  return getRequiredMissingFieldItems().length;
 }
 
 function getMissingLocaleFieldCount(localeKey) {
-  return CONTENT_SECTIONS.reduce(
-    (total, section) => total + getMissingSectionFieldCount(`locales.${localeKey}.${section.key}`, section),
-    0
-  );
+  return getRequiredMissingFieldItems(localeKey).length;
 }
 
 function getMissingSectionFieldCount(basePath, section) {
-  const fieldCount = (section.fields || []).reduce(
-    (count, field) => count + (isPathMissing(`${basePath}.${field.key}`, isRequiredField(field)) ? 1 : 0),
-    0
-  );
-  const listCount = (section.lists || []).reduce(
-    (count, list) => count + getMissingListFieldCount(`${basePath}.${list.key}`, list),
-    0
-  );
-  return fieldCount + listCount;
+  return getFieldCompletionSectionItems(basePath, section, "required").length;
 }
 
 function getMissingListFieldCount(path, list) {
-  const items = getPath(path);
-  if (!Array.isArray(items)) return 0;
-  return items.reduce((count, _item, index) => count + getMissingListItemFieldCount(path, index, list), 0);
+  const parts = String(path || "").split(".");
+  const section = CONTENT_SECTIONS.find((item) => item.key === parts[2]);
+  const locale = getLocaleFromPath(path);
+  return section && locale ? getFieldCompletionListItems(path, section, list, "required", locale).length : 0;
 }
 
 function getMissingListItemFieldCount(path, index, list = getListDefinitionForPath(path)) {
@@ -1983,6 +2174,7 @@ async function init() {
   document.getElementById("publish").addEventListener("click", publish);
   document.getElementById("preview").addEventListener("click", preview);
   document.getElementById("logout").addEventListener("click", logout);
+  bindCompletionStatusDismissal();
   document.querySelector(".admin-brand-link")?.addEventListener("click", async (event) => {
     const href = event.currentTarget.href;
     if (!hasPendingChanges()) return;
@@ -1996,6 +2188,25 @@ async function init() {
     if (!hasPendingChanges()) return;
     event.preventDefault();
     event.returnValue = "";
+  });
+}
+
+function bindCompletionStatusDismissal() {
+  const closeIfOutside = (event) => {
+    const details = completionStatus?.querySelector("details.admin-translation-status[open]");
+    if (!details) return;
+    if (event.target instanceof Node && details.contains(event.target)) return;
+    details.open = false;
+  };
+
+  document.addEventListener("pointerdown", closeIfOutside, true);
+  document.addEventListener("focusin", closeIfOutside);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const details = completionStatus?.querySelector("details.admin-translation-status[open]");
+    if (!details) return;
+    details.open = false;
+    details.querySelector(".admin-translation-summary")?.focus();
   });
 }
 

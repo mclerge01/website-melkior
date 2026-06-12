@@ -169,34 +169,146 @@
       line-height: 1.1;
     }
 
-    .admin-translation-summary {
+    .admin-translation-status {
+      position: relative;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-height: 2.25rem;
+      max-width: min(100%, 36rem);
+    }
+
+    .admin-translation-summary {
       margin: 0;
-      padding: var(--space-2) var(--space-4);
-      border: 1px solid var(--color-border);
-      border-radius: var(--rounded-full);
-      color: var(--color-text-light);
-      background: var(--color-white);
-      font-size: var(--text-sm);
-      font-weight: 800;
-      line-height: 1.2;
-      text-align: center;
       white-space: nowrap;
+      list-style: none;
+    }
+
+    details.admin-translation-status > .admin-translation-summary {
+      cursor: pointer;
+    }
+
+    .admin-translation-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .admin-translation-summary::marker {
+      content: "";
     }
 
     .admin-translation-summary.warning {
-      border-color: rgba(var(--color-accent-rgb), 0.65);
-      color: var(--color-accent-dark);
-      background: rgba(var(--color-accent-rgb), 0.16);
+      --button-bg: rgba(var(--color-accent-rgb), 0.16);
+      --button-color: var(--color-accent-dark);
+      --button-border: rgba(var(--color-accent-rgb), 0.65);
+      --button-hover-bg: rgba(var(--color-accent-rgb), 0.23);
+      --button-hover-border: rgba(var(--color-accent-rgb), 0.72);
+      --button-hover-color: var(--color-accent-dark);
     }
 
     .admin-translation-summary.complete {
-      border-color: rgba(21, 128, 61, 0.24);
-      color: var(--color-success);
-      background: rgba(21, 128, 61, 0.08);
+      --button-bg: rgba(21, 128, 61, 0.08);
+      --button-color: var(--color-success);
+      --button-border: rgba(21, 128, 61, 0.24);
+      --button-hover-bg: rgba(21, 128, 61, 0.13);
+      --button-hover-border: rgba(21, 128, 61, 0.32);
+      --button-hover-color: var(--color-success);
+    }
+
+    .admin-translation-summary.optional {
+      --button-bg: var(--color-primary-light);
+      --button-color: var(--color-primary);
+      --button-border: rgba(var(--color-primary-rgb), 0.2);
+      --button-hover-bg: color-mix(in srgb, var(--color-primary-light) 84%, var(--color-primary) 16%);
+      --button-hover-border: rgba(var(--color-primary-rgb), 0.34);
+      --button-hover-color: var(--color-primary);
+    }
+
+    .admin-empty-groups {
+      position: absolute;
+      top: calc(100% + var(--space-2));
+      right: 0;
+      z-index: 40;
+      display: grid;
+      gap: var(--space-2);
+      width: min(28rem, calc(100vw - 2rem));
+      max-height: min(32rem, calc(100vh - 6rem));
+      padding: var(--space-4);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded);
+      background: var(--color-white);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .admin-empty-group {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .admin-empty-group + .admin-empty-group {
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .admin-empty-group-title,
+    .admin-empty-extra {
+      margin: 0;
+      position: sticky;
+      top: calc(var(--space-4) * -1);
+      z-index: 1;
+      padding-block: var(--space-1);
+      color: var(--color-text-light);
+      background: var(--color-white);
+      font-size: var(--text-xs);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .admin-empty-group.required .admin-empty-group-title {
+      color: var(--color-accent-dark);
+    }
+
+    .admin-empty-group.optional .admin-empty-group-title {
+      color: var(--color-primary);
+    }
+
+    .admin-empty-link {
+      display: block;
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 0;
+      border-left: 3px solid var(--color-border);
+      border-radius: var(--rounded-sm);
+      color: var(--color-text);
+      background: transparent;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .admin-empty-link:hover,
+    .admin-empty-link:focus-visible {
+      border-left-color: var(--color-accent);
+      color: var(--color-accent-dark);
+      background: rgba(var(--color-accent-rgb), 0.12);
+    }
+
+    .admin-empty-group.required .admin-empty-link {
+      border-left-color: rgba(var(--color-accent-rgb), 0.62);
+    }
+
+    .admin-empty-group.optional .admin-empty-link {
+      border-left-color: var(--color-border);
+      color: var(--color-text-light);
+    }
+
+    .admin-empty-group.optional .admin-empty-link:hover,
+    .admin-empty-group.optional .admin-empty-link:focus-visible {
+      border-left-color: var(--color-primary);
+      color: var(--color-primary);
+      background: var(--color-primary-light);
     }
 
     .admin-actions {
@@ -204,6 +316,10 @@
       flex-wrap: wrap;
       align-items: center;
       gap: var(--space-3);
+    }
+
+    .admin-completion-slot {
+      margin-right: var(--space-8);
     }
 
     .admin-action-separated {
@@ -246,6 +362,39 @@
     .admin-section-card h3 {
       font-size: var(--text-xl);
       line-height: 1.2;
+    }
+
+    .admin-section-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--space-2);
+    }
+
+    .admin-completion-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+      padding: var(--space-1) var(--space-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--rounded-full);
+      color: var(--color-text-light);
+      background: var(--color-white);
+      font-size: var(--text-xs);
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .admin-completion-badge.required {
+      border-color: rgba(var(--color-accent-rgb), 0.6);
+      color: var(--color-accent-dark);
+      background: rgba(var(--color-accent-rgb), 0.16);
+    }
+
+    .admin-completion-badge.optional {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
     }
 
     .admin-field-grid {
@@ -333,6 +482,12 @@
     .admin-field-missing .EasyMDEContainer .CodeMirror {
       border-color: var(--color-accent);
       box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.14);
+    }
+
+    .admin-locate-target {
+      outline: 3px solid rgba(var(--color-accent-rgb), 0.62);
+      outline-offset: 0.35rem;
+      transition: outline-color 0.2s ease;
     }
 
     .admin-hint,
@@ -932,6 +1087,11 @@
         margin-left: 0;
       }
 
+      .admin-completion-slot {
+        width: 100%;
+        margin-right: 0;
+      }
+
       .admin-shell {
         padding-top: 7.5rem;
       }
@@ -949,6 +1109,34 @@
       .admin-section-card > header,
       .admin-list-header {
         display: grid;
+      }
+
+      .admin-translation-status {
+        width: 100%;
+        justify-items: start;
+      }
+
+      .admin-translation-actions {
+        justify-content: flex-start;
+      }
+
+      .admin-translation-summary {
+        width: 100%;
+        white-space: normal;
+      }
+
+      .admin-empty-details {
+        width: 100%;
+      }
+
+      .admin-empty-groups {
+        position: static;
+        width: 100%;
+        margin-top: var(--space-2);
+      }
+
+      .admin-section-badges {
+        justify-content: flex-start;
       }
 
       .admin-field-grid {
@@ -1005,6 +1193,7 @@
         </span>
       </a>
       <div class="admin-actions">
+        <div class="admin-completion-slot" id="admin-completion-status"></div>
         <button class="btn btn-outline" id="preview" type="button">Aperçu</button>
         <button class="btn btn-primary" id="publish" type="button">Publier</button>
         <button class="btn btn-outline admin-action-separated" id="logout" type="button">Déconnexion</button>
