@@ -66,7 +66,7 @@
       "header": {
         "site_name": "Melkior Clergé",
         "credential": "Courtier hypothécaire",
-        "cta_text": "Réserver une consultation",
+        "cta_text": "Prendre un rendez-vous",
         "cta_link": "#contact"
       },
       "regions": "Partout au Québec",
@@ -109,7 +109,7 @@
         "eyebrow": "Courtier hypothécaire | Multi-Prêts",
         "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
-        "primary_cta": "Réserver une consultation",
+        "primary_cta": "Prendre un rendez-vous",
         "image_alt": "Portrait de Melkior Clergé, courtier hypothécaire",
         "highlight": "Pour un service en or, contactez Melkior.",
         "primary_cta_link": "#contact"
@@ -163,7 +163,7 @@
         "monthly_label": "Mensuel (12/an)",
         "biweekly_label": "Aux deux semaines (26/an)",
         "result_label": "Paiement estimé",
-        "cta_text": "Réserver une consultation",
+        "cta_text": "Prendre un rendez-vous",
         "default_amount": "450000",
         "default_rate": "4.89",
         "default_years": "25"
@@ -193,7 +193,7 @@
             "icon_path": "M20 6H4V4H20M20 18H4V20H20M20 8H4C2.9 8 2 8.9 2 10V14C2 15.1 2.9 16 4 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8M18 14H14V12H18V14Z"
           }
         ],
-        "cta_text": "Réserver une consultation",
+        "cta_text": "Prendre un rendez-vous",
         "cta_link": "#contact"
       },
       "guide": {
@@ -275,8 +275,8 @@
       "final_cta": {
         "eyebrow": "Consultation hypothécaire",
         "heading": "Votre prochain chapitre *immobilier* commence ici.",
-        "description": "Choisissez la façon la plus simple de joindre Melkior : réserver une consultation, envoyer un courriel ou appeler directement.",
-        "booking_cta": "Réserver une consultation",
+        "description": "Choisissez la façon la plus simple de joindre Melkior : prendre un rendez-vous, envoyer un courriel ou appeler directement.",
+        "booking_cta": "Prendre un rendez-vous",
         "booking_text": "Réservez une plage horaire pour discuter de votre projet avec Melkior.",
         "email_cta": "Envoyer un courriel",
         "email_text": "Transmettez les détails de votre demande par formulaire sécurisé.",
