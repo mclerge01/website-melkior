@@ -89,22 +89,23 @@ p {
 
 :root {
   /* Colors */
-  --color-primary: #790025;
-  --color-primary-rgb: 121, 0, 37;
-  --color-primary-dark: #3c0012;
-  --color-primary-dark-rgb: 60, 0, 18;
-  --color-primary-light: #fff1f3;
-  --color-secondary: #007167;
-  --color-accent: #dbaa4b;
-  --color-accent-dark: #8f641f;
-  --color-link-bright: #ffcf4a;
-  --color-link-focus-bg: rgba(255, 207, 74, 0.16);
+  --color-primary: #0e2538;
+  --color-primary-rgb: 14, 37, 56;
+  --color-primary-dark: #07131d;
+  --color-primary-dark-rgb: 7, 19, 29;
+  --color-primary-light: #eef7ea;
+  --color-secondary: #4d9d34;
+  --color-accent: #d6b35a;
+  --color-accent-rgb: 214, 179, 90;
+  --color-accent-dark: #3f7f2b;
+  --color-link-bright: #3f7f2b;
+  --color-link-focus-bg: rgba(63, 127, 43, 0.16);
   --color-text: #1f2126;
   --color-text-light: #57555c;
   --color-bg: #ffffff;
   --color-bg-light: #f3f5f9;
-  --color-bg-dark: #002521;
-  --color-bg-dark-rgb: 0, 37, 33;
+  --color-bg-dark: #0e2538;
+  --color-bg-dark-rgb: 14, 37, 56;
   --color-bg-dark-tint: rgba(var(--color-bg-dark-rgb), 0.08);
   --color-bg-dark-tint-border: rgba(var(--color-bg-dark-rgb), 0.14);
   --color-border: #e1e1e1;
@@ -114,9 +115,10 @@ p {
   --color-white-subtle: rgba(255, 255, 255, 0.06);
   --color-white-border: rgba(255, 255, 255, 0.16);
   --color-white-border-strong: rgba(255, 255, 255, 0.22);
-  --color-error: #dc2626;
-  --color-error-light: #fff1f1;
-  --color-success: #15803d;
+  --color-error: #7a4f00;
+  --color-error-rgb: 122, 79, 0;
+  --color-error-light: #fff8e6;
+  --color-success: #3f7f2b;
 
   /* Breakpoints */
   --bp-xs: 360px;
@@ -213,8 +215,8 @@ p {
   --reveal-distance: 1rem;
   --reveal-duration: 0.56s;
   --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ring-primary: 0 0 0 3px rgba(121, 0, 37, 0.18);
-  --ring-error: 0 0 0 3px rgba(220, 38, 38, 0.16);
+  --ring-primary: 0 0 0 3px rgba(var(--color-primary-rgb), 0.2);
+  --ring-error: 0 0 0 3px rgba(var(--color-error-rgb), 0.18);
 }
 
 .container {
@@ -253,6 +255,20 @@ p {
 .bg-dark .section-title em,
 .bg-primary-dark .section-title em {
   color: var(--color-accent);
+}
+
+.text-white,
+.bg-dark,
+.bg-primary-dark,
+.footer,
+.hero,
+.guide-section,
+.about-section,
+.testimonial-section,
+.calculator-section,
+.contact-action {
+  --color-link-bright: #76b82a;
+  --color-link-focus-bg: rgba(118, 184, 42, 0.18);
 }
 
 .section-lead {
@@ -622,9 +638,9 @@ p {
   z-index: 1;
   background:
     repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 14px),
-    linear-gradient(115deg, rgba(60, 0, 18, 0.92) 0%, rgba(20, 29, 33, 0.86) 42%, rgba(0, 113, 103, 0.78) 100%),
-    radial-gradient(circle at 76% 22%, rgba(219, 170, 75, 0.2), transparent 30%),
-    radial-gradient(circle at 18% 78%, rgba(121, 0, 37, 0.28), transparent 34%);
+    linear-gradient(115deg, rgba(var(--color-primary-dark-rgb), 0.92) 0%, rgba(var(--color-primary-rgb), 0.86) 42%, rgba(77, 157, 52, 0.76) 100%),
+    radial-gradient(circle at 76% 22%, rgba(214, 179, 90, 0.2), transparent 30%),
+    radial-gradient(circle at 18% 78%, rgba(118, 184, 42, 0.18), transparent 34%);
   pointer-events: none;
 }
 
@@ -684,6 +700,17 @@ p {
   font-weight: 800;
 }
 
+.hero .btn-primary,
+.site-nav.menu-open .nav-cta,
+.site-nav:has(.nav-menu.active) .nav-cta {
+  --button-bg: var(--color-accent);
+  --button-color: var(--color-primary-dark);
+  --button-border: var(--color-accent);
+  --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
+  --button-hover-border: var(--button-hover-bg);
+  --button-hover-color: var(--color-primary-dark);
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -732,7 +759,7 @@ p {
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: var(--rounded-full);
   background:
-    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.72) 42%, rgba(121, 0, 37, 0.9) 100%);
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.72) 42%, rgba(var(--color-primary-rgb), 0.9) 100%);
   box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.28);
 }
 
@@ -830,7 +857,7 @@ p {
   background:
     linear-gradient(135deg, rgba(var(--color-bg-dark-rgb), 0.06), transparent 40%),
     var(--color-white);
-  box-shadow: 0 1.25rem 3rem rgba(0, 37, 33, 0.16);
+  box-shadow: 0 1.25rem 3rem rgba(var(--color-bg-dark-rgb), 0.16);
   transition:
     border-color var(--transition),
     box-shadow var(--transition),
@@ -840,7 +867,7 @@ p {
 .calculator-teaser:hover,
 .calculator-teaser:focus-visible {
   border-color: color-mix(in srgb, var(--color-bg-dark) 28%, var(--color-border) 72%);
-  box-shadow: 0 1.6rem 3.4rem rgba(0, 37, 33, 0.22);
+  box-shadow: 0 1.6rem 3.4rem rgba(var(--color-bg-dark-rgb), 0.22);
   transform: translateY(-2px);
 }
 
@@ -933,12 +960,12 @@ p {
 .calculator-section .calculator-rate-note strong,
 .calculator-section .calculator-detail strong,
 .calculator-section .calculator-rate-note a {
-  color: var(--color-accent);
+  color: var(--color-link-bright);
 }
 
 .calculator-section .side-note {
   border-color: var(--color-white-border);
-  border-left-color: var(--color-accent);
+  border-left-color: var(--color-link-bright);
   color: var(--color-white);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
@@ -946,11 +973,12 @@ p {
 }
 
 .calculator-section .btn-primary {
-  --button-bg: var(--color-secondary);
-  --button-border: var(--color-secondary);
+  --button-bg: var(--color-accent);
+  --button-color: var(--color-primary-dark);
+  --button-border: var(--color-accent);
   --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
   --button-hover-border: var(--button-hover-bg);
-  --button-hover-color: var(--color-white);
+  --button-hover-color: var(--color-primary-dark);
 }
 
 .calculator-section .calculator-result {
@@ -964,7 +992,7 @@ p {
 .calculator-section {
   color: var(--color-white);
   background:
-    radial-gradient(circle at 18% 20%, rgba(219, 170, 75, 0.12), transparent 23rem),
+    radial-gradient(circle at 18% 20%, rgba(var(--color-accent-rgb), 0.12), transparent 23rem),
     radial-gradient(circle at 86% 78%, rgba(255, 255, 255, 0.08), transparent 24rem),
     var(--color-bg-dark);
 }
@@ -1010,7 +1038,7 @@ p {
   color: var(--color-text);
   background:
     radial-gradient(circle at 14% 18%, rgba(var(--color-bg-dark-rgb), 0.06), transparent 22rem),
-    radial-gradient(circle at 88% 74%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    radial-gradient(circle at 88% 74%, rgba(var(--color-accent-rgb), 0.12), transparent 24rem),
     var(--color-white);
 }
 
@@ -1047,7 +1075,7 @@ p {
   background:
     linear-gradient(135deg, rgba(var(--color-bg-dark-rgb), 0.04), transparent 38%),
     var(--color-white);
-  box-shadow: 0 1rem 2.5rem rgba(0, 37, 33, 0.12);
+  box-shadow: 0 1rem 2.5rem rgba(var(--color-bg-dark-rgb), 0.12);
 }
 
 .service-card-icon svg {
@@ -1107,7 +1135,7 @@ p {
 .guide-section {
   color: var(--color-white);
   background:
-    radial-gradient(circle at 15% 18%, rgba(219, 170, 75, 0.12), transparent 23rem),
+    radial-gradient(circle at 15% 18%, rgba(var(--color-accent-rgb), 0.12), transparent 23rem),
     #070707;
 }
 
@@ -1131,7 +1159,7 @@ p {
 .about-section {
   color: var(--color-white);
   background:
-    radial-gradient(circle at 16% 20%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    radial-gradient(circle at 16% 20%, rgba(var(--color-accent-rgb), 0.12), transparent 24rem),
     var(--color-bg-dark);
 }
 
@@ -1152,7 +1180,7 @@ p {
   content: "";
   position: absolute;
   inset: 1.25rem -1.25rem -1.25rem 1.25rem;
-  border: 1px solid rgba(219, 170, 75, 0.34);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.34);
   border-radius: var(--card-radius);
   pointer-events: none;
 }
@@ -1255,7 +1283,7 @@ p {
   bottom: 0;
   left: var(--timeline-line-x);
   width: 1px;
-  background: linear-gradient(to bottom, var(--color-accent), rgba(219, 170, 75, 0.62) 68%, transparent);
+  background: linear-gradient(to bottom, var(--color-accent), rgba(var(--color-accent-rgb), 0.62) 68%, transparent);
 }
 
 .timeline-item {
@@ -1277,7 +1305,7 @@ p {
   border: 2px solid var(--color-accent);
   border-radius: var(--rounded-full);
   background: var(--color-primary-dark);
-  box-shadow: 0 0 0 4px rgba(219, 170, 75, 0.12);
+  box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb), 0.12);
   z-index: 1;
 }
 
@@ -1300,7 +1328,7 @@ p {
   flex: 1 1 auto;
   max-width: 8rem;
   height: 1px;
-  background: linear-gradient(to right, rgba(219, 170, 75, 0.68), transparent);
+  background: linear-gradient(to right, rgba(var(--color-accent-rgb), 0.68), transparent);
 }
 
 .timeline-item h3 {
@@ -1317,8 +1345,8 @@ p {
   overflow: hidden;
   color: var(--color-white);
   background:
-    radial-gradient(circle at 14% 18%, rgba(219, 170, 75, 0.16), transparent 22rem),
-    radial-gradient(circle at 86% 74%, rgba(219, 170, 75, 0.12), transparent 24rem),
+    radial-gradient(circle at 14% 18%, rgba(var(--color-accent-rgb), 0.16), transparent 22rem),
+    radial-gradient(circle at 86% 74%, rgba(var(--color-accent-rgb), 0.12), transparent 24rem),
     #070707;
 }
 
@@ -1328,7 +1356,7 @@ p {
   top: 2rem;
   left: 5vw;
   z-index: 0;
-  color: rgba(219, 170, 75, 0.14);
+  color: rgba(var(--color-accent-rgb), 0.14);
   font-family: var(--font-serif);
   font-size: 14rem;
   line-height: 1;
@@ -1344,7 +1372,7 @@ p {
   width: 13rem;
   height: 13rem;
   border-radius: var(--rounded-full);
-  background: rgba(219, 170, 75, 0.14);
+  background: rgba(var(--color-accent-rgb), 0.14);
   filter: blur(5rem);
   pointer-events: none;
 }
@@ -1408,7 +1436,7 @@ p {
   pointer-events: auto;
   width: 3rem;
   height: 3rem;
-  border-color: rgba(219, 170, 75, 0.34);
+  border-color: rgba(var(--color-accent-rgb), 0.34);
   color: var(--color-accent);
   background: var(--control-bg);
   box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.28);
@@ -1551,9 +1579,9 @@ p {
 }
 
 .testimonial-section .translation-badge {
-  border-color: rgba(230, 181, 74, 0.32);
+  border-color: rgba(var(--color-accent-rgb), 0.32);
   color: rgba(255, 255, 255, 0.82);
-  background: rgba(230, 181, 74, 0.12);
+  background: rgba(var(--color-accent-rgb), 0.12);
 }
 
 .testimonial-stars {
@@ -1613,7 +1641,7 @@ img.testimonial-avatar {
 .media-section {
   background:
     radial-gradient(circle at 12% 20%, rgba(var(--color-bg-dark-rgb), 0.05), transparent 22rem),
-    radial-gradient(circle at 88% 74%, rgba(219, 170, 75, 0.1), transparent 24rem),
+    radial-gradient(circle at 88% 74%, rgba(var(--color-accent-rgb), 0.1), transparent 24rem),
     var(--color-white);
 }
 
@@ -1636,7 +1664,7 @@ img.testimonial-avatar {
   color: var(--color-text-light);
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(0, 46, 41, 0.05), rgba(151, 0, 46, 0.05)),
+    linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.05), rgba(118, 184, 42, 0.06)),
     var(--color-white);
 }
 
@@ -1723,8 +1751,8 @@ img.testimonial-avatar {
   overflow: hidden;
   padding-block: var(--section-padding-y);
   background:
-    radial-gradient(circle at 18% 22%, rgba(219, 170, 75, 0.14), transparent 24rem),
-    radial-gradient(circle at 80% 80%, rgba(219, 170, 75, 0.1), transparent 24rem),
+    radial-gradient(circle at 18% 22%, rgba(var(--color-accent-rgb), 0.14), transparent 24rem),
+    radial-gradient(circle at 80% 80%, rgba(var(--color-accent-rgb), 0.1), transparent 24rem),
     #070707;
 }
 
@@ -1734,7 +1762,7 @@ img.testimonial-avatar {
   inset: auto 8% -35% 8%;
   height: 22rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(219, 170, 75, 0.16), transparent 65%);
+  background: radial-gradient(circle, rgba(var(--color-accent-rgb), 0.16), transparent 65%);
   pointer-events: none;
 }
 
@@ -1958,7 +1986,7 @@ img.testimonial-avatar {
 
 .form-status {
   padding: var(--content-gap-compact) var(--content-gap);
-  border: 1px solid rgba(220, 38, 38, 0.28);
+  border: 1px solid rgba(var(--color-error-rgb), 0.28);
   border-radius: var(--rounded);
   color: var(--color-error);
   background: var(--color-error-light);

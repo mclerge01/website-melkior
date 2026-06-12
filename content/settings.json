@@ -8,17 +8,17 @@
     ]
   },
   "theme": {
-    "primary": "#790025",
-    "primary_dark": "#3c0012",
-    "primary_light": "#fff1f3",
-    "secondary": "#007167",
-    "accent": "#dbaa4b",
-    "accent_dark": "#8f641f",
+    "primary": "#0e2538",
+    "primary_dark": "#07131d",
+    "primary_light": "#eef7ea",
+    "secondary": "#4d9d34",
+    "accent": "#d6b35a",
+    "accent_dark": "#3f7f2b",
     "text": "#1f2126",
     "text_light": "#57555c",
     "bg": "#ffffff",
     "bg_light": "#f3f5f9",
-    "bg_dark": "#002521",
+    "bg_dark": "#0e2538",
     "border": "#e1e1e1"
   },
   "shared": {
