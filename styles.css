@@ -1485,6 +1485,7 @@ p {
   --testimonial-card-width: clamp(28rem, 54vw, 46rem);
   --testimonial-side-offset: clamp(24rem, 41vw, 38rem);
   --testimonial-showcase-height: clamp(26rem, 32vw, 32rem);
+  --testimonial-card-height: var(--testimonial-showcase-height);
   position: relative;
   display: grid;
   max-width: min(100%, 76rem);
@@ -1533,7 +1534,7 @@ p {
   align-items: center;
   width: 100%;
   max-width: none;
-  min-height: var(--testimonial-showcase-height);
+  min-height: var(--testimonial-card-height);
   overflow: visible;
   scroll-behavior: auto;
   scroll-snap-type: none;
@@ -1560,7 +1561,7 @@ p {
   margin-left: calc(var(--testimonial-card-width) * -0.5);
   z-index: 1;
   width: var(--testimonial-card-width);
-  height: var(--testimonial-showcase-height);
+  height: var(--testimonial-card-height);
   opacity: 0;
   pointer-events: none;
   transform: translate3d(0, -50%, 0) scale(0.82);

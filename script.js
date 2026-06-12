@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let timer = null;
     let paused = false;
     let activeIndex = 0;
+    let heightFrame = 0;
 
     function getItems() {
       return Array.from(track.children);
@@ -175,6 +176,76 @@ document.addEventListener("DOMContentLoaded", () => {
       return pages.reduce((closestIndex, page, index) => {
         return Math.abs(page - scrollLeft) < Math.abs(pages[closestIndex] - scrollLeft) ? index : closestIndex;
       }, 0);
+    }
+
+    function measureShowcaseHeight() {
+      if (mode !== "showcase") return;
+      const items = getItems();
+      if (!items.length) return;
+
+      carousel.style.removeProperty("--testimonial-card-height");
+      const fallbackHeight = Number.parseFloat(window.getComputedStyle(track).minHeight) || 0;
+      const cardWidth = Math.max(
+        ...items.map((item) => Number.parseFloat(window.getComputedStyle(item).width) || item.getBoundingClientRect().width),
+      );
+      if (!Number.isFinite(cardWidth) || cardWidth <= 0) return;
+
+      const measurer = document.createElement("div");
+      measurer.setAttribute("aria-hidden", "true");
+      Object.assign(measurer.style, {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        zIndex: "-1",
+        width: "100%",
+        overflow: "visible",
+        visibility: "hidden",
+        pointerEvents: "none",
+      });
+
+      const clones = items.map((item) => {
+        const clone = item.cloneNode(true);
+        clone.classList.remove("is-active", "is-prev", "is-next", "is-hidden");
+        clone.removeAttribute("aria-hidden");
+        Object.assign(clone.style, {
+          position: "static",
+          inset: "auto",
+          top: "auto",
+          left: "auto",
+          width: `${Math.ceil(cardWidth)}px`,
+          height: "auto",
+          minHeight: "0",
+          margin: "0",
+          opacity: "1",
+          visibility: "hidden",
+          pointerEvents: "none",
+          transform: "none",
+          transition: "none",
+          filter: "none",
+          webkitMaskImage: "none",
+          maskImage: "none",
+        });
+        measurer.appendChild(clone);
+        return clone;
+      });
+
+      carousel.appendChild(measurer);
+      const measuredHeight = Math.max(...clones.map((clone) => clone.getBoundingClientRect().height));
+      measurer.remove();
+
+      const nextHeight = Math.ceil(Math.max(fallbackHeight, measuredHeight));
+      if (Number.isFinite(nextHeight) && nextHeight > 0) {
+        carousel.style.setProperty("--testimonial-card-height", `${nextHeight}px`);
+      }
+    }
+
+    function scheduleShowcaseHeightMeasure() {
+      if (mode !== "showcase") return;
+      if (heightFrame) window.cancelAnimationFrame(heightFrame);
+      heightFrame = window.requestAnimationFrame(() => {
+        heightFrame = 0;
+        measureShowcaseHeight();
+      });
     }
 
     function updateShowcase(index = activeIndex) {
@@ -288,6 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("resize", () => {
       if (mode === "showcase") {
+        scheduleShowcaseHeightMeasure();
         updateShowcase(activeIndex);
         resetAuto();
         return;
@@ -303,6 +375,15 @@ document.addEventListener("DOMContentLoaded", () => {
     carousel.classList.add("is-paged");
     if (mode === "showcase") carousel.classList.add("is-showcase");
     carousel.dataset.carouselReady = "true";
+    if (mode === "showcase") {
+      measureShowcaseHeight();
+      document.fonts?.ready.then(scheduleShowcaseHeightMeasure);
+      getItems().forEach((item) => {
+        item.querySelectorAll("img").forEach((image) => {
+          if (!image.complete) image.addEventListener("load", scheduleShowcaseHeightMeasure, { once: true });
+        });
+      });
+    }
     setControlsState();
     updateShowcase(0);
     startAuto();
