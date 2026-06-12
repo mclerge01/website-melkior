@@ -275,7 +275,9 @@
     .admin-empty-link {
       display: block;
       width: 100%;
+      min-width: 0;
       padding: var(--space-2) var(--space-3);
+      overflow: hidden;
       border: 0;
       border-left: 3px solid var(--color-border);
       border-radius: var(--rounded-sm);
@@ -285,6 +287,8 @@
       font-weight: 700;
       line-height: 1.35;
       text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       cursor: pointer;
     }
 

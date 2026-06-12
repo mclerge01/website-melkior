@@ -678,10 +678,12 @@ function renderEmptyFieldGroup(title, items, kind) {
   group.appendChild(heading);
 
   for (const item of items) {
+    const label = formatFieldCompletionLabel(item);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "admin-empty-link";
-    button.textContent = formatFieldCompletionLabel(item);
+    button.textContent = label;
+    button.title = label;
     button.addEventListener("click", () => scrollToFieldCompletionItem(item));
     group.appendChild(button);
   }
