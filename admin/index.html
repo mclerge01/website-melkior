@@ -40,7 +40,7 @@
       inset: 0;
       z-index: -1;
       background:
-        repeating-linear-gradient(135deg, rgba(248, 249, 250, 0.035) 0 1px, transparent 1px 14px),
+        repeating-linear-gradient(135deg, rgba(var(--color-primary-light-rgb), 0.035) 0 1px, transparent 1px 14px),
         linear-gradient(112deg, rgba(var(--color-primary-dark-rgb), 0.96) 0%, rgba(var(--color-primary-rgb), 0.88) 34%, rgba(var(--color-brand-teal-rgb), 0.68) 58%, rgba(var(--color-section-green-rgb), 0.56) 78%, rgba(var(--color-secondary-rgb), 0.46) 100%),
         radial-gradient(circle at 74% 26%, rgba(var(--color-secondary-bright-rgb), 0.22), transparent 32%),
         radial-gradient(circle at 88% 78%, rgba(var(--color-secondary-rgb), 0.24), transparent 34%),
@@ -79,7 +79,7 @@
       gap: var(--space-4);
       padding: 0 var(--space-6);
       border-bottom: 1px solid var(--color-border);
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(var(--color-white-rgb), 0.96);
       backdrop-filter: blur(14px);
     }
 
@@ -204,11 +204,11 @@
     }
 
     .admin-translation-summary.complete {
-      --button-bg: rgba(21, 128, 61, 0.08);
+      --button-bg: rgba(var(--color-success-rgb), 0.08);
       --button-color: var(--color-success);
-      --button-border: rgba(21, 128, 61, 0.24);
-      --button-hover-bg: rgba(21, 128, 61, 0.13);
-      --button-hover-border: rgba(21, 128, 61, 0.32);
+      --button-border: rgba(var(--color-success-rgb), 0.24);
+      --button-hover-bg: rgba(var(--color-success-rgb), 0.13);
+      --button-hover-border: rgba(var(--color-success-rgb), 0.32);
       --button-hover-color: var(--color-success);
     }
 
@@ -627,7 +627,7 @@
 
     .EasyMDEContainer .CodeMirror-focused {
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(155, 0, 46, 0.15);
+      box-shadow: var(--ring-primary);
     }
 
     .EasyMDEContainer .editor-toolbar {

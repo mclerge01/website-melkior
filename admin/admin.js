@@ -32,17 +32,24 @@ const ADMIN_VIEWS = [
 const COLOR_FIELDS = [
   ["primary", "Couleur principale"],
   ["primary_dark", "Couleur principale foncée"],
-  ["primary_light", "Couleur principale claire"],
   ["secondary", "Couleur secondaire"],
+  ["secondary_light", "Couleur secondaire claire"],
+  ["secondary_bright", "Couleur secondaire vive"],
   ["accent", "Accent"],
   ["accent_dark", "Accent foncé"],
+  ["brand_blue", "Bleu de marque"],
+  ["brand_teal", "Sarcelle de marque"],
+  ["section_green", "Vert de section"],
+  ["error", "Erreur"],
   ["text", "Texte principal"],
   ["text_light", "Texte secondaire"],
   ["bg", "Arrière-plan"],
   ["bg_light", "Arrière-plan alternatif"],
-  ["bg_dark", "Arrière-plan foncé"],
   ["border", "Bordures"],
+  ["white", "Blanc"],
 ].map(([key, label]) => ({ key, label, type: "color" }));
+
+const THEME_COLOR_KEYS = COLOR_FIELDS.map(({ key }) => key);
 
 const SYNCED_LOCALE_FIELD_PATTERNS = [
   /^locales\.[^.]+\.popup\.enabled$/,
@@ -581,10 +588,26 @@ function isValidColor(value) {
   return /^#[0-9a-fA-F]{6}$/.test(String(value || ""));
 }
 
+function colorRgbValue(value) {
+  if (!isValidColor(value)) return "";
+  const number = Number.parseInt(String(value).slice(1), 16);
+  return `${(number >> 16) & 255}, ${(number >> 8) & 255}, ${number & 255}`;
+}
+
+function resolvedColorValue(name, fallback = "") {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(`--color-${name}`).trim();
+  return isValidColor(value) ? value : (isValidColor(fallback) ? fallback : "");
+}
+
 function applyColorTheme() {
   const theme = content?.theme || {};
-  for (const [key, value] of Object.entries(theme)) {
-    if (isValidColor(value)) document.documentElement.style.setProperty(`--color-${key.replace(/_/g, "-")}`, value);
+  for (const key of THEME_COLOR_KEYS) {
+    const value = theme[key];
+    if (isValidColor(value)) {
+      const name = key.replace(/_/g, "-");
+      document.documentElement.style.setProperty(`--color-${name}`, value);
+      document.documentElement.style.setProperty(`--color-${name}-rgb`, colorRgbValue(value));
+    }
   }
 }
 
@@ -1008,7 +1031,8 @@ function renderColorInput(group, path, value) {
   const color = document.createElement("input");
   color.className = "admin-color-picker";
   color.type = "color";
-  color.value = isValidColor(value) ? value : "#000000";
+  const fallbackColor = resolvedColorValue("primary");
+  if (isValidColor(value) || fallbackColor) color.value = isValidColor(value) ? value : fallbackColor;
   const text = document.createElement("input");
   text.className = "input";
   text.value = value || "";

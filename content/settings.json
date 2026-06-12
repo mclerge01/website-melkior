@@ -10,17 +10,21 @@
   "theme": {
     "primary": "#0e2538",
     "primary_dark": "#07131d",
-    "primary_light": "#eef7ea",
     "secondary": "#4d9d34",
+    "secondary_light": "#a7d683",
+    "secondary_bright": "#76bc21",
     "accent": "#eef7ea",
     "accent_dark": "#3f7f2b",
-    "hero_accent": "#eef7ea",
+    "brand_blue": "#204a88",
+    "brand_teal": "#21515c",
+    "section_green": "#007167",
+    "error": "#7a4f00",
     "text": "#1f2126",
     "text_light": "#57555c",
     "bg": "#ffffff",
     "bg_light": "#f3f5f9",
-    "bg_dark": "#0e2538",
-    "border": "#e1e1e1"
+    "border": "#e1e1e1",
+    "white": "#ffffff"
   },
   "shared": {
     "phone": "+1 (514) 836-6736",

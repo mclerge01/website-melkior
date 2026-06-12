@@ -271,6 +271,33 @@ function generateSitemap(settings) {
     .join("\n")}\n</urlset>\n`;
 }
 
+function themeHex(theme, key, fallbackKey = "") {
+  const value = theme?.[key];
+  if (typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value)) return value;
+  const fallback = theme?.[fallbackKey];
+  return typeof fallback === "string" && /^#[0-9a-fA-F]{6}$/.test(fallback) ? fallback : "";
+}
+
+function generateFavicon(theme) {
+  const primary = themeHex(theme, "primary", "brand_blue");
+  const brandBlue = themeHex(theme, "brand_blue", "primary");
+  const secondaryBright = themeHex(theme, "secondary_bright", "secondary");
+  const white = themeHex(theme, "white", "bg");
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="logo-mark-gradient" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${primary}"/>
+      <stop offset="0.54" stop-color="${brandBlue}"/>
+      <stop offset="1" stop-color="${secondaryBright}"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="url(#logo-mark-gradient)" stroke="${white}" stroke-opacity="0.26" stroke-width="2"/>
+  <text x="32" y="33" text-anchor="middle" dominant-baseline="middle" fill="${white}" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="0">MC</text>
+</svg>
+`;
+}
+
 if (IS_DEV_BUILD) loadLocalEnv();
 
 rmSync(OUT_DIR, { recursive: true, force: true });
@@ -289,9 +316,10 @@ const settings = processMarkdown(JSON.parse(read("content/settings.json")));
 const template = read("template.html");
 const legalTemplate = read("template-legal.html");
 
-for (const path of ["styles.css", "script.js", "favicon.svg", "_headers", "assets", "admin"]) {
+for (const path of ["styles.css", "script.js", "_headers", "assets", "admin"]) {
   copyStatic(path);
 }
+write("favicon.svg", generateFavicon(settings.theme));
 await minifyStaticAssets();
 write("admin/preview-template.txt", template);
 
