@@ -2473,10 +2473,6 @@ img.testimonial-avatar {
     width: min(100%, 26rem);
   }
 
-  .nav-menu.active .nav-menu-network-logo {
-    display: inline-flex;
-  }
-
   .scroll-cue {
     display: none;
   }
@@ -2590,6 +2586,23 @@ img.testimonial-avatar {
   }
 }
 
+@media (max-width: 679px) {
+  .nav-menu.active .nav-menu-network-logo {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 680px) {
+  .logo-divider {
+    display: block;
+  }
+
+  .nav-brand .network-logo-link {
+    display: inline-flex;
+    width: 6.4rem;
+  }
+}
+
 @media (min-width: 768px) {
   .container {
     width: min(100% - (var(--container-padding-md) * 2), var(--container-xl));
@@ -2611,15 +2624,6 @@ img.testimonial-avatar {
 
   .stat-item:last-child {
     border-right: 0;
-  }
-
-  .logo-divider {
-    display: block;
-  }
-
-  .nav-brand .network-logo-link {
-    display: inline-flex;
-    width: 6.4rem;
   }
 
   .service-grid {
