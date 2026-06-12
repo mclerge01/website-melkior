@@ -114,8 +114,8 @@ p {
   --color-accent: #f8f9fa;
   --color-accent-rgb: 248, 249, 250;
   --color-accent-dark: #007167;
-  --color-hero-accent: #f8f9fa;
-  --color-hero-accent-rgb: 248, 249, 250;
+  --color-hero-accent: #eef7ea;
+  --color-hero-accent-rgb: 238, 247, 234;
   --color-link-bright: #a7d683;
   --color-link-focus-bg: var(--color-primary-subtle);
   --color-text: #0f1b27;
@@ -714,7 +714,7 @@ p {
 
 .hero-title em {
   display: block;
-  color: var(--color-white);
+  color: var(--color-hero-accent);
   line-height: 1.03;
 }
 
@@ -1957,6 +1957,8 @@ img.testimonial-avatar {
 }
 
 .contact-info {
+  --link-hover-mix-color: var(--color-accent-dark);
+  --link-hover-color: var(--color-accent-dark);
   margin-top: var(--component-gap);
   border-color: var(--color-border);
   background: var(--color-white);
@@ -2001,7 +2003,12 @@ img.testimonial-avatar {
   display: inline-flex;
   min-height: 3rem;
   align-items: center;
-  color: var(--color-primary);
+  color: var(--color-accent-dark);
+  font-weight: 700;
+}
+
+.contact-info p > span {
+  color: var(--color-accent-dark);
   font-weight: 700;
 }
 

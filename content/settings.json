@@ -12,8 +12,9 @@
     "primary_dark": "#07131d",
     "primary_light": "#eef7ea",
     "secondary": "#4d9d34",
-    "accent": "#d6b35a",
+    "accent": "#eef7ea",
     "accent_dark": "#3f7f2b",
+    "hero_accent": "#eef7ea",
     "text": "#1f2126",
     "text_light": "#57555c",
     "bg": "#ffffff",
@@ -247,23 +248,23 @@
         "items": [
           {
             "quote": "Service impeccable de la part de mon courtier hypothécaire monsieur Melkior. Notre dossier n'était pas simple, mais son expertise et sa persévérance nous ont permis de concrétiser notre projet. Achat de notre première maison, efficace et proactif, il a su trouver des solutions là où d'autres ont échoué. Merci encore pour tout!",
-            "name": "Client vérifié",
-            "context": "Achat de première maison"
+            "name": "Joseph M.",
+            "context": "Achat"
           },
           {
             "quote": "Rapidité, efficacité, sont les deux qualités qui décrivent le mieux Melkior. Le traitement de mon dossier a été plus que parfait. Je le recommande sans hésiter.",
-            "name": "Client vérifié",
-            "context": "Dossier hypothécaire"
+            "name": "Sandra B.",
+            "context": "Achat"
           },
           {
             "quote": "J'ai eu recours aux services de Melkior à deux reprises au cours de la dernière année. J'ai toujours reçu un excellent service. Non seulement il est professionnel, mais mes besoins étaient au coeur de ses démarches. Il a pris le temps nécessaire pour répondre à mes questions et me fournir les explications nécessaires afin que je puisse prendre les meilleures décisions. Je le recommande fortement. Merci.",
-            "name": "Client vérifié",
-            "context": "Accompagnement récurrent"
+            "name": "Elise P.",
+            "context": "Refinancement et Achat"
           },
           {
             "quote": "Très bon service. Un accompagnement adapté et professionnel tout au long du processus d'achat de notre maison. Nous recommandons Melkior sans hésiter.",
-            "name": "Client vérifié",
-            "context": "Achat de maison"
+            "name": "Sandra B.",
+            "context": "Achat"
           }
         ]
       },
@@ -571,26 +572,26 @@
         "items": [
           {
             "quote": "Impeccable service from my mortgage broker, Mr. Melkior. Our file was not simple, but his expertise and perseverance helped us make our project happen. For the purchase of our first home, he was efficient and proactive, finding solutions where others had failed. Thank you again for everything!",
-            "name": "Verified client",
-            "context": "First-home purchase",
+            "name": "Joseph M.",
+            "context": "Purchase",
             "translation_note": "Translated from French"
           },
           {
             "quote": "Speed and efficiency are the two qualities that best describe Melkior. The handling of my file was more than perfect. I recommend him without hesitation.",
-            "name": "Verified client",
-            "context": "Mortgage file",
+            "name": "Sandra B.",
+            "context": "Purchase",
             "translation_note": "Translated from French"
           },
           {
             "quote": "I used Melkior's services twice over the past year. I always received excellent service. Not only is he professional, but my needs were at the heart of his approach. He took the time needed to answer my questions and provide the explanations I needed to make the best decisions. I highly recommend him. Thank you.",
-            "name": "Verified client",
-            "context": "Repeat guidance",
+            "name": "Elise P.",
+            "context": "Refinancing and Purchase",
             "translation_note": "Translated from French"
           },
           {
             "quote": "Very good service. Tailored and professional guidance throughout the purchase process for our home. We recommend Melkior without hesitation.",
-            "name": "Verified client",
-            "context": "Home purchase",
+            "name": "Sandra B.",
+            "context": "Purchase",
             "translation_note": "Translated from French"
           }
         ]
