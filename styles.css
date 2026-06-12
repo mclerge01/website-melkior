@@ -44,16 +44,16 @@ a {
 
 a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):not(.action-card):hover,
 a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):not(.action-card):focus-visible {
-  color: var(--color-link-bright);
+  color: var(--link-hover-color);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
 
 a:not(.btn):not(.site-logo):not(.network-logo-link):not(.icon-button):not(.language-link):not(.calculator-teaser):not(.action-card):focus-visible {
-  outline: 2px solid var(--color-link-bright);
+  outline: 2px solid currentColor;
   outline-offset: 0.25rem;
   border-radius: var(--rounded-sm);
-  background: var(--color-link-focus-bg);
+  background: var(--link-focus-bg);
 }
 
 button,
@@ -119,6 +119,9 @@ p {
   --color-error-rgb: 122, 79, 0;
   --color-error-light: #fff8e6;
   --color-success: #3f7f2b;
+  --link-hover-mix-color: #000000;
+  --link-hover-color: color-mix(in srgb, currentColor 76%, var(--link-hover-mix-color) 24%);
+  --link-focus-bg: color-mix(in srgb, currentColor 12%, transparent);
 
   /* Breakpoints */
   --bp-xs: 360px;
@@ -164,9 +167,9 @@ p {
   --text-lg: 1.125rem;
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
-  --text-3xl: clamp(1.875rem, 1.5rem + 1vw, 2.25rem);
-  --text-4xl: clamp(2.25rem, 1.75rem + 1.5vw, 3rem);
-  --text-5xl: clamp(3rem, 2rem + 2.5vw, 4rem);
+  --text-3xl: clamp(1.75rem, 1.45rem + 0.85vw, 2.125rem);
+  --text-4xl: clamp(2rem, 1.55rem + 1.2vw, 2.75rem);
+  --text-5xl: clamp(2.5rem, 1.7rem + 2vw, 3.55rem);
   --measure-prose: 62ch;
   --measure-section: 760px;
 
@@ -189,7 +192,7 @@ p {
   --field-gap: var(--space-2);
   --field-padding-x: var(--space-4);
   --field-padding-y: var(--space-4);
-  --button-min-height: 2.75rem;
+  --button-min-height: 3rem;
   --button-min-height-lg: 3.25rem;
   --button-padding-x: var(--space-5);
   --button-padding-x-lg: var(--space-6);
@@ -199,7 +202,7 @@ p {
   --hero-min-h: 100vh;
   --card-radius: 0.5rem;
   --input-height: 3rem;
-  --input-height-compact: 2.75rem;
+  --input-height-compact: 3rem;
   --textarea-min-h: 8rem;
   --textarea-min-h-compact: 6.5rem;
   --instagram-widget-height: clamp(20rem, 23vw, 23rem);
@@ -267,8 +270,7 @@ p {
 .testimonial-section,
 .calculator-section,
 .contact-action {
-  --color-link-bright: #76b82a;
-  --color-link-focus-bg: rgba(118, 184, 42, 0.18);
+  --link-hover-mix-color: #ffffff;
 }
 
 .section-lead {
@@ -399,6 +401,7 @@ p {
   align-items: center;
   gap: var(--space-3);
   min-width: 0;
+  min-height: 3rem;
 }
 
 .site-logo:hover {
@@ -462,7 +465,7 @@ p {
   align-items: center;
   justify-content: center;
   width: 7rem;
-  height: 2.35rem;
+  height: 3rem;
   border-radius: var(--rounded-sm);
   transition: transform var(--transition), opacity var(--transition);
 }
@@ -534,6 +537,9 @@ p {
 
 .nav-link,
 .language-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: var(--text-sm);
   font-weight: 700;
   transition: color var(--transition), background-color var(--transition), border-color var(--transition), text-decoration-color var(--transition);
@@ -541,6 +547,8 @@ p {
 
 .nav-menu .nav-link {
   width: 100%;
+  min-width: 3rem;
+  min-height: 3rem;
   text-align: center;
 }
 
@@ -548,16 +556,13 @@ p {
 .nav-link:focus-visible,
 .footer a:hover,
 .footer a:focus-visible {
-  color: var(--color-link-bright);
+  color: var(--link-hover-color);
   text-decoration-line: underline;
 }
 
 .language-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  min-height: 2.25rem;
+  width: 3rem;
+  min-height: 3rem;
   border: 1px solid currentColor;
   border-radius: var(--rounded-full);
   transition:
@@ -581,8 +586,11 @@ p {
   position: relative;
   z-index: 70;
   display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-content: center;
   gap: 5px;
-  padding: var(--space-2);
+  padding: 0;
 }
 
 .hamburger span {
@@ -729,7 +737,7 @@ p {
 
 .phone-link:hover,
 .phone-link:focus-visible {
-  color: var(--color-link-bright);
+  color: var(--link-hover-color);
   text-decoration-line: underline;
   text-decoration-color: currentColor;
 }
@@ -769,7 +777,7 @@ p {
   left: 50%;
   bottom: var(--space-6);
   display: grid;
-  width: 2rem;
+  width: 3rem;
   height: 3.25rem;
   place-items: start center;
   padding-top: 0.55rem;
@@ -947,13 +955,16 @@ p {
 }
 
 .calculator-rate-note a {
+  display: inline-flex;
   width: fit-content;
+  min-height: 3rem;
+  align-items: center;
   color: var(--color-primary);
   font-weight: 800;
 }
 
 .calculator-rate-note a:hover {
-  color: var(--color-link-bright);
+  color: var(--link-hover-color);
 }
 
 .calculator-section .eyebrow,
@@ -1700,8 +1711,8 @@ img.testimonial-avatar {
   --control-hover-border: color-mix(in srgb, var(--control-border) 58%, #000 42%);
 
   display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   place-items: center;
   border: 1px solid var(--control-border);
   border-radius: var(--rounded-full);
@@ -1851,6 +1862,10 @@ img.testimonial-avatar {
 }
 
 .privacy-note a {
+  display: inline-block;
+  max-width: 100%;
+  min-height: 3rem;
+  padding-block: var(--space-2);
   color: var(--color-primary);
   font-weight: 800;
 }
@@ -1861,6 +1876,9 @@ img.testimonial-avatar {
 }
 
 .contact-info a {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
   color: var(--color-primary);
   font-weight: 700;
 }
@@ -1912,6 +1930,7 @@ img.testimonial-avatar {
 }
 
 .iti__selected-country {
+  min-height: 3rem;
   padding: 0 var(--field-gap) 0 0;
   border-radius: var(--rounded-sm);
   font-weight: 800;
@@ -1945,7 +1964,7 @@ img.testimonial-avatar {
 }
 
 .iti__search-input {
-  min-height: 2.75rem;
+  min-height: 3rem;
   border-color: var(--color-border);
   color: var(--color-text);
 }
@@ -2039,6 +2058,12 @@ img.testimonial-avatar {
 .footer a,
 .footer-bottom {
   color: rgba(255, 255, 255, 0.66);
+}
+
+.footer a {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
 }
 
 .footer-description {
@@ -2478,8 +2503,8 @@ img.testimonial-avatar {
   }
 
   .hero-title {
-    font-size: clamp(2.45rem, 11.5vw, 3.25rem);
-    line-height: 1.02;
+    font-size: clamp(2.2rem, 10vw, 2.85rem);
+    line-height: 1.04;
   }
 
   .hero-subtitle {
@@ -2578,8 +2603,8 @@ img.testimonial-avatar {
   }
 
   .testimonial-controls .carousel-control {
-    width: 2.625rem;
-    height: 2.625rem;
+    width: 3rem;
+    height: 3rem;
   }
 
   .testimonial-section .section-heading {
@@ -2587,8 +2612,8 @@ img.testimonial-avatar {
   }
 
   .testimonial-section .section-title {
-    font-size: clamp(2rem, 10vw, 2.85rem);
-    line-height: 1.03;
+    font-size: clamp(1.95rem, 8.5vw, 2.45rem);
+    line-height: 1.05;
   }
 
   .testimonial-card {
