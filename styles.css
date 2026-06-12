@@ -98,11 +98,15 @@ p {
   --color-secondary-rgb: 77, 157, 52;
   --color-secondary-light: #76b82a;
   --color-secondary-light-rgb: 118, 184, 42;
+  --color-section-green: #174f35;
+  --color-section-green-rgb: 23, 79, 53;
+  --color-section-green-dark: #0f3427;
+  --color-section-green-dark-rgb: 15, 52, 39;
   --color-accent: #d6b35a;
   --color-accent-rgb: 214, 179, 90;
   --color-accent-dark: #3f7f2b;
-  --color-hero-accent: #f0a15d;
-  --color-hero-accent-rgb: 240, 161, 93;
+  --color-hero-accent: #d7bf1a;
+  --color-hero-accent-rgb: 215, 191, 26;
   --color-link-bright: #3f7f2b;
   --color-link-focus-bg: rgba(63, 127, 43, 0.16);
   --color-text: #1f2126;
@@ -718,9 +722,9 @@ p {
 }
 
 .hero .btn-primary {
-  --button-bg: var(--color-hero-accent);
+  --button-bg: var(--color-secondary-light);
   --button-color: var(--color-primary-dark);
-  --button-border: var(--color-hero-accent);
+  --button-border: var(--color-secondary-light);
   --button-hover-bg: color-mix(in srgb, var(--button-bg) 72%, #000 28%);
   --button-hover-border: var(--button-hover-bg);
   --button-hover-color: var(--color-primary-dark);
@@ -826,7 +830,9 @@ p {
 
 .stats-band {
   color: var(--color-white);
-  background: var(--color-bg-dark);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(var(--color-secondary-light-rgb), 0.14), transparent 22rem),
+    linear-gradient(135deg, var(--color-section-green-dark), var(--color-section-green));
 }
 
 .stats-band .container {
@@ -1190,8 +1196,9 @@ p {
 .about-section {
   color: var(--color-white);
   background:
-    radial-gradient(circle at 16% 20%, rgba(var(--color-accent-rgb), 0.12), transparent 24rem),
-    var(--color-bg-dark);
+    radial-gradient(circle at 16% 20%, rgba(var(--color-secondary-light-rgb), 0.16), transparent 24rem),
+    radial-gradient(circle at 86% 78%, rgba(var(--color-primary-rgb), 0.18), transparent 28rem),
+    linear-gradient(135deg, var(--color-section-green-dark), var(--color-section-green));
 }
 
 .about-grid {
@@ -1782,9 +1789,9 @@ img.testimonial-avatar {
   overflow: hidden;
   padding-block: var(--section-padding-y);
   background:
-    radial-gradient(circle at 18% 22%, rgba(var(--color-accent-rgb), 0.13), transparent 24rem),
-    radial-gradient(circle at 80% 80%, rgba(var(--color-secondary-rgb), 0.12), transparent 24rem),
-    linear-gradient(135deg, var(--color-bg-dark), var(--color-primary-dark));
+    radial-gradient(circle at 18% 22%, rgba(var(--color-secondary-light-rgb), 0.15), transparent 24rem),
+    radial-gradient(circle at 80% 80%, rgba(var(--color-primary-rgb), 0.18), transparent 24rem),
+    linear-gradient(135deg, var(--color-section-green), var(--color-section-green-dark));
 }
 
 .contact-action::before {
@@ -1793,7 +1800,7 @@ img.testimonial-avatar {
   inset: auto 8% -35% 8%;
   height: 22rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(var(--color-accent-rgb), 0.16), transparent 65%);
+  background: radial-gradient(circle, rgba(var(--color-secondary-light-rgb), 0.18), transparent 65%);
   pointer-events: none;
 }
 
