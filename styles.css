@@ -1985,9 +1985,7 @@ img.testimonial-avatar {
   font-size: var(--text-base);
   line-height: 1.65;
   border-left-color: var(--color-accent-dark);
-  background:
-    linear-gradient(135deg, rgba(var(--color-secondary-rgb), 0.08), transparent 48%),
-    rgba(var(--color-white-rgb), 0.76);
+  background: linear-gradient(90deg, var(--color-white) 0%, var(--color-primary-light) 100%);
   box-shadow: none;
 }
 
