@@ -500,17 +500,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const annualRate = parsePercentInput(calculator.elements.rate.value);
       const years = parseYearsInput(calculator.elements.years.value);
       const frequency = calculator.elements.frequency.value;
-      const months = Math.max(years * 12, 1);
-      const monthlyRate = annualRate / 100 / 12;
-      let monthly;
+      const paymentsPerYear = frequency === "biweekly" ? 26 : 12;
+      const paymentCount = Math.max(years * paymentsPerYear, 1);
+      const nominalRate = annualRate / 100;
+      const periodRate = nominalRate > 0 ? Math.pow(1 + nominalRate / 2, 2 / paymentsPerYear) - 1 : 0;
+      let payment;
 
-      if (monthlyRate === 0) monthly = amount / months;
+      if (periodRate === 0) payment = amount / paymentCount;
       else {
-        const factor = Math.pow(1 + monthlyRate, months);
-        monthly = amount * ((monthlyRate * factor) / (factor - 1));
+        const factor = Math.pow(1 + periodRate, paymentCount);
+        payment = amount * ((periodRate * factor) / (factor - 1));
       }
 
-      const payment = frequency === "biweekly" ? (monthly * 12) / 26 : monthly;
       result.textContent = formatter.format(Number.isFinite(payment) ? payment : 0);
     }
 
