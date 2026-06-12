@@ -933,11 +933,16 @@ p {
 .calculator-section .calculator-rate-note strong,
 .calculator-section .calculator-detail strong,
 .calculator-section .calculator-rate-note a {
-  color: var(--color-secondary);
+  color: var(--color-accent);
 }
 
 .calculator-section .side-note {
-  border-left-color: var(--color-secondary);
+  border-color: var(--color-white-border);
+  border-left-color: var(--color-accent);
+  color: var(--color-white);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%),
+    var(--color-white-subtle);
 }
 
 .calculator-section .btn-primary {
@@ -950,6 +955,28 @@ p {
 
 .calculator-section .calculator-result {
   background: var(--color-bg-dark);
+}
+
+.calculator-section .calculator-card {
+  color: var(--color-text);
+}
+
+.calculator-section {
+  color: var(--color-white);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(219, 170, 75, 0.12), transparent 23rem),
+    radial-gradient(circle at 86% 78%, rgba(255, 255, 255, 0.08), transparent 24rem),
+    var(--color-bg-dark);
+}
+
+.calculator-section .section-title {
+  color: var(--color-white);
+}
+
+.calculator-section .section-lead,
+.calculator-section .calculator-detail p,
+.calculator-section .calculator-rate-note p {
+  color: var(--color-white-muted);
 }
 
 .calculator-detail-list {
@@ -1584,7 +1611,10 @@ img.testimonial-avatar {
 }
 
 .media-section {
-  background: var(--color-bg-light);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(var(--color-bg-dark-rgb), 0.05), transparent 22rem),
+    radial-gradient(circle at 88% 74%, rgba(219, 170, 75, 0.1), transparent 24rem),
+    var(--color-white);
 }
 
 .media-section .section-heading {
@@ -1676,7 +1706,7 @@ img.testimonial-avatar {
 }
 
 .contact-section {
-  background: var(--color-bg);
+  background: var(--color-white);
 }
 
 .contact-content,
@@ -1692,6 +1722,10 @@ img.testimonial-avatar {
   position: relative;
   overflow: hidden;
   padding-block: var(--section-padding-y);
+  background:
+    radial-gradient(circle at 18% 22%, rgba(219, 170, 75, 0.14), transparent 24rem),
+    radial-gradient(circle at 80% 80%, rgba(219, 170, 75, 0.1), transparent 24rem),
+    #070707;
 }
 
 .contact-action::before {
