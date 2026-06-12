@@ -29,7 +29,7 @@
   "shared": {
     "phone": "+1 (514) 836-6736",
     "phone_href": "+15148366736",
-    "email": "consultation@melkiorclerge.ca",
+    "email": "mclerge@multi-prets.ca",
     "booking_url": "https://calendly.com/melkiorcourtierhypothecaire/consultation-gratuite-30-minutes",
     "office_address": "6799 boulevard St-Laurent, Montréal, QC, H2S 3C8",
     "regions": "Partout au Québec",
@@ -290,7 +290,7 @@
         "phone_text": "Appelez Melkior directement pour clarifier vos prochaines étapes."
       },
       "contact": {
-        "eyebrow": "Contact",
+        "eyebrow": "Envoyer un courriel",
         "heading": "Consultation hypothécaire",
         "subtitle": "Remplissez le formulaire avec les détails de votre achat, renouvellement ou refinancement. Melkior vous répondra dans les meilleurs délais, sans engagement de votre part.",
         "info_heading": "Coordonnées",
@@ -618,7 +618,7 @@
         "phone_text": "Call Melkior directly to clarify your next steps."
       },
       "contact": {
-        "eyebrow": "Contact",
+        "eyebrow": "Send an email",
         "heading": "Mortgage consultation",
         "subtitle": "Fill out the form with details about your purchase, renewal, or refinance. Melkior will reply as soon as possible, with no commitment required.",
         "info_heading": "Contact details",
