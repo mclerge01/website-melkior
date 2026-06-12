@@ -74,6 +74,15 @@ function base64Utf8(value) {
   return btoa(binary);
 }
 
+function contactLogMetadata({ locale, subject, referral, message }) {
+  return {
+    locale,
+    subject_length: subject.length,
+    referral_provided: Boolean(referral),
+    message_length: message.length,
+  };
+}
+
 /**
  * Hand off the prepared MIME message to the email Worker service binding.
  *
@@ -268,12 +277,7 @@ export async function onRequestPost(context) {
       const handoff = dispatchContactEmail(
         context,
         { from: fromEmail, to: toEmail, raw },
-        {
-          locale,
-          subject,
-          referral: referral || "not_provided",
-          message_length: message.length,
-        }
+        contactLogMetadata({ locale, subject, referral, message })
       );
       if (context.waitUntil) {
         context.waitUntil(handoff);
@@ -283,8 +287,8 @@ export async function onRequestPost(context) {
     } else if (isLocalDevelopmentRequest(context.request)) {
       console.log("Contact form dev mode:", {
         locale,
-        subject,
-        referral: referral || "not_provided",
+        subjectLength: subject.length,
+        referralProvided: Boolean(referral),
         hasPhone: Boolean(formattedPhone),
         emailDomain: email.includes("@") ? email.split("@").pop() : "",
         messageLength: message.length,

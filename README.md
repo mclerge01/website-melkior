@@ -16,7 +16,7 @@ The site is intentionally small and framework-free: static HTML generated from J
 - GitHub OAuth for admin login
 - EasyMDE for admin-only Markdown editing
 
-No frontend framework or Tailwind package is used. The public website loads pinned CDN assets only where needed: Cloudflare Turnstile, `intl-tel-input` for phone entry, and Superflow on public HTML pages during the client review period. The admin panel loads pinned EasyMDE assets for Markdown editing.
+No frontend framework or Tailwind package is used. The public website loads pinned CDN assets only where needed: Cloudflare Turnstile and `intl-tel-input` for phone entry. The admin panel loads pinned EasyMDE assets for Markdown editing.
 
 ## Project Structure
 
