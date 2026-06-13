@@ -6,12 +6,13 @@ The project is intentionally small: generated HTML, hand-written CSS and JavaScr
 
 ## Quick Facts
 
-- Admin URL: `/admin/`
+- Admin base URL: `/admin/`
+- Admin route URLs: `/admin/contenu/en`, `/admin/contenu/fr`, `/admin/couleurs`, `/admin/images`, `/admin/seo/en`, `/admin/seo/fr`
 - Generated output: `dist/` (ignored, rebuilt locally and during deploy)
 - Local dev URL: `http://127.0.0.1:8788`
 - Main content file: `content/settings.json`
 - Production domain: `https://melkiorclerge.ca`
-- Public contact sender: `consultation@melkiorclerge.ca`
+- Public contact email: `mclerge@multi-prets.ca`
 
 ## Stack
 
@@ -146,6 +147,20 @@ Admin writes require:
 
 Admin previews render draft content without publishing. Image uploads are prepared in the browser, then uploaded to GitHub when the admin user clicks publish.
 
+Admin routes are clean URLs backed by the static admin shell:
+
+```text
+/admin/
+/admin/contenu/en
+/admin/contenu/fr
+/admin/couleurs
+/admin/images
+/admin/seo/en
+/admin/seo/fr
+```
+
+Field anchors are appended as hash fragments so a specific editable field can be linked directly.
+
 Uploaded images are stored under:
 
 ```text
@@ -162,11 +177,7 @@ The public contact form posts to:
 /api/contact
 ```
 
-The handler validates required fields, verifies Turnstile, sanitizes input, and sends email through Cloudflare Email Sending from:
-
-```text
-consultation@melkiorclerge.ca
-```
+The public contact email is stored in `content/settings.json` as `shared.email`. The handler validates required fields, verifies Turnstile, sanitizes input, and sends the form message through Cloudflare Email Sending to `CONTACT_DESTINATION`.
 
 Set `CONTACT_DESTINATION` to the private final recipient mailbox, not to the public alias. Do not commit the destination mailbox in source, generated files, or `wrangler.toml`.
 
@@ -289,7 +300,8 @@ private mailbox destinations
 Turnstile secrets
 ```
 
-- Keep `consultation@melkiorclerge.ca` aligned in public content, contact-email code, and the `SEND_EMAIL` binding.
+- Keep `content/settings.json` `shared.email`, legal/privacy copy, and public contact links aligned.
+- Keep the contact-form sender in `lib/email-config.mjs` aligned with the `SEND_EMAIL` binding.
 - Keep Cloudflare Managed Rules and DDoS protection enabled.
 - If contact emails deliver but land in spam, check `CONTACT_DESTINATION`, Cloudflare Email Sending analytics, SPF/DKIM records, and DMARC reports before changing form logic.
 

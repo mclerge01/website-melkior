@@ -4,8 +4,13 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
+import { adminPathForState } from "../admin/admin-routing.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 test("Workers live in directories matching their Wrangler names", async () => {
   const readme = await readFile(join(ROOT, "README.md"), "utf8");
@@ -44,4 +49,25 @@ test("README Project Layout stays alphabetized", async () => {
 
   assert.deepEqual(paths, sortedPaths);
   assert.equal(new Set(paths).size, paths.length, "Project Layout should not list duplicate paths");
+});
+
+test("README documents current public email and admin routes", async () => {
+  const readme = await readFile(join(ROOT, "README.md"), "utf8");
+  const settings = JSON.parse(await readFile(join(ROOT, "content/settings.json"), "utf8"));
+  const publicEmail = settings.shared.email;
+  const adminRoutes = [
+    "/admin/",
+    adminPathForState({ activeView: "content", activeLocale: "en-CA" }),
+    adminPathForState({ activeView: "content", activeLocale: "fr-CA" }),
+    adminPathForState({ activeView: "colors" }),
+    adminPathForState({ activeView: "images" }),
+    adminPathForState({ activeView: "seo", activeSeoLocale: "en-CA" }),
+    adminPathForState({ activeView: "seo", activeSeoLocale: "fr-CA" }),
+  ];
+
+  assert.match(readme, new RegExp(escapeRegExp(publicEmail)));
+  assert.doesNotMatch(readme, /consultation@melkiorclerge\.ca/);
+  for (const route of adminRoutes) {
+    assert.match(readme, new RegExp(escapeRegExp(route)));
+  }
 });
