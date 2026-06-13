@@ -29,3 +29,19 @@ test("Workers live in directories matching their Wrangler names", async () => {
   assert.doesNotMatch(readme, /^functions\//m, "README layout should not advertise a top-level Pages Functions directory");
   assert.doesNotMatch(readme, /workers\/site/);
 });
+
+test("README Project Layout stays alphabetized", async () => {
+  const readme = await readFile(join(ROOT, "README.md"), "utf8");
+  const layoutBlock = readme.match(/## Project Layout\s+```text\n(?<layout>[\s\S]*?)\n```/);
+
+  assert.ok(layoutBlock?.groups?.layout, "README should include a Project Layout code block");
+
+  const paths = layoutBlock.groups.layout
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => line.trim().split(/\s+/)[0]);
+  const sortedPaths = [...paths].sort((left, right) => left.localeCompare(right));
+
+  assert.deepEqual(paths, sortedPaths);
+  assert.equal(new Set(paths).size, paths.length, "Project Layout should not list duplicate paths");
+});

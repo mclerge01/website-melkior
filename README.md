@@ -6,64 +6,63 @@ The project is intentionally small: generated HTML, hand-written CSS and JavaScr
 
 ## Quick Facts
 
-- Production domain: `https://melkiorclerge.ca`
+- Admin URL: `/admin/`
+- Generated output: `dist/` (ignored, rebuilt locally and during deploy)
 - Local dev URL: `http://127.0.0.1:8788`
 - Main content file: `content/settings.json`
-- Generated output: `dist/` (ignored, rebuilt locally and during deploy)
-- Admin URL: `/admin/`
+- Production domain: `https://melkiorclerge.ca`
 - Public contact sender: `consultation@melkiorclerge.ca`
 
 ## Stack
 
-- Node.js build script
-- Vanilla HTML, CSS, and JavaScript
-- `marked` for Markdown rendering
-- `libphonenumber-js` for phone validation
-- Cloudflare Worker with static assets
-- Cloudflare Turnstile for contact-form spam protection
 - Cloudflare Email Sending for contact emails
 - Cloudflare KV for contact-form health markers
-- GitHub OAuth and GitHub Contents API for admin editing
+- Cloudflare Turnstile for contact-form spam protection
+- Cloudflare Worker with static assets
 - EasyMDE for admin-only Markdown editing
+- GitHub OAuth and GitHub Contents API for admin editing
+- `libphonenumber-js` for phone validation
+- `marked` for Markdown rendering
+- Node.js build script
+- Vanilla HTML, CSS, and JavaScript
 
 There is no frontend framework and no Tailwind package.
 
 ## Project Layout
 
 ```text
-content/settings.json          Site content, localized copy, theme values
-template.html                  Main public page template
-template-legal.html            Privacy/legal page template
-build.js                       Static build, sitemap, robots, headers
-styles.css                     Public and shared styles
-script.js                      Public site behavior
 admin/                         Admin editor UI
-workers/website-melkior/       Main website Worker entry, API routes, middleware
-lib/                           Rendering, i18n, auth, email, security helpers
-workers/email-health-check/    Scheduled weekly email-health Worker
 assets/images/                 Source image assets
+build.js                       Static build, sitemap, robots, headers
+content/settings.json          Site content, localized copy, theme values
 dist/                          Generated output, not committed
+lib/                           Rendering, i18n, auth, email, security helpers
+script.js                      Public site behavior
+styles.css                     Public and shared styles
+template-legal.html            Privacy/legal page template
+template.html                  Main public page template
+workers/email-health-check/    Scheduled weekly email-health Worker
+workers/website-melkior/       Main website Worker entry, API routes, middleware
 ```
 
 ## Architecture
 
-The main Worker serves generated files from `dist/` through the `ASSETS` binding. It also dispatches API routes, applies security headers, handles locale routing, admin auth, previews, and contact-form delivery.
+- `admin/`: GitHub-backed editor for `content/settings.json` and image files. Publishing commits changes to GitHub; Cloudflare then redeploys the site.
+- `workers/email-health-check/`: separate scheduled Worker with no public route. It runs every Monday at 15:00 UTC, checks Cloudflare Email Service health and shared `CONTACT_HEALTH` KV markers, and sends an alert only when action is needed.
+- `workers/website-melkior/`: main Cloudflare Workers Static Assets Worker. It serves `dist/` through the `ASSETS` binding, dispatches API routes, applies security headers, handles locale routing, admin auth, previews, and contact-form delivery.
 
-This is a Cloudflare Workers Static Assets deployment, not a Cloudflare Pages Functions project. Each Worker lives under `workers/<wrangler-name>/`; the main Worker entrypoint and its route modules live under `workers/website-melkior/`, and there is intentionally no top-level `functions/` directory.
-
-The admin area edits `content/settings.json` and image files through GitHub. Publishing from the admin commits changes to GitHub; Cloudflare then redeploys the site.
-
-The weekly email-health Worker is separate from the public site. It has no public route. It runs every Monday at 15:00 UTC, checks Cloudflare Email Service health and shared `CONTACT_HEALTH` KV markers, and sends an alert only when action is needed.
+Each Worker lives under `workers/<wrangler-name>/`. This is not a Cloudflare Pages Functions project, so there is intentionally no top-level `functions/` directory.
 
 ## Public Routes
 
 ```text
-/fr/
+/
 /en/
-/fr/politique-de-confidentialite/
-/en/privacy-policy/
-/fr/mentions-legales/
 /en/legal-notice/
+/en/privacy-policy/
+/fr/
+/fr/mentions-legales/
+/fr/politique-de-confidentialite/
 ```
 
 The root path `/` redirects using the locale cookie, `Accept-Language`, then French as the fallback.
@@ -85,15 +84,15 @@ cp .dev.vars.example .dev.vars
 Fill in `.dev.vars`:
 
 ```text
-GITHUB_CLIENT_ID
-GITHUB_CLIENT_SECRET
-ADMIN_SESSION_SECRET
 ADMIN_COOKIE_SECURE=false
 ADMIN_PUBLIC_ORIGIN=http://127.0.0.1:8788
-TURNSTILE_SITE_KEY
-TURNSTILE_SECRET
+ADMIN_SESSION_SECRET
 CONTACT_DESTINATION
 EMAIL_FAILURE_WEBHOOK_URL
+GITHUB_CLIENT_ID
+GITHUB_CLIENT_SECRET
+TURNSTILE_SECRET
+TURNSTILE_SITE_KEY
 ```
 
 Build generated files:
@@ -118,10 +117,10 @@ http://127.0.0.1:8788
 
 Most site content is in `content/settings.json`:
 
+- `locales.en-CA`: Canadian English copy
+- `locales.fr-CA`: French Canadian copy
 - `shared`: common contact details, image paths, social links, business metadata
 - `theme`: color values injected into generated pages
-- `locales.fr-CA`: French Canadian copy
-- `locales.en-CA`: Canadian English copy
 
 After manual content edits, run:
 
@@ -141,9 +140,9 @@ mclerge01/website-melkior
 
 Admin writes require:
 
-- valid admin session
 - CSRF token
 - current repository write permission
+- valid admin session
 
 Admin previews render draft content without publishing. Image uploads are prepared in the browser, then uploaded to GitHub when the admin user clicks publish.
 
@@ -190,10 +189,10 @@ cp workers/email-health-check/.dev.vars.example workers/email-health-check/.dev.
 Health-check Worker secrets:
 
 ```text
-CONTACT_DESTINATION
 CLOUDFLARE_ANALYTICS_TOKEN
-EMAIL_HEALTH_CHECK_RECIPIENT
+CONTACT_DESTINATION
 EMAIL_FAILURE_WEBHOOK_URL
+EMAIL_HEALTH_CHECK_RECIPIENT
 ```
 
 `CONTACT_DESTINATION` is required. `CLOUDFLARE_ANALYTICS_TOKEN` needs Cloudflare Analytics Read permission for the `melkiorclerge.ca` zone.
@@ -221,25 +220,25 @@ npx wrangler deploy --config workers/email-health-check/wrangler.toml
 Required production secrets for the main Worker:
 
 ```bash
-npx wrangler secret put GITHUB_CLIENT_SECRET --config wrangler.toml
 npx wrangler secret put ADMIN_SESSION_SECRET --config wrangler.toml
-npx wrangler secret put TURNSTILE_SECRET --config wrangler.toml
 npx wrangler secret put CONTACT_DESTINATION --config wrangler.toml
+npx wrangler secret put GITHUB_CLIENT_SECRET --config wrangler.toml
+npx wrangler secret put TURNSTILE_SECRET --config wrangler.toml
 ```
 
 Required production secrets for the health-check Worker:
 
 ```bash
-npx wrangler secret put CONTACT_DESTINATION --config workers/email-health-check/wrangler.toml
 npx wrangler secret put CLOUDFLARE_ANALYTICS_TOKEN --config workers/email-health-check/wrangler.toml
+npx wrangler secret put CONTACT_DESTINATION --config workers/email-health-check/wrangler.toml
 ```
 
 Optional secrets:
 
 ```bash
 npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config wrangler.toml
-npx wrangler secret put EMAIL_HEALTH_CHECK_RECIPIENT --config workers/email-health-check/wrangler.toml
 npx wrangler secret put EMAIL_FAILURE_WEBHOOK_URL --config workers/email-health-check/wrangler.toml
+npx wrangler secret put EMAIL_HEALTH_CHECK_RECIPIENT --config workers/email-health-check/wrangler.toml
 ```
 
 ## Verification
@@ -248,7 +247,19 @@ Run before committing meaningful changes:
 
 ```bash
 npm run build
-node --check build.js workers/website-melkior/index.js workers/website-melkior/middleware.js workers/website-melkior/api/contact.js workers/website-melkior/api/preview.js workers/email-health-check/index.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js admin/admin.js
+node --test tests/*.mjs tests/*.js
+node --check admin/admin.js
+node --check build.js
+node --check lib/contact-health.mjs
+node --check lib/email-health-check.mjs
+node --check lib/mime-email.mjs
+node --check lib/security-headers.mjs
+node --check script.js
+node --check workers/email-health-check/index.js
+node --check workers/website-melkior/api/contact.js
+node --check workers/website-melkior/api/preview.js
+node --check workers/website-melkior/index.js
+node --check workers/website-melkior/middleware.js
 npx wrangler deploy --dry-run --config wrangler.toml
 npx wrangler deploy --dry-run --config workers/email-health-check/wrangler.toml
 git diff --check
@@ -256,20 +267,36 @@ git diff --check
 
 Also verify in a browser when relevant:
 
-- `/fr/` and `/en/` render correctly
-- language switcher maps equivalent pages
-- contact form validates inline
 - admin login reaches GitHub OAuth
 - admin preview renders draft changes
+- contact form validates inline
+- language switcher maps equivalent pages
 - legal and privacy pages render correctly
+- `/fr/` and `/en/` render correctly
 
 ## Operational Notes
 
-- Never commit `.dev.vars`, `.env`, `.wrangler/`, local logs, private mailbox destinations, OAuth secrets, Turnstile secrets, or API tokens.
+Never commit:
+
+```text
+.dev.vars
+.env
+.wrangler/
+API tokens
+local logs
+OAuth secrets
+private mailbox destinations
+Turnstile secrets
+```
+
 - Keep `consultation@melkiorclerge.ca` aligned in public content, contact-email code, and the `SEND_EMAIL` binding.
 - Keep Cloudflare Managed Rules and DDoS protection enabled.
-- Recommended WAF rate limits:
-  - `/api/contact*` POST: block or challenge more than 10 requests per minute per IP.
-  - `/api/auth/*` GET/POST: block more than 30 requests per minute per IP.
-  - `/api/admin/*`: block more than 120 requests per minute per IP.
 - If contact emails deliver but land in spam, check `CONTACT_DESTINATION`, Cloudflare Email Sending analytics, SPF/DKIM records, and DMARC reports before changing form logic.
+
+Recommended WAF rate limits:
+
+```text
+/api/admin/*        block more than 120 requests per minute per IP
+/api/auth/*         block more than 30 requests per minute per IP
+/api/contact* POST  block or challenge more than 10 requests per minute per IP
+```
