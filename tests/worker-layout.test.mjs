@@ -7,15 +7,25 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 
-test("site Worker owns its route modules under workers/site", async () => {
-  const workerIndex = await readFile(join(ROOT, "workers/site/index.js"), "utf8");
+test("Workers live in directories matching their Wrangler names", async () => {
   const readme = await readFile(join(ROOT, "README.md"), "utf8");
   const wranglerConfig = await readFile(join(ROOT, "wrangler.toml"), "utf8");
+  const workerName = wranglerConfig.match(/^name = "([^"]+)"$/m)?.[1];
+  const mainPath = wranglerConfig.match(/^main = "([^"]+)"$/m)?.[1];
+
+  assert.ok(workerName, "wrangler.toml should declare a Worker name");
+  assert.ok(mainPath, "wrangler.toml should declare a Worker entrypoint");
+
+  const expectedMainPath = `workers/${workerName}/index.js`;
+
+  assert.equal(mainPath, expectedMainPath);
+
+  const workerIndex = await readFile(join(ROOT, mainPath), "utf8");
 
   assert.equal(existsSync(join(ROOT, "functions")), false, "top-level functions/ is reserved for Pages Functions projects");
-  assert.match(wranglerConfig, /^main = "workers\/site\/index\.js"$/m);
-  assert.doesNotMatch(workerIndex, /\.\.\/\.\.\/functions\//, "Worker entrypoint should import local workers/site modules");
+  assert.doesNotMatch(workerIndex, /\.\.\/\.\.\/functions\//, "Worker entrypoint should import local Worker modules");
   assert.match(workerIndex, /from "\.\/api\/contact\.js"/);
   assert.match(workerIndex, /from "\.\/middleware\.js"/);
   assert.doesNotMatch(readme, /^functions\//m, "README layout should not advertise a top-level Pages Functions directory");
+  assert.doesNotMatch(readme, /workers\/site/);
 });

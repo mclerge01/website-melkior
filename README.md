@@ -38,10 +38,8 @@ build.js                       Static build, sitemap, robots, headers
 styles.css                     Public and shared styles
 script.js                      Public site behavior
 admin/                         Admin editor UI
-workers/site/api/              Main Worker API route handlers
-workers/site/middleware.js     Main Worker locale middleware
+workers/website-melkior/       Main website Worker entry, API routes, middleware
 lib/                           Rendering, i18n, auth, email, security helpers
-workers/site/index.js          Main website Worker entry
 workers/email-health-check/    Scheduled weekly email-health Worker
 assets/images/                 Source image assets
 dist/                          Generated output, not committed
@@ -51,7 +49,7 @@ dist/                          Generated output, not committed
 
 The main Worker serves generated files from `dist/` through the `ASSETS` binding. It also dispatches API routes, applies security headers, handles locale routing, admin auth, previews, and contact-form delivery.
 
-This is a Cloudflare Workers Static Assets deployment, not a Cloudflare Pages Functions project. The main Worker entrypoint and its route modules live under `workers/site/`; there is intentionally no top-level `functions/` directory.
+This is a Cloudflare Workers Static Assets deployment, not a Cloudflare Pages Functions project. Each Worker lives under `workers/<wrangler-name>/`; the main Worker entrypoint and its route modules live under `workers/website-melkior/`, and there is intentionally no top-level `functions/` directory.
 
 The admin area edits `content/settings.json` and image files through GitHub. Publishing from the admin commits changes to GitHub; Cloudflare then redeploys the site.
 
@@ -250,7 +248,7 @@ Run before committing meaningful changes:
 
 ```bash
 npm run build
-node --check build.js workers/site/index.js workers/site/middleware.js workers/site/api/contact.js workers/site/api/preview.js workers/email-health-check/index.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js admin/admin.js
+node --check build.js workers/website-melkior/index.js workers/website-melkior/middleware.js workers/website-melkior/api/contact.js workers/website-melkior/api/preview.js workers/email-health-check/index.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js admin/admin.js
 npx wrangler deploy --dry-run --config wrangler.toml
 npx wrangler deploy --dry-run --config workers/email-health-check/wrangler.toml
 git diff --check

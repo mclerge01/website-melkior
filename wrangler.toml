@@ -1,5 +1,5 @@
 name = "website-melkior"
-main = "workers/site/index.js"
+main = "workers/website-melkior/index.js"
 compatibility_date = "2026-06-11"
 workers_dev = false
 
