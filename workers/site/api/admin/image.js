@@ -9,12 +9,12 @@ import {
   requireAdminJsonBody,
   validateImageName,
   validateImageUpload,
-} from "../../../lib/admin-auth.mjs";
+} from "../../../../lib/admin-auth.mjs";
 
 /**
  * Validate and upload an admin-managed image to GitHub.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON upload result.
  */
 export async function onRequestPut(context) {
@@ -59,7 +59,7 @@ export async function onRequestPut(context) {
 /**
  * Delete an admin-managed image from GitHub by name and SHA.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON deletion result.
  */
 export async function onRequestDelete(context) {

@@ -7,12 +7,12 @@ import {
   getGithubUser,
   readOauthChallenge,
   verifyRepoWriteAccess,
-} from "../../../lib/admin-auth.mjs";
+} from "../../../../lib/admin-auth.mjs";
 
 /**
  * Redirect back to the admin UI with an OAuth error code.
  *
- * @param {{request: Request, env: Record<string, string>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, string>}} context - Worker route handler context.
  * @param {string} error - Admin UI error code.
  * @param {string[]} [cookies] - Cookies to clear on the redirect.
  * @returns {Response} Redirect response.
@@ -55,7 +55,7 @@ function tokenErrorCode(tokenData) {
 /**
  * Complete GitHub OAuth, verify repo access, and create an admin session.
  *
- * @param {{request: Request, env: Record<string, string>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, string>}} context - Worker route handler context.
  * @returns {Promise<Response>} Redirect back to the admin UI.
  */
 export async function onRequestGet(context) {

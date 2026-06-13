@@ -10,12 +10,12 @@ import {
   requireAdmin,
   requireAdminJsonBody,
   textToBase64,
-} from "../../../lib/admin-auth.mjs";
+} from "../../../../lib/admin-auth.mjs";
 
 /**
  * Return the current editable site content from GitHub.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON content payload.
  */
 export async function onRequestGet(context) {
@@ -34,7 +34,7 @@ export async function onRequestGet(context) {
 /**
  * Commit updated site content to GitHub after admin and CSRF checks.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON update result.
  */
 export async function onRequestPut(context) {

@@ -1,13 +1,13 @@
-import { onRequest as handleMiddleware } from "../../functions/_middleware.js";
-import { onRequestOptions as contactOptions, onRequestPost as contactPost } from "../../functions/api/contact.js";
-import { onRequestPost as previewPost } from "../../functions/api/preview.js";
-import { onRequestGet as authCallbackGet } from "../../functions/api/auth/callback.js";
-import { onRequestGet as authGithubGet } from "../../functions/api/auth/github.js";
-import { onRequestPost as authLogoutPost } from "../../functions/api/auth/logout.js";
-import { onRequestGet as adminContentGet, onRequestPut as adminContentPut } from "../../functions/api/admin/content.js";
-import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } from "../../functions/api/admin/image.js";
-import { onRequestGet as adminImagesGet } from "../../functions/api/admin/images.js";
-import { onRequestGet as adminSessionGet } from "../../functions/api/admin/session.js";
+import { onRequest as handleMiddleware } from "./middleware.js";
+import { onRequestOptions as contactOptions, onRequestPost as contactPost } from "./api/contact.js";
+import { onRequestPost as previewPost } from "./api/preview.js";
+import { onRequestGet as authCallbackGet } from "./api/auth/callback.js";
+import { onRequestGet as authGithubGet } from "./api/auth/github.js";
+import { onRequestPost as authLogoutPost } from "./api/auth/logout.js";
+import { onRequestGet as adminContentGet, onRequestPut as adminContentPut } from "./api/admin/content.js";
+import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } from "./api/admin/image.js";
+import { onRequestGet as adminImagesGet } from "./api/admin/images.js";
+import { onRequestGet as adminSessionGet } from "./api/admin/session.js";
 import { jsonResponse } from "../../lib/http.mjs";
 import {
   ADMIN_CONTENT_SECURITY_POLICY,
@@ -30,12 +30,12 @@ const API_ROUTES = [
 ];
 
 /**
- * Adapt the Worker runtime inputs to the Pages Function context shape.
+ * Adapt Worker runtime inputs to the local route handler context shape.
  *
  * @param {Request} request - Incoming request.
  * @param {Record<string, unknown>} env - Worker environment.
  * @param {{waitUntil: Function}} ctx - Worker execution context.
- * @returns {{request: Request, env: Record<string, unknown>, params: Record<string, string>, waitUntil: Function}} Pages-like context.
+ * @returns {{request: Request, env: Record<string, unknown>, params: Record<string, string>, waitUntil: Function}} Route handler context.
  */
 function pagesContext(request, env, ctx) {
   return {
@@ -47,7 +47,7 @@ function pagesContext(request, env, ctx) {
 }
 
 /**
- * Route API requests to their Pages Function-compatible handlers.
+ * Route API requests to their site Worker handlers.
  *
  * @param {Request} request - Incoming API request.
  * @param {Record<string, unknown>} env - Worker environment.
@@ -84,7 +84,7 @@ async function handleApiRequest(request, env, ctx) {
  * @param {Request} request - Incoming non-API request.
  * @param {Record<string, unknown>} env - Worker environment.
  * @param {{waitUntil: Function}} ctx - Worker execution context.
- * @returns {Record<string, unknown>} Pages middleware context.
+ * @returns {Record<string, unknown>} Route middleware context.
  */
 function middlewareContext(request, env, ctx) {
   return {

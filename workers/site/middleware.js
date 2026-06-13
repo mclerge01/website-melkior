@@ -1,9 +1,9 @@
-import { DEFAULT_LOCALE, localeToSlug, normalizeLocale, parseCookie, pickLocaleFromAcceptLanguage } from "../lib/i18n.mjs";
+import { DEFAULT_LOCALE, localeToSlug, normalizeLocale, parseCookie, pickLocaleFromAcceptLanguage } from "../../lib/i18n.mjs";
 
 /**
  * Canonicalize locale paths and redirect the root path by cookie or Accept-Language.
  *
- * @param {{request: Request, next: Function}} context - Pages/Worker middleware context.
+ * @param {{request: Request, next: Function}} context - Worker route middleware context.
  * @returns {Promise<Response>|Response} Redirect or next middleware response.
  */
 export async function onRequest(context) {

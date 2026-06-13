@@ -1,10 +1,10 @@
 import { EmailMessage } from "cloudflare:email";
-import { CONTACT_FORM_FROM_EMAIL } from "../../lib/email-config.mjs";
-import { recordContactFormFailure } from "../../lib/contact-health.mjs";
-import { emailDomain, errorSummary, notifyEmailFailure } from "../../lib/email-alert.mjs";
-import { jsonResponse } from "../../lib/http.mjs";
-import { createMultipartEmail } from "../../lib/mime-email.mjs";
-import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../lib/phone.mjs";
+import { CONTACT_FORM_FROM_EMAIL } from "../../../lib/email-config.mjs";
+import { recordContactFormFailure } from "../../../lib/contact-health.mjs";
+import { emailDomain, errorSummary, notifyEmailFailure } from "../../../lib/email-alert.mjs";
+import { jsonResponse } from "../../../lib/http.mjs";
+import { createMultipartEmail } from "../../../lib/mime-email.mjs";
+import { formatContactPhoneNumber, getValidContactPhoneNumber } from "../../../lib/phone.mjs";
 
 const MESSAGES = {
   "fr-CA": {
@@ -153,7 +153,7 @@ export async function onRequestOptions() {
 /**
  * Validate a contact submission, verify Turnstile, and queue email handoff.
  *
- * @param {{request: Request, env: Record<string, unknown>, waitUntil?: Function}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>, waitUntil?: Function}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON contact form result.
  */
 export async function onRequestPost(context) {

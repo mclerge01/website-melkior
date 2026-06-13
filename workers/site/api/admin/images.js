@@ -1,9 +1,9 @@
-import { IMAGES_PATH, githubContentsQuery, githubFetch, isAllowedImageName, jsonResponse, requireAdmin } from "../../../lib/admin-auth.mjs";
+import { IMAGES_PATH, githubContentsQuery, githubFetch, isAllowedImageName, jsonResponse, requireAdmin } from "../../../../lib/admin-auth.mjs";
 
 /**
  * List admin-manageable images stored in the GitHub assets directory.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON image listing.
  */
 export async function onRequestGet(context) {

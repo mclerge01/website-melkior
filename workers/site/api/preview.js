@@ -1,6 +1,6 @@
-import { adminPublicOrigin, htmlResponse, jsonResponse, requireAdminJsonBody } from "../../lib/admin-auth.mjs";
-import { prepareLocaleData } from "../../lib/page-data.mjs";
-import { processMarkdown, render } from "../../lib/render.mjs";
+import { adminPublicOrigin, htmlResponse, jsonResponse, requireAdminJsonBody } from "../../../lib/admin-auth.mjs";
+import { prepareLocaleData } from "../../../lib/page-data.mjs";
+import { processMarkdown, render } from "../../../lib/render.mjs";
 
 const TURNSTILE_TEST_SITE_KEY = "1x00000000000000000000AA";
 
@@ -22,7 +22,7 @@ function injectPreviewBase(html, baseHref) {
 /**
  * Render an authenticated draft preview without publishing content.
  *
- * @param {{request: Request, env: Record<string, unknown>}} context - Pages/Worker handler context.
+ * @param {{request: Request, env: Record<string, unknown>}} context - Worker route handler context.
  * @returns {Promise<Response>} Rendered preview HTML or JSON error.
  */
 export async function onRequestPost(context) {
