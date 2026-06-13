@@ -1,3 +1,9 @@
+import {
+  adminAnchorIdFromHash,
+  adminAnchorSlug,
+  adminHrefForState,
+  adminRouteFromPathname,
+} from "./admin-routing.js";
 import { groupImageGalleryItems } from "./image-gallery.js";
 
 /* ==========================================================================
@@ -366,6 +372,41 @@ const CONTENT_SECTIONS = [
   },
 ];
 
+const SHARED_CONTENT_SECTION = {
+  key: "",
+  label: "Coordonn\u00e9es communes",
+  description: "Ces valeurs sont utilis\u00e9es dans les deux langues.",
+  fields: SHARED_FIELDS,
+};
+
+const COLOR_SECTION = {
+  key: "",
+  label: "Palette du site",
+  fields: COLOR_FIELDS,
+};
+
+const SHARED_IMAGES_SECTION = {
+  key: "",
+  label: "Images utilis\u00e9es par le site",
+  fields: SHARED_IMAGE_FIELDS,
+};
+
+const SEO_FIELDS = [
+  { key: "title", label: "Titre Google / onglet", full: true },
+  { key: "description", label: "M\u00e9ta description", type: "textarea", full: true, hint: "Visez environ 150 \u00e0 160 caract\u00e8res, avec les recherches importantes." },
+  { key: "og_image", label: "Image de partage", type: "image", full: true },
+  { key: "favicon", label: "Favicon", type: "image", full: true },
+];
+
+const SITE_CONFIG_SECTION = {
+  key: "",
+  label: "Configuration g\u00e9n\u00e9rale",
+  fields: [
+    { key: "domain", label: "Domaine canonique", full: true },
+    { key: "default_locale", label: "Langue par d\u00e9faut", type: "select", options: getAvailableLocaleOptions },
+  ],
+};
+
 let csrfToken = "";
 let contentSha = "";
 let content = null;
@@ -378,6 +419,7 @@ let toastTimer = null;
 let pendingImages = [];
 let hasUnpublishedChanges = false;
 const pendingImagePreviews = new Map();
+let activeAnchorRegistry = { byPath: new Map(), byId: new Map() };
 
 const loginScreen = document.getElementById("login-screen");
 const editorScreen = document.getElementById("editor-screen");
@@ -613,6 +655,189 @@ function applyColorTheme() {
   }
 }
 
+function currentAdminRouteState() {
+  return { activeView, activeLocale, activeSeoLocale };
+}
+
+function navigateAdminRoute(nextState = {}, options = {}) {
+  activeView = nextState.activeView || activeView;
+  activeLocale = nextState.activeLocale || activeLocale;
+  activeSeoLocale = nextState.activeSeoLocale || activeSeoLocale;
+  activeListEditor = options.listEditor || null;
+
+  if (options.anchorId) prepareAdminAnchorTarget(options.anchorId);
+  updateAdminHistory(options.anchorId || "", { replace: Boolean(options.replace) });
+  renderChrome();
+  renderActiveView();
+  scheduleAdminAnchorScroll(options.anchorId || "");
+}
+
+function navigateAdminAnchor(anchorId) {
+  if (!anchorId) return;
+  const target = prepareAdminAnchorTarget(anchorId);
+  updateAdminHistory(anchorId);
+  if (target?.listPath) renderActiveView();
+  scheduleAdminAnchorScroll(anchorId);
+}
+
+function applyAdminRouteFromLocation(options = {}) {
+  const route = adminRouteFromPathname(window.location.pathname, currentAdminRouteState());
+  activeView = route.activeView;
+  activeLocale = route.activeLocale;
+  activeSeoLocale = route.activeSeoLocale;
+  activeListEditor = null;
+
+  const anchorId = adminAnchorIdFromHash(window.location.hash);
+  if (anchorId) prepareAdminAnchorTarget(anchorId);
+  if (options.replace) updateAdminHistory(anchorId, { replace: true });
+  if (options.render) {
+    renderChrome();
+    renderActiveView();
+    scheduleAdminAnchorScroll(anchorId);
+  }
+}
+
+function updateAdminHistory(anchorId = "", options = {}) {
+  const nextUrl = adminHrefForState(currentAdminRouteState(), anchorId);
+  const currentUrl = `${window.location.pathname}${window.location.hash}`;
+  if (currentUrl === nextUrl) return;
+  const method = options.replace ? "replaceState" : "pushState";
+  window.history[method]({ adminRoute: true }, "", nextUrl);
+}
+
+function bindAdminRouting() {
+  window.addEventListener("popstate", () => applyAdminRouteFromLocation({ render: true }));
+  window.addEventListener("hashchange", () => {
+    const anchorId = adminAnchorIdFromHash(window.location.hash);
+    if (!anchorId) return;
+    const target = prepareAdminAnchorTarget(anchorId);
+    if (target?.listPath) renderActiveView();
+    scheduleAdminAnchorScroll(anchorId);
+  });
+}
+
+function buildAdminAnchorRegistry(state = currentAdminRouteState()) {
+  const registry = { byPath: new Map(), byId: new Map() };
+  const usedIds = new Set();
+  for (const { rootPath, section } of adminSectionsForRoute(state)) {
+    addSectionAnchorTargets(registry, usedIds, rootPath, section);
+  }
+  return registry;
+}
+
+function adminSectionsForRoute(state = currentAdminRouteState()) {
+  if (!content) return [];
+  if (state.activeView === "content") {
+    return [
+      ...CONTENT_SECTIONS.map((section) => ({ rootPath: `locales.${state.activeLocale}`, section })),
+      { rootPath: "shared", section: SHARED_CONTENT_SECTION },
+    ];
+  }
+  if (state.activeView === "colors") return [{ rootPath: "theme", section: COLOR_SECTION }];
+  if (state.activeView === "images") return [{ rootPath: "shared.images", section: SHARED_IMAGES_SECTION }];
+  if (state.activeView === "seo") {
+    return [
+      {
+        rootPath: `locales.${state.activeSeoLocale}`,
+        section: {
+          key: "seo",
+          label: `R\u00e9f\u00e9rencement - ${localeLabel(state.activeSeoLocale)}`,
+          fields: SEO_FIELDS,
+        },
+      },
+      { rootPath: "site", section: SITE_CONFIG_SECTION },
+    ];
+  }
+  return [];
+}
+
+function addSectionAnchorTargets(registry, usedIds, rootPath, section) {
+  const pathPrefix = section.key ? `${rootPath}.${section.key}` : rootPath;
+  for (const field of section.fields || []) {
+    addAnchorTarget(registry, usedIds, {
+      path: `${pathPrefix}.${field.key}`,
+      parts: [section.label, field.label || labelFromKey(field.key)],
+    });
+  }
+
+  for (const list of section.lists || []) {
+    const listPath = `${pathPrefix}.${list.key}`;
+    const items = Array.isArray(getPath(listPath)) ? getPath(listPath) : [];
+    items.forEach((item, index) => {
+      const itemTitle = listItemSummary(item, index).title;
+      for (const field of list.fields || []) {
+        addAnchorTarget(registry, usedIds, {
+          path: `${listPath}.${index}.${field.key}`,
+          listPath,
+          index,
+          parts: [section.label, list.label, String(index + 1), itemTitle, field.label || labelFromKey(field.key)],
+        });
+      }
+    });
+  }
+}
+
+function addAnchorTarget(registry, usedIds, target) {
+  const baseId = adminAnchorSlug(...target.parts);
+  let id = baseId;
+  let suffix = 2;
+  while (usedIds.has(id)) {
+    id = `${baseId}-${suffix}`;
+    suffix += 1;
+  }
+  usedIds.add(id);
+  const next = { ...target, id };
+  registry.byPath.set(next.path, next);
+  registry.byId.set(next.id, next);
+}
+
+function prepareAdminAnchorTarget(anchorId) {
+  activeAnchorRegistry = buildAdminAnchorRegistry();
+  const target = activeAnchorRegistry.byId.get(anchorId);
+  if (target?.listPath) activeListEditor = { path: target.listPath, index: target.index };
+  return target;
+}
+
+function getAdminAnchorTargetByPath(path) {
+  return activeAnchorRegistry.byPath.get(path) || null;
+}
+
+function createAdminAnchorLink(anchorId, label) {
+  const link = document.createElement("a");
+  link.className = "admin-anchor-link";
+  link.href = adminHrefForState(currentAdminRouteState(), anchorId);
+  link.title = "Lien vers ce champ";
+  link.setAttribute("aria-label", `Lien vers ${label}`);
+  link.appendChild(createAdminIcon("link"));
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    navigateAdminAnchor(anchorId);
+  });
+  return link;
+}
+
+function scheduleAdminAnchorScroll(anchorId) {
+  if (!anchorId) return;
+  const locate = () => locateAdminElement(document.getElementById(anchorId));
+  requestAnimationFrame(() => {
+    requestAnimationFrame(locate);
+  });
+  setTimeout(locate, 250);
+}
+
+function locateAdminElement(target) {
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.classList.add("admin-locate-target");
+  setTimeout(() => target.classList.remove("admin-locate-target"), 1800);
+  const control = target.querySelector("input, textarea, select, button, .input, .textarea");
+  if (control) control.focus({ preventScroll: true });
+}
+
+function localeLabel(localeKey) {
+  return LOCALES.find((item) => item.key === localeKey)?.label || localeKey;
+}
+
 function renderChrome() {
   sidebar.replaceChildren();
   mobileTabs.replaceChildren();
@@ -636,9 +861,7 @@ function createNavButton(view) {
   button.className = `admin-nav-item${view.key === activeView ? " active" : ""}`;
   button.textContent = view.label;
   button.addEventListener("click", () => {
-    activeView = view.key;
-    renderChrome();
-    renderActiveView();
+    navigateAdminRoute({ activeView: view.key });
   });
   return button;
 }
@@ -719,6 +942,7 @@ function renderEmptyFieldGroup(title, items, kind) {
 function renderActiveView() {
   contentEl.replaceChildren();
   if (!content) return;
+  activeAnchorRegistry = buildAdminAnchorRegistry();
 
   if (activeView === "content") renderContentView();
   else if (activeView === "colors") renderColorView();
@@ -754,8 +978,7 @@ function renderLocaleTabs(activeKey, onChange) {
 function renderContentView() {
   contentEl.appendChild(renderPageHeader("Contenu du site", "Modifiez d’abord la page en français ou en anglais. Les coordonnées communes se trouvent après les sections de contenu."));
   contentEl.appendChild(renderLocaleTabs(activeLocale, (locale) => {
-    activeLocale = locale;
-    renderActiveView();
+    navigateAdminRoute({ activeView: "content", activeLocale: locale });
   }));
 
   const rootPath = `locales.${activeLocale}`;
@@ -817,8 +1040,7 @@ function renderImagesView() {
 function renderSeoView() {
   contentEl.appendChild(renderPageHeader("SEO", "Titres, descriptions et images de partage. Cette section reste volontairement à la fin."));
   contentEl.appendChild(renderLocaleTabs(activeSeoLocale, (locale) => {
-    activeSeoLocale = locale;
-    renderActiveView();
+    navigateAdminRoute({ activeView: "seo", activeSeoLocale: locale });
   }));
   contentEl.appendChild(renderSectionCard(`locales.${activeSeoLocale}`, {
     key: "seo",
@@ -889,6 +1111,8 @@ function renderField(path, field) {
   group.className = `admin-field${field.full || field.type === "markdown" || field.type === "image" ? " admin-field-full" : ""}`;
   group.dataset.adminFieldPath = path;
   group.dataset.adminFieldRequired = isRequiredField(field) ? "true" : "false";
+  const anchorTarget = getAdminAnchorTargetByPath(path);
+  if (anchorTarget?.id) group.id = anchorTarget.id;
   const labelRow = document.createElement("span");
   labelRow.className = "admin-field-heading";
   const label = document.createElement("span");
@@ -898,7 +1122,9 @@ function renderField(path, field) {
   missingBadge.className = "admin-missing-badge";
   missingBadge.textContent = "À remplir";
   missingBadge.hidden = true;
-  labelRow.append(label, missingBadge);
+  labelRow.appendChild(label);
+  if (anchorTarget?.id) labelRow.appendChild(createAdminAnchorLink(anchorTarget.id, label.textContent));
+  labelRow.appendChild(missingBadge);
   group.appendChild(labelRow);
   if (field.hint) {
     const hint = document.createElement("span");
@@ -1417,6 +1643,7 @@ function createAdminIcon(name) {
     },
     edit: { paths: ["M12 20h9", "M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"] },
     trash: { paths: ["M3 6h18", "M8 6V4h8v2", "M19 6l-1 14H6L5 6", "M10 11v5M14 11v5"] },
+    link: { paths: ["M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1", "M14 11a5 5 0 0 0-7.1 0l-2 2a5 5 0 0 0 7.1 7.1l1.1-1.1"] },
   };
   const spec = icons[name];
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -1542,26 +1769,26 @@ function formatFieldCompletionLabel(item) {
 
 function scrollToFieldCompletionItem(item) {
   if (!item?.path) return;
-  activeView = "content";
-  activeLocale = item.localeKey || activeLocale;
-  activeListEditor = item.listPath ? { path: item.listPath, index: item.index } : null;
-  renderChrome();
-  renderActiveView();
-  requestAnimationFrame(() => {
+  const nextState = {
+    activeView: "content",
+    activeLocale: item.localeKey || activeLocale,
+    activeSeoLocale,
+  };
+  const registry = buildAdminAnchorRegistry(nextState);
+  const anchorTarget = registry.byPath.get(item.path);
+  const listEditor = item.listPath ? { path: item.listPath, index: item.index } : null;
+  navigateAdminRoute(nextState, { anchorId: anchorTarget?.id || "", listEditor });
+  if (!anchorTarget?.id) {
     requestAnimationFrame(() => {
-      const field = document.querySelector(`[data-admin-field-path="${cssEscape(item.path)}"]`);
-      const fallback = item.listPath
-        ? document.querySelector(`[data-admin-list-path="${cssEscape(item.listPath)}"][data-admin-list-index="${cssEscape(item.index)}"]`)
-        : null;
-      const target = field || fallback;
-      if (!target) return;
-      target.scrollIntoView({ behavior: "smooth", block: "center" });
-      target.classList.add("admin-locate-target");
-      setTimeout(() => target.classList.remove("admin-locate-target"), 1800);
-      const control = target.querySelector(".input, .textarea, select, button");
-      if (control) control.focus({ preventScroll: true });
+      requestAnimationFrame(() => {
+        const field = document.querySelector(`[data-admin-field-path="${cssEscape(item.path)}"]`);
+        const fallback = item.listPath
+          ? document.querySelector(`[data-admin-list-path="${cssEscape(item.listPath)}"][data-admin-list-index="${cssEscape(item.index)}"]`)
+          : null;
+        locateAdminElement(field || fallback);
+      });
     });
-  });
+  }
 }
 
 function getFrenchSourcePath(path) {
@@ -2267,9 +2494,11 @@ async function init() {
   try {
     await loadSession();
     await loadContent();
+    applyAdminRouteFromLocation({ replace: true });
     showEditor();
     renderChrome();
     renderActiveView();
+    scheduleAdminAnchorScroll(adminAnchorIdFromHash(window.location.hash));
     markClean();
   } catch {
     showLogin(error || "login_required");
@@ -2278,6 +2507,7 @@ async function init() {
   document.getElementById("publish").addEventListener("click", publish);
   document.getElementById("preview").addEventListener("click", preview);
   document.getElementById("logout").addEventListener("click", logout);
+  bindAdminRouting();
   bindCompletionStatusDismissal();
   document.querySelector(".admin-brand-link")?.addEventListener("click", async (event) => {
     const href = event.currentTarget.href;

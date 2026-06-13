@@ -469,6 +469,37 @@
       font-weight: 800;
     }
 
+    .admin-anchor-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: var(--rounded-sm);
+      color: var(--color-text-light);
+      opacity: 0.52;
+      text-decoration: none;
+      transition: opacity var(--transition), color var(--transition), background-color var(--transition);
+    }
+
+    .admin-anchor-link:hover,
+    .admin-anchor-link:focus-visible {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      opacity: 1;
+      outline: 0;
+    }
+
+    .admin-anchor-link svg {
+      width: 0.95rem;
+      height: 0.95rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .admin-missing-badge,
     .admin-unused-badge,
     .admin-variant-badge {

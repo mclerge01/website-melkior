@@ -114,6 +114,31 @@ function isAdminPath(pathname) {
 }
 
 /**
+ * Check whether a clean admin UI route should receive the admin SPA shell.
+ *
+ * @param {string} pathname - Request URL path.
+ * @returns {boolean} Whether to serve admin/index.html for this path.
+ */
+function isAdminShellRoute(pathname) {
+  return /^\/admin\/?$/.test(pathname)
+    || /^\/admin\/(?:contenu|seo)(?:\/[^/]+)?\/?$/.test(pathname)
+    || /^\/admin\/(?:couleurs|images)\/?$/.test(pathname);
+}
+
+/**
+ * Rewrite clean admin UI routes to the static admin shell asset.
+ *
+ * @param {Request} request - Incoming non-API request.
+ * @returns {Request} Request for the shell asset or the original request.
+ */
+function adminShellAssetRequest(request) {
+  const url = new URL(request.url);
+  if (!isAdminShellRoute(url.pathname)) return request;
+  url.pathname = "/admin/";
+  return new Request(url.toString(), request);
+}
+
+/**
  * Select the CSP that belongs to a route class.
  *
  * @param {string} pathname - Request URL path.
@@ -163,7 +188,7 @@ export default {
       return withSecurityHeaders(request, await handleApiRequest(request, env, ctx));
     }
 
-    const response = await handleMiddleware(middlewareContext(request, env, ctx));
+    const response = await handleMiddleware(middlewareContext(adminShellAssetRequest(request), env, ctx));
     return withSecurityHeaders(request, response);
   },
 };
