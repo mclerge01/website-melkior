@@ -1,3 +1,5 @@
+import { groupImageGalleryItems } from "./image-gallery.js";
+
 /* ==========================================================================
    Admin editor - vanilla JS, schema-driven CMS
    ========================================================================== */
@@ -1788,6 +1790,23 @@ async function deleteImageFile(image) {
   });
 }
 
+async function deleteGalleryItemFiles(item) {
+  const variants = item.variants?.length ? item.variants : [item];
+  const failures = [];
+  let deletedCount = 0;
+
+  for (const variant of variants) {
+    try {
+      await deleteImageFile(variant);
+      deletedCount += 1;
+    } catch (error) {
+      failures.push(`${variant.name}: ${error.message}`);
+    }
+  }
+
+  return { deletedCount, failures };
+}
+
 function showUnusedImagesDialog(images, target, cleanupButton) {
   if (!images.length) {
     showToast("Aucune image inutilis\u00e9e \u00e0 supprimer.");
@@ -1960,9 +1979,10 @@ async function renderImageGallery(target, cleanupButton = null) {
   try {
     const data = await apiJson(API.images);
     const images = data.images || [];
+    const galleryItems = groupImageGalleryItems(images);
     const unusedImagePaths = getUnusedImagePathSet(images);
     configureUnusedImagesButton(cleanupButton, images, target);
-    if (!images.length) {
+    if (!galleryItems.length) {
       const empty = document.createElement("p");
       empty.className = "admin-status";
       empty.textContent = "Aucune image téléversée pour le moment.";
@@ -1971,20 +1991,28 @@ async function renderImageGallery(target, cleanupButton = null) {
     }
     const grid = document.createElement("div");
     grid.className = "admin-gallery-grid";
-    for (const image of images) {
-      const isUnused = unusedImagePaths.has(normalizeLocalImagePath(image.path));
+    for (const image of galleryItems) {
+      const variants = image.variants?.length ? image.variants : [image];
+      const isUnused = variants.every((variant) => unusedImagePaths.has(normalizeLocalImagePath(variant.path)));
       const card = document.createElement("article");
       card.className = `admin-gallery-card${isUnused ? " admin-gallery-card-unused" : ""}`;
       const img = document.createElement("img");
       img.src = `/${image.path}`;
-      img.alt = image.name;
+      img.alt = image.displayName || image.name;
       const titleRow = document.createElement("div");
       titleRow.className = "admin-gallery-title";
       const name = document.createElement("strong");
-      name.textContent = image.name;
+      name.textContent = image.displayName || image.name;
       titleRow.appendChild(name);
       const metaRow = document.createElement("div");
       metaRow.className = "admin-gallery-meta";
+      if (image.variantCount > 1) {
+        const variantBadge = document.createElement("span");
+        variantBadge.className = "admin-variant-badge";
+        variantBadge.textContent = `${image.variantCount} variantes`;
+        variantBadge.title = image.variantWidths?.length ? image.variantWidths.map((width) => `${width}w`).join(", ") : "";
+        titleRow.appendChild(variantBadge);
+      }
       if (isUnused) {
         const unusedBadge = document.createElement("span");
         unusedBadge.className = "admin-unused-badge";
@@ -1998,9 +2026,17 @@ async function renderImageGallery(target, cleanupButton = null) {
       remove.type = "button";
       remove.textContent = "Supprimer";
       remove.addEventListener("click", async () => {
-        if (!confirm(`Supprimer ${image.name}?`)) return;
-        await deleteImageFile(image);
-        showToast("Image supprimée.");
+        const deleteLabel = image.variantCount > 1 ? `${image.variantCount} variantes de ${image.displayName || image.name}` : image.name;
+        if (!confirm(`Supprimer ${deleteLabel}?`)) return;
+        remove.disabled = true;
+        const { deletedCount, failures } = await deleteGalleryItemFiles(image);
+        if (failures.length) {
+          remove.disabled = false;
+          setStatus("error", "Suppression incomplète", failures.join(" | "));
+          showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} supprimée${deletedCount > 1 ? "s" : ""}, ${failures.length} erreur${failures.length > 1 ? "s" : ""}.`, "error");
+          return;
+        }
+        showToast(`${deletedCount} image${deletedCount > 1 ? "s" : ""} supprimée${deletedCount > 1 ? "s" : ""}.`);
         renderActiveView();
       });
       card.append(img, titleRow);
@@ -2197,7 +2233,7 @@ function writePreviewShell(previewWindow) {
   </style>
 </head>
 <body>
-  <iframe id="preview-frame" class="preview-frame" title="Apercu du site" sandbox=""></iframe>
+  <iframe id="preview-frame" class="preview-frame" title="Apercu du site" sandbox="allow-scripts"></iframe>
 </body>
 </html>`);
   previewWindow.document.close();

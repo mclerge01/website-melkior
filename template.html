@@ -18,13 +18,19 @@
   <meta property="og:title" content="{{seo.title}}">
   <meta property="og:description" content="{{seo.description}}">
   <meta property="og:image" content="{{seo.og_image}}">
+  <meta property="og:image:alt" content="{{seo.og_image_alt}}">
+  <meta property="og:image:width" content="{{seo.og_image_width}}">
+  <meta property="og:image:height" content="{{seo.og_image_height}}">
   <meta property="og:url" content="{{canonical_url}}">
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="{{html_lang}}">
+  <meta property="og:site_name" content="{{seo.site_name}}">
+  <meta property="og:locale" content="{{seo.og_locale}}">
+  <meta property="og:locale:alternate" content="{{seo.og_locale_alternate}}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{seo.title}}">
   <meta name="twitter:description" content="{{seo.description}}">
   <meta name="twitter:image" content="{{seo.og_image}}">
+  <meta name="twitter:image:alt" content="{{seo.og_image_alt}}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,16 +42,7 @@
     }
   </style>
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "{{header.site_name}}",
-    "description": "{{seo.description}}",
-    "telephone": "{{shared.phone}}",
-    "email": "{{shared.email}}",
-    "address": "{{shared.office_address}}",
-    "url": "{{canonical_url}}"
-  }
+{{structured_data}}
   </script>
 </head>
 <body data-locale="{{locale}}" data-locale-slug="{{locale_slug}}" data-popup-enabled="{{popup.enabled}}">

@@ -9,7 +9,7 @@ import {
   canonicalUrl,
   pagePath,
 } from "./lib/i18n.mjs";
-import { prepareLocaleData } from "./lib/page-data.mjs";
+import { prepareLocaleData, withStructuredData } from "./lib/page-data.mjs";
 import { processMarkdown, render } from "./lib/render.mjs";
 import { renderHeadersFile } from "./lib/security-headers.mjs";
 
@@ -207,11 +207,30 @@ function formatPageUpdated(locale, fallback, sourcePaths) {
   return `${prefix}${separator}${formattedDate}`;
 }
 
+function legalPageMetaDescription(locale, page, siteName) {
+  if (locale.startsWith("en")) {
+    return page === "privacy"
+      ? `Privacy policy for ${siteName}, Multi-Prets mortgage broker.`
+      : `Legal notice for ${siteName}, Multi-Prets mortgage broker.`;
+  }
+
+  return page === "privacy"
+    ? `Politique de confidentialité du site de ${siteName}, courtier hypothécaire Multi-Prêts.`
+    : `Mentions légales du site de ${siteName}, courtier hypothécaire Multi-Prêts.`;
+}
+
 function legalPageData(settings, locale, page, homeData) {
   const pageContent = page === "privacy" ? homeData.privacy_page : homeData.legal_page;
+  const baseData = prepareLocaleData(settings, locale, page);
+  const metaTitle = `${pageContent.title} | ${baseData.header.site_name}`;
 
-  return {
-    ...prepareLocaleData(settings, locale, page),
+  return withStructuredData({
+    ...baseData,
+    seo: {
+      ...baseData.seo,
+      title: metaTitle,
+      description: legalPageMetaDescription(locale, page, baseData.header.site_name),
+    },
     page_robots: "index, follow",
     page_main_class: "legal-page",
     page_content_class: "legal-content",
@@ -220,7 +239,7 @@ function legalPageData(settings, locale, page, homeData) {
     page_title: pageContent.title,
     page_updated: formatPageUpdated(locale, pageContent.updated, ["content/settings.json", "template-legal.html"]),
     page_body: pageContent.body,
-  };
+  });
 }
 
 function notFoundPageData(settings, locale, path = pagePath(locale, "not_found")) {
@@ -238,8 +257,13 @@ function notFoundPageData(settings, locale, path = pagePath(locale, "not_found")
         primary: "Retour à l'accueil",
       };
 
-  return {
+  return withStructuredData({
     ...homeData,
+    seo: {
+      ...homeData.seo,
+      title: `${copy.summary} | ${homeData.header.site_name}`,
+      description: copy.body,
+    },
     page_path: path,
     canonical_url: canonicalUrl(settings.site.domain, path),
     alternate_fr: canonicalUrl(settings.site.domain, pagePath("fr-CA", "not_found")),
@@ -254,7 +278,7 @@ function notFoundPageData(settings, locale, path = pagePath(locale, "not_found")
     page_actions: [
       { label: copy.primary, href: current.homePath, class: "btn-primary" },
     ],
-  };
+  });
 }
 
 function generateSitemap(settings) {
@@ -299,6 +323,44 @@ function generateFavicon(theme) {
 `;
 }
 
+const ATTRIBUTE_ESCAPE_MAP = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+function escapeHtmlAttribute(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ATTRIBUTE_ESCAPE_MAP[char]);
+}
+
+function metaTag(attribute, key, content) {
+  return `  <meta ${attribute}="${escapeHtmlAttribute(key)}" content="${escapeHtmlAttribute(content)}">`;
+}
+
+function socialPreviewMetaTags(data) {
+  const seo = data.seo || {};
+  return [
+    metaTag("property", "og:title", seo.title),
+    metaTag("property", "og:description", seo.description),
+    metaTag("property", "og:image", seo.og_image),
+    metaTag("property", "og:image:alt", seo.og_image_alt),
+    metaTag("property", "og:image:width", seo.og_image_width),
+    metaTag("property", "og:image:height", seo.og_image_height),
+    metaTag("property", "og:url", data.canonical_url),
+    metaTag("property", "og:type", "website"),
+    metaTag("property", "og:site_name", seo.site_name),
+    metaTag("property", "og:locale", seo.og_locale),
+    metaTag("property", "og:locale:alternate", seo.og_locale_alternate),
+    metaTag("name", "twitter:card", "summary_large_image"),
+    metaTag("name", "twitter:title", seo.title),
+    metaTag("name", "twitter:description", seo.description),
+    metaTag("name", "twitter:image", seo.og_image),
+    metaTag("name", "twitter:image:alt", seo.og_image_alt),
+  ].join("\n");
+}
+
 if (IS_DEV_BUILD) loadLocalEnv();
 
 rmSync(OUT_DIR, { recursive: true, force: true });
@@ -340,12 +402,24 @@ for (const locale of settings.site.locales) {
 
 write("404.html", render(legalTemplate, notFoundPageData(settings, "fr-CA", "/404.html")));
 
+const rootBaseData = prepareLocaleData(settings, settings.site.default_locale || "fr-CA", "home");
+const rootData = withStructuredData({
+  ...rootBaseData,
+  canonical_url: canonicalUrl(settings.site.domain, "/"),
+  seo: {
+    ...rootBaseData.seo,
+    title: "Melkior Clergé | Courtier hypothécaire / Mortgage Broker",
+    description: "Choisissez le français ou l'anglais pour joindre Melkior Clergé, courtier hypothécaire Multi-Prêts au Québec. Choose French or English.",
+  },
+});
+
 write("index.html", `<!DOCTYPE html>
 <html lang="fr-CA">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Melkior Clergé</title>
+  <title>${escapeHtmlAttribute(rootData.seo.title)}</title>
+  <meta name="description" content="${escapeHtmlAttribute(rootData.seo.description)}">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="${settings.site.domain}/">
   <link rel="alternate" hreflang="fr" href="${settings.site.domain}/fr/">
@@ -354,7 +428,13 @@ write("index.html", `<!DOCTYPE html>
   <link rel="alternate" hreflang="en-CA" href="${settings.site.domain}/en/">
   <link rel="alternate" hreflang="x-default" href="${settings.site.domain}/">
   <link rel="icon" href="/favicon.svg">
+  <link rel="preload" href="${escapeHtmlAttribute(rootData.shared.images.multi_prets_logo_plain)}" as="image" type="image/svg+xml">
+  <link rel="preload" href="${escapeHtmlAttribute(rootData.shared.images.multi_prets_logo)}" as="image" type="image/svg+xml">
+${socialPreviewMetaTags(rootData)}
   <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+${rootData.structured_data_json}
+  </script>
   <script>
     (function () {
       var locale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language || "";
