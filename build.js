@@ -345,6 +345,8 @@ function socialPreviewMetaTags(data) {
     metaTag("property", "og:title", seo.title),
     metaTag("property", "og:description", seo.description),
     metaTag("property", "og:image", seo.og_image),
+    metaTag("property", "og:image:secure_url", seo.og_image),
+    metaTag("property", "og:image:type", seo.og_image_type),
     metaTag("property", "og:image:alt", seo.og_image_alt),
     metaTag("property", "og:image:width", seo.og_image_width),
     metaTag("property", "og:image:height", seo.og_image_height),
@@ -457,7 +459,23 @@ ${rootData.structured_data_json}
 </html>
 `);
 write("sitemap.xml", generateSitemap(settings));
-write("robots.txt", `# Search and indexing crawlers are welcome.
+write("robots.txt", `# Social preview crawlers need access to generate link cards.
+User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: FacebookBot
+User-agent: Twitterbot
+User-agent: LinkedInBot
+User-agent: Slackbot-LinkExpanding
+User-agent: Slack-ImgProxy
+User-agent: Discordbot
+User-agent: TelegramBot
+User-agent: WhatsApp
+User-agent: Pinterestbot
+User-agent: SkypeUriPreview
+User-agent: MobileSMS
+Allow: /
+
+# Search and indexing crawlers are welcome.
 User-agent: OAI-SearchBot
 Allow: /
 
@@ -502,9 +520,6 @@ User-agent: Amazonbot
 Disallow: /
 
 User-agent: meta-externalagent
-Disallow: /
-
-User-agent: FacebookBot
 Disallow: /
 
 User-agent: *
