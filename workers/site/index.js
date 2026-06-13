@@ -1,21 +1,21 @@
-import { onRequest as handleMiddleware } from "../functions/_middleware.js";
-import { onRequestOptions as contactOptions, onRequestPost as contactPost } from "../functions/api/contact.js";
-import { onRequestPost as previewPost } from "../functions/api/preview.js";
-import { onRequestGet as authCallbackGet } from "../functions/api/auth/callback.js";
-import { onRequestGet as authGithubGet } from "../functions/api/auth/github.js";
-import { onRequestPost as authLogoutPost } from "../functions/api/auth/logout.js";
-import { onRequestGet as adminContentGet, onRequestPut as adminContentPut } from "../functions/api/admin/content.js";
-import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } from "../functions/api/admin/image.js";
-import { onRequestGet as adminImagesGet } from "../functions/api/admin/images.js";
-import { onRequestGet as adminSessionGet } from "../functions/api/admin/session.js";
-import { jsonResponse } from "../lib/http.mjs";
+import { onRequest as handleMiddleware } from "../../functions/_middleware.js";
+import { onRequestOptions as contactOptions, onRequestPost as contactPost } from "../../functions/api/contact.js";
+import { onRequestPost as previewPost } from "../../functions/api/preview.js";
+import { onRequestGet as authCallbackGet } from "../../functions/api/auth/callback.js";
+import { onRequestGet as authGithubGet } from "../../functions/api/auth/github.js";
+import { onRequestPost as authLogoutPost } from "../../functions/api/auth/logout.js";
+import { onRequestGet as adminContentGet, onRequestPut as adminContentPut } from "../../functions/api/admin/content.js";
+import { onRequestDelete as adminImageDelete, onRequestPut as adminImagePut } from "../../functions/api/admin/image.js";
+import { onRequestGet as adminImagesGet } from "../../functions/api/admin/images.js";
+import { onRequestGet as adminSessionGet } from "../../functions/api/admin/session.js";
+import { jsonResponse } from "../../lib/http.mjs";
 import {
   ADMIN_CONTENT_SECURITY_POLICY,
   API_CONTENT_SECURITY_POLICY,
   PUBLIC_CONTENT_SECURITY_POLICY,
   SECURITY_HEADERS,
   SVG_CONTENT_SECURITY_POLICY,
-} from "../lib/security-headers.mjs";
+} from "../../lib/security-headers.mjs";
 
 const API_ROUTES = [
   { path: /^\/api\/contact\/?$/, handlers: { OPTIONS: contactOptions, POST: contactPost } },

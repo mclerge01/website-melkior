@@ -40,7 +40,7 @@ script.js                      Public site behavior
 admin/                         Admin editor UI
 functions/                     API handlers dispatched by the Worker
 lib/                           Rendering, i18n, auth, email, security helpers
-worker/index.js                Main website Worker entry
+workers/site/index.js          Main website Worker entry
 workers/email-health-check/    Scheduled weekly email-health Worker
 assets/images/                 Source image assets
 dist/                          Generated output, not committed
@@ -247,7 +247,7 @@ Run before committing meaningful changes:
 
 ```bash
 npm run build
-node --check build.js worker/index.js workers/email-health-check/index.js functions/api/contact.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js admin/admin.js
+node --check build.js workers/site/index.js workers/email-health-check/index.js functions/api/contact.js lib/contact-health.mjs lib/email-health-check.mjs lib/mime-email.mjs lib/security-headers.mjs script.js admin/admin.js
 npx wrangler deploy --dry-run --config wrangler.toml
 npx wrangler deploy --dry-run --config workers/email-health-check/wrangler.toml
 git diff --check

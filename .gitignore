@@ -54,4 +54,5 @@ Desktop.ini
 # Local Codex / agent tooling
 .codex/
 .agents/
+.playwright-cli/
 skills-lock.json
