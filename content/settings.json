@@ -134,8 +134,8 @@
             "label": "Partout au Québec"
           },
           {
-            "value": "1",
-            "label": "Stratégie adaptée à votre projet"
+            "value": "3",
+            "label": "Options comparées pour choisir la meilleure"
           }
         ]
       },
@@ -267,8 +267,11 @@
           },
           {
             "quote": "Très bon service. Un accompagnement adapté et professionnel tout au long du processus d'achat de notre maison. Nous recommandons Melkior sans hésiter.",
-            "name": "Sandra B.",
-            "context": "Achat"
+            "image": "",
+            "image_alt": "",
+            "name": "Camille Y.",
+            "context": "Achat",
+            "translation_note": ""
           }
         ]
       },
