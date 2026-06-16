@@ -43,3 +43,7 @@ id = "51fe960e1a294781a99db54697a02076"
 [[routes]]
 pattern = "melkiorclerge.ca"
 custom_domain = true
+
+[[routes]]
+pattern = "www.melkiorclerge.ca"
+custom_domain = true
