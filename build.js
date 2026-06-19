@@ -210,13 +210,13 @@ function formatPageUpdated(locale, fallback, sourcePaths) {
 function legalPageMetaDescription(locale, page, siteName) {
   if (locale.startsWith("en")) {
     return page === "privacy"
-      ? `Privacy policy for ${siteName}, Multi-Prets mortgage broker.`
-      : `Legal notice for ${siteName}, Multi-Prets mortgage broker.`;
+      ? `Privacy policy for ${siteName}, Multi-Prêts Hypothèques mortgage broker.`
+      : `Legal notice for ${siteName}, Multi-Prêts Hypothèques mortgage broker.`;
   }
 
   return page === "privacy"
-    ? `Politique de confidentialité du site de ${siteName}, courtier hypothécaire Multi-Prêts.`
-    : `Mentions légales du site de ${siteName}, courtier hypothécaire Multi-Prêts.`;
+    ? `Politique de confidentialité du site de ${siteName}, courtier hypothécaire Multi-Prêts Hypothèques.`
+    : `Mentions légales du site de ${siteName}, courtier hypothécaire Multi-Prêts Hypothèques.`;
 }
 
 function legalPageData(settings, locale, page, homeData) {
@@ -411,7 +411,7 @@ const rootData = withStructuredData({
   seo: {
     ...rootBaseData.seo,
     title: "Melkior Clergé | Courtier hypothécaire / Mortgage Broker",
-    description: "Choisissez le français ou l'anglais pour joindre Melkior Clergé, courtier hypothécaire Multi-Prêts au Québec. Choose French or English.",
+    description: "Choisissez le français ou l'anglais pour joindre Melkior Clergé, courtier hypothécaire Multi-Prêts Hypothèques au Québec. Choose French or English.",
   },
 });
 

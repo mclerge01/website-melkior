@@ -1,6 +1,6 @@
 # Melkior Clergé Website
 
-Bilingual website for Melkior Clergé, mortgage broker with Multi-Prêts.
+Bilingual website for Melkior Clergé, mortgage broker with Multi-Prêts Hypothèques.
 
 The project is intentionally small: generated HTML, hand-written CSS and JavaScript, Cloudflare Workers, and a GitHub-backed admin editor.
 

@@ -63,8 +63,8 @@
   "locales": {
     "fr-CA": {
       "seo": {
-        "title": "Melkior Clergé | Courtier hypothécaire Multi-Prêts à Montréal",
-        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
+        "title": "Melkior Clergé | Courtier hypothécaire Multi-Prêts Hypothèques à Montréal",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts Hypothèques partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "og_image": "/assets/images/melkior-clerge-og-preferred-1200w.jpg",
         "favicon": "/favicon.svg"
       },
@@ -72,7 +72,9 @@
         "site_name": "Melkior Clergé",
         "credential": "Courtier hypothécaire",
         "cta_text": "Prendre un rendez-vous",
-        "cta_link": "#contact"
+        "cta_link": "#contact",
+        "network_profile_label": "Profil Multi-Prêts Hypothèques de Melkior Clergé",
+        "network_logo_alt": "Multi-Prêts Hypothèques"
       },
       "regions": "Partout au Québec",
       "nav": {
@@ -111,7 +113,7 @@
         "dismiss_label": "Fermer"
       },
       "hero": {
-        "eyebrow": "Courtier hypothécaire | Multi-Prêts",
+        "eyebrow": "Courtier hypothécaire | Multi-Prêts Hypothèques",
         "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
         "primary_cta": "Prendre un rendez-vous",
@@ -239,7 +241,7 @@
           },
           {
             "year": "Aujourd'hui",
-            "title": "Courtier Multi-Prêts",
+            "title": "Courtier Multi-Prêts Hypothèques",
             "description": "Accompagnement rigoureux pour des projets immobiliers et financiers bien structurés."
           }
         ]
@@ -367,7 +369,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts Hypothèques partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "description_heading": "Résumé",
         "pages_heading": "Navigation",
         "legal_heading": "Légal",
@@ -380,18 +382,36 @@
       "privacy_page": {
         "title": "Politique de confidentialité",
         "updated": "Dernière mise à jour : juin 2026",
-        "body": "## Responsable du site\n\nCe site est exploité par Melkior Clergé, courtier hypothécaire agissant pour le compte de Multi-Prêts Hypothèques, cabinet en courtage hypothécaire. Pour toute question sur cette politique ou sur vos renseignements personnels, écrivez à consultation@melkiorclerge.ca.\n\n## Renseignements recueillis\n\nLe formulaire de contact recueille les renseignements nécessaires pour traiter votre demande: nom, courriel, téléphone, sujet, source de référence si fournie, message et langue de la demande. Cloudflare Turnstile peut traiter des renseignements techniques nécessaires à la vérification antipourriel.\n\n## Utilisation\n\nCes renseignements servent à répondre à votre demande, à vous contacter au sujet de votre projet hypothécaire et à assurer la sécurité du formulaire. Aucune décision automatisée n'est prise à partir de ces renseignements.\n\n## Communication\n\nLes renseignements ne sont pas vendus. Ils sont transmis uniquement aux services nécessaires au fonctionnement du site, à l'hébergement, à la sécurité et à l'envoi du courriel, notamment Cloudflare. Ces services peuvent traiter des renseignements à l'extérieur du Québec ou du Canada.\n\n## Témoins\n\nLe site utilise un témoin de langue pour retenir votre choix entre le français et l'anglais. La section d'administration utilise des témoins de connexion réservés aux contributeurs autorisés. Le site public n'utilise pas de témoins publicitaires ou analytiques.\n\n## Conservation\n\nLe site ne conserve pas de base de données client. Les messages sont conservés dans la boîte courriel professionnelle pour le suivi de la demande, puis supprimés lorsqu'ils ne sont plus nécessaires ou selon les pratiques applicables.\n\n## Vos droits\n\nVous pouvez demander l'accès, la rectification ou la suppression des renseignements transmis, ou retirer votre consentement lorsque la loi le permet, en écrivant à consultation@melkiorclerge.ca."
+        "body": "## Responsable du site\n\nCe site est exploité par Melkior Clergé, courtier hypothécaire agissant pour le compte de Multi-Prêts Hypothèques, cabinet en courtage hypothécaire. Pour toute question sur cette politique ou sur vos renseignements personnels, écrivez à consultation@melkiorclerge.ca.\n\n## Renseignements recueillis\n\nLe formulaire de contact recueille les renseignements nécessaires pour traiter votre demande: nom, courriel, téléphone, sujet, source de référence si fournie, message et langue de la demande. Cloudflare Turnstile peut traiter des renseignements techniques nécessaires à la vérification antipourriel.\n\n## Utilisation\n\nCes renseignements servent à répondre à votre demande, à vous contacter au sujet de votre projet hypothécaire et à assurer la sécurité du formulaire. Aucune décision automatisée n'est prise à partir de ces renseignements.\n\n## Communication\n\nLes renseignements ne sont pas vendus. Ils sont transmis uniquement aux services nécessaires au fonctionnement du site, à l'hébergement, à la sécurité et à l'envoi du courriel, notamment Cloudflare. Ces services peuvent traiter des renseignements à l'extérieur du Québec ou du Canada.\n\n## Témoins\n\nLe site utilise des témoins nécessaires pour la sécurité, l'administration, la protection du formulaire de contact et l'enregistrement de vos choix. Un témoin de préférence peut retenir votre choix de langue uniquement si vous l'acceptez. Le module Instagram/Fouita demeure désactivé tant que vous n'avez pas accepté la catégorie médias. Le site public n'utilise pas de témoins publicitaires ou analytiques.\n\n## Conservation\n\nLe site ne conserve pas de base de données client. Les messages sont conservés dans la boîte courriel professionnelle pour le suivi de la demande, puis supprimés lorsqu'ils ne sont plus nécessaires ou selon les pratiques applicables.\n\n## Conformité à la Loi 25 (Québec)\n\nLa présente politique est conforme à la Loi modernisant des dispositions législatives en matière de protection des renseignements personnels (« Loi 25 »).\n\n## Responsable de la protection des renseignements personnels\n\nLe responsable de la protection des renseignements personnels pour ce site est : Melkior Clergé\n\nCourriel : consultation@melkiorclerge.ca\n\nIl veille à la conformité de l'entreprise à la Loi 25 et répond aux demandes d'accès, de rectification, de retrait du consentement ou de suppression des renseignements.\n\n## Vos droits\n\nConformément à la Loi 25, vous disposez des droits suivants :\n\n- accéder aux renseignements personnels vous concernant\n- demander leur rectification\n- demander leur suppression lorsque permis\n- retirer votre consentement à leur utilisation\n- déposer une plainte auprès de la Commission d'accès à l'information\n\nToute demande peut être adressée à : consultation@melkiorclerge.ca\n\n## Section plaintes\n\nPour toutes questions, préoccupations ou plaintes liées à l'hypothèque :\n\nLyne Deslippe\n\nMulti-Prêts Hypothèques\n\n525 Viger Ouest suite 502, Montréal, Québec, H2Z 0B2\n\nTéléphone : 514-287-8770\n\nCourriel : sac@multi-prets.ca"
       },
       "legal_page": {
         "title": "Mentions légales",
         "updated": "Dernière mise à jour : juin 2026",
-        "body": "## Éditeur du site\n\nCe site est édité par Melkior Clergé, courtier hypothécaire agissant pour le compte de Multi-Prêts Hypothèques, cabinet en courtage hypothécaire. Coordonnées: (514) 836-6736, consultation@melkiorclerge.ca, 6799 boulevard St-Laurent, Montréal, QC H2S 3C8.\n\n## Vérification de l'autorisation\n\nVous pouvez vérifier l'autorisation d'exercice de Melkior Clergé et du cabinet au [registre de l'Autorité des marchés financiers](https://lautorite.qc.ca/grand-public/registres).\n\n## Hébergement\n\nLe site est hébergé avec Cloudflare. Le formulaire de contact utilise des services Cloudflare pour la sécurité et l'envoi des courriels.\n\n## Nature de l'information\n\nLe contenu présente des renseignements généraux sur les services de courtage hypothécaire. Il ne constitue pas un conseil financier, juridique ou hypothécaire personnalisé. Le site permet de demander un suivi ou de réserver une consultation; aucune demande de prêt hypothécaire, approbation ou transaction de courtage hypothécaire n'est conclue directement sur le site.\n\n## Exactitude\n\nLes taux, conditions, calculs et options hypothécaires peuvent changer sans préavis et dépendent notamment du profil de l'emprunteur, du prêteur, du marché et de l'analyse du dossier. La calculatrice fournit une estimation indicative seulement.\n\n## Propriété intellectuelle\n\nSauf indication contraire, les textes, la mise en page et les éléments visuels du site sont protégés par le droit d'auteur. Toute reproduction non autorisée est interdite.\n\n## Liens externes\n\nLe site peut contenir des liens vers des sites tiers, notamment Multi-Prêts. Ces sites sont responsables de leur propre contenu et de leurs propres pratiques.\n\n## Contact\n\nPour toute question au sujet du site, écrivez à consultation@melkiorclerge.ca."
+        "body": "## Éditeur du site\n\nCe site est édité par Melkior Clergé, courtier hypothécaire agissant pour le compte de Multi-Prêts Hypothèques, cabinet en courtage hypothécaire. Coordonnées: (514) 836-6736, consultation@melkiorclerge.ca, 6799 boulevard St-Laurent, Montréal, QC H2S 3C8.\n\n## Vérification de l'autorisation\n\nVous pouvez vérifier l'autorisation d'exercice de Melkior Clergé et du cabinet au [registre de l'Autorité des marchés financiers](https://lautorite.qc.ca/grand-public/registres).\n\n## Hébergement\n\nLe site est hébergé avec Cloudflare. Le formulaire de contact utilise des services Cloudflare pour la sécurité et l'envoi des courriels.\n\n## Nature de l'information\n\nLe contenu présente des renseignements généraux sur les services de courtage hypothécaire. Il ne constitue pas un conseil financier, juridique ou hypothécaire personnalisé. Le site permet de demander un suivi ou de réserver une consultation; aucune demande de prêt hypothécaire, approbation ou transaction de courtage hypothécaire n'est conclue directement sur le site.\n\n## Exactitude\n\nLes taux, conditions, calculs et options hypothécaires peuvent changer sans préavis et dépendent notamment du profil de l'emprunteur, du prêteur, du marché et de l'analyse du dossier. La calculatrice fournit une estimation indicative seulement.\n\n## Propriété intellectuelle\n\nSauf indication contraire, les textes, la mise en page et les éléments visuels du site sont protégés par le droit d'auteur. Toute reproduction non autorisée est interdite.\n\n## Liens externes\n\nLe site peut contenir des liens vers des sites tiers, notamment Multi-Prêts Hypothèques. Ces sites sont responsables de leur propre contenu et de leurs propres pratiques.\n\n## Contact\n\nPour toute question au sujet du site, écrivez à consultation@melkiorclerge.ca."
+      },
+      "cookie_consent": {
+        "title": "Gestion des témoins",
+        "body": "Ce site utilise des témoins nécessaires au fonctionnement et peut utiliser des témoins de préférences ou de médias si vous les acceptez.",
+        "privacy_link_label": "Consulter la politique de confidentialité.",
+        "accept_label": "Accepter les témoins",
+        "reject_label": "Refuser les témoins optionnels",
+        "manage_label": "Gérer mes préférences",
+        "save_label": "Enregistrer mes choix",
+        "necessary_label": "Nécessaires",
+        "necessary_description": "Toujours actifs pour la sécurité, l'administration, le formulaire de contact et l'enregistrement de votre choix.",
+        "preferences_label": "Préférences",
+        "preferences_description": "Retient votre choix de langue entre le français et l'anglais.",
+        "media_label": "Médias",
+        "media_description": "Permet d'afficher le module Instagram/Fouita intégré.",
+        "media_blocked_title": "Médias désactivés",
+        "media_blocked_text": "Le fil Instagram est désactivé tant que vous n'avez pas accepté les témoins de médias.",
+        "media_accept_label": "Autoriser les médias"
       }
     },
     "en-CA": {
       "seo": {
-        "title": "Melkior Clergé | Multi-Prêts Mortgage Broker in Montreal",
-        "description": "Melkior Clergé, Multi-Prêts mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
+        "title": "Melkior Clergé | Multi-Prêts Hypothèques Mortgage Broker in Montreal",
+        "description": "Melkior Clergé, Multi-Prêts Hypothèques mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
         "og_image": "/assets/images/melkior-clerge-og-preferred-1200w.jpg",
         "favicon": "/favicon.svg"
       },
@@ -399,7 +419,9 @@
         "site_name": "Melkior Clergé",
         "credential": "Mortgage Broker",
         "cta_text": "Book a consultation",
-        "cta_link": "#contact"
+        "cta_link": "#contact",
+        "network_profile_label": "Melkior Clergé's Multi-Prêts Hypothèques profile",
+        "network_logo_alt": "Multi-Prêts Hypothèques"
       },
       "regions": "Across Quebec",
       "nav": {
@@ -438,7 +460,7 @@
         "dismiss_label": "Close"
       },
       "hero": {
-        "eyebrow": "Mortgage Broker | Multi-Prêts",
+        "eyebrow": "Mortgage Broker | Multi-Prêts Hypothèques",
         "title": "Your real estate **project** *deserves a clear strategy.*",
         "subtitle": "I review your situation, compare market options, and guide you with structure and care through your purchase, renewal, or refinance.",
         "primary_cta": "Book a consultation",
@@ -551,7 +573,7 @@
       "about": {
         "eyebrow": "My story",
         "title": "A patient, organized advisor who listens.",
-        "body": "Available around your schedule, Melkior is passionate, attentive to your needs, patient, and organized. He is your ally in finding a solution that fits.\n\nAfter studying insurance and financial services, he worked in claims adjustment before moving toward mortgage brokerage in 2015. A mortgage broker with Multi-Prêts since 2016, he brings practical financial experience to concrete mortgage strategies.\n\nHis goal: guide you through a pre-approval, purchase, refinance, renewal, debt consolidation, or any question related to borrowing capacity.",
+        "body": "Available around your schedule, Melkior is passionate, attentive to your needs, patient, and organized. He is your ally in finding a solution that fits.\n\nAfter studying insurance and financial services, he worked in claims adjustment before moving toward mortgage brokerage in 2015. A mortgage broker with Multi-Prêts Hypothèques since 2016, he brings practical financial experience to concrete mortgage strategies.\n\nHis goal: guide you through a pre-approval, purchase, refinance, renewal, debt consolidation, or any question related to borrowing capacity.",
         "image_alt": "Melkior Clergé",
         "timeline": [
           {
@@ -566,7 +588,7 @@
           },
           {
             "year": "Today",
-            "title": "Multi-Prêts broker",
+            "title": "Multi-Prêts Hypothèques broker",
             "description": "Structured guidance for well-planned real estate and financial projects."
           }
         ]
@@ -695,7 +717,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Melkior Clergé, Multi-Prêts mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
+        "description": "Melkior Clergé, Multi-Prêts Hypothèques mortgage broker serving clients across Quebec: purchase, pre-approval, renewal, refinancing, debt consolidation.",
         "description_heading": "Summary",
         "pages_heading": "Navigation",
         "legal_heading": "Legal",
@@ -708,12 +730,30 @@
       "privacy_page": {
         "title": "Privacy Policy",
         "updated": "Last updated: June 2026",
-        "body": "## Website operator\n\nThis website is operated by Melkior Clergé, mortgage broker acting on behalf of Multi-Prêts Hypothèques, a mortgage brokerage firm. For questions about this policy or your personal information, write to consultation@melkiorclerge.ca.\n\n## Information collected\n\nThe contact form collects the information needed to handle your request: name, email, phone, subject, referral source if provided, message, and request language. Cloudflare Turnstile may process technical information needed for anti-spam verification.\n\n## Use\n\nThis information is used to respond to your request, contact you about your mortgage project, and protect the form. No automated decision is made from this information.\n\n## Disclosure\n\nPersonal information is not sold. It is shared only with services needed to operate the website, host it, secure it, and send email, including Cloudflare. These services may process information outside Quebec or Canada.\n\n## Cookies\n\nThe website uses a language preference cookie to remember your choice between French and English. The administration section uses login cookies for authorized contributors only. The public website does not use advertising or analytics cookies.\n\n## Retention\n\nThe website does not keep a client database. Messages are retained in the professional email inbox for request follow-up, then deleted when no longer needed or according to applicable practices.\n\n## Your rights\n\nYou may request access, correction, or deletion of submitted information, or withdraw consent where the law allows, by writing to consultation@melkiorclerge.ca."
+        "body": "## Website operator\n\nThis website is operated by Melkior Clergé, mortgage broker acting on behalf of Multi-Prêts Hypothèques, a mortgage brokerage firm. For questions about this policy or your personal information, write to consultation@melkiorclerge.ca.\n\n## Information collected\n\nThe contact form collects the information needed to handle your request: name, email, phone, subject, referral source if provided, message, and request language. Cloudflare Turnstile may process technical information needed for anti-spam verification.\n\n## Use\n\nThis information is used to respond to your request, contact you about your mortgage project, and protect the form. No automated decision is made from this information.\n\n## Disclosure\n\nPersonal information is not sold. It is shared only with services needed to operate the website, host it, secure it, and send email, including Cloudflare. These services may process information outside Quebec or Canada.\n\n## Cookies\n\nThe website uses required storage for security, administration/session needs, contact-form protection, and remembering your cookie choices. A language preference cookie is used only if you accept preferences. The Instagram/Fouita module remains blocked unless media cookies are accepted. The public website does not use advertising or analytics cookies.\n\n## Retention\n\nThe website does not keep a client database. Messages are retained in the professional email inbox for request follow-up, then deleted when no longer needed or according to applicable practices.\n\n## Compliance with Quebec privacy legislation\n\nThis policy is intended to comply with the Act respecting the protection of personal information in the private sector, as amended by Law 25, the Act to modernize legislative provisions as regards the protection of personal information.\n\n## Person in charge of the protection of personal information\n\nThe person in charge of the protection of personal information for this site is: Melkior Clergé\n\nEmail: consultation@melkiorclerge.ca\n\nHe oversees the site's compliance with Quebec privacy legislation and responds to requests for access, rectification, withdrawal of consent, or deletion of information.\n\n## Your rights\n\nSubject to legal restrictions, you may:\n\n- access personal information concerning you\n- request its rectification\n- request its deletion when permitted\n- withdraw your consent to its use\n- lodge a complaint with the Commission d'accès à l'information\n\nRequests may be sent to: consultation@melkiorclerge.ca\n\n## Mortgage complaints\n\nFor questions, concerns, or complaints related to a mortgage:\n\nLyne Deslippe\n\nMulti-Prêts Hypothèques\n\n525 Viger West, Suite 502, Montreal, Quebec, H2Z 0B2\n\nPhone: 514-287-8770\n\nEmail: sac@multi-prets.ca"
       },
       "legal_page": {
         "title": "Legal Notice",
         "updated": "Last updated: June 2026",
-        "body": "## Website publisher\n\nThis website is published by Melkior Clergé, mortgage broker acting on behalf of Multi-Prêts Hypothèques, a mortgage brokerage firm. Contact information: (514) 836-6736, consultation@melkiorclerge.ca, 6799 boulevard St-Laurent, Montréal, QC H2S 3C8.\n\n## Authorization check\n\nYou can verify Melkior Clergé's and the firm's authorization in the [Autorité des marchés financiers register](https://lautorite.qc.ca/grand-public/registres).\n\n## Hosting\n\nThe website is hosted with Cloudflare. The contact form uses Cloudflare services for security and email delivery.\n\n## Nature of information\n\nThe content provides general information about mortgage brokerage services. It is not personalized financial, legal, or mortgage advice. The website lets visitors request follow-up or book a consultation; no mortgage application, approval, or mortgage brokerage transaction is completed directly on the website.\n\n## Accuracy\n\nRates, conditions, calculations, and mortgage options may change without notice and depend on the borrower profile, lender, market, and file review. The calculator provides an indicative estimate only.\n\n## Intellectual property\n\nUnless otherwise indicated, the text, layout, and visual elements of the website are protected by copyright. Unauthorized reproduction is prohibited.\n\n## External links\n\nThe website may contain links to third-party websites, including Multi-Prêts. Those websites are responsible for their own content and practices.\n\n## Contact\n\nFor questions about this website, write to consultation@melkiorclerge.ca."
+        "body": "## Website publisher\n\nThis website is published by Melkior Clergé, mortgage broker acting on behalf of Multi-Prêts Hypothèques, a mortgage brokerage firm. Contact information: (514) 836-6736, consultation@melkiorclerge.ca, 6799 boulevard St-Laurent, Montréal, QC H2S 3C8.\n\n## Authorization check\n\nYou can verify Melkior Clergé's and the firm's authorization in the [Autorité des marchés financiers register](https://lautorite.qc.ca/grand-public/registres).\n\n## Hosting\n\nThe website is hosted with Cloudflare. The contact form uses Cloudflare services for security and email delivery.\n\n## Nature of information\n\nThe content provides general information about mortgage brokerage services. It is not personalized financial, legal, or mortgage advice. The website lets visitors request follow-up or book a consultation; no mortgage application, approval, or mortgage brokerage transaction is completed directly on the website.\n\n## Accuracy\n\nRates, conditions, calculations, and mortgage options may change without notice and depend on the borrower profile, lender, market, and file review. The calculator provides an indicative estimate only.\n\n## Intellectual property\n\nUnless otherwise indicated, the text, layout, and visual elements of the website are protected by copyright. Unauthorized reproduction is prohibited.\n\n## External links\n\nThe website may contain links to third-party websites, including Multi-Prêts Hypothèques. Those websites are responsible for their own content and practices.\n\n## Contact\n\nFor questions about this website, write to consultation@melkiorclerge.ca."
+      },
+      "cookie_consent": {
+        "title": "Cookie preferences",
+        "body": "This site uses cookies or local storage that are required for operation and may use preference or media cookies if you accept them.",
+        "privacy_link_label": "Read the privacy policy.",
+        "accept_label": "Accept cookies",
+        "reject_label": "Reject optional cookies",
+        "manage_label": "Manage preferences",
+        "save_label": "Save choices",
+        "necessary_label": "Required",
+        "necessary_description": "Always active for security, administration, contact-form protection, and saving your choice.",
+        "preferences_label": "Preferences",
+        "preferences_description": "Remembers your language choice between French and English.",
+        "media_label": "Media",
+        "media_description": "Allows the embedded Instagram/Fouita module to load.",
+        "media_blocked_title": "Media disabled",
+        "media_blocked_text": "The Instagram feed is disabled until you accept media cookies.",
+        "media_accept_label": "Allow media"
       }
     }
   }
