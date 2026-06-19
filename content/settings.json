@@ -111,7 +111,7 @@
         "dismiss_label": "Fermer"
       },
       "hero": {
-        "eyebrow": "Courtier hypothécaire | Multi-Prêts",
+        "eyebrow": "Courtier hypothécaire | Multi-Prêts Hypothèques",
         "title": "Votre projet **immobilier** *mérite une stratégie claire.*",
         "subtitle": "J'analyse votre situation, je compare les options du marché et je vous accompagne avec rigueur pour concrétiser votre achat, renouvellement ou refinancement.",
         "primary_cta": "Prendre un rendez-vous",
@@ -145,7 +145,7 @@
         "description": "Obtenez une estimation rapide de votre mensualité. Les résultats sont indicatifs et ne remplacent pas une analyse personnalisée.",
         "rate_note_title": "Taux indicatif",
         "rate_note": "Cette calculatrice utilise un taux d'exemple. Le taux applicable dépend du montant emprunté, de votre profil, des garanties et des conditions du prêteur.",
-        "rate_link_label": "Voir les taux Multi-Prêts",
+        "rate_link_label": "Voir les taux Multi-Prêts Hypothèques",
         "rate_link_url": "https://www.multi-prets.com/fr/courtier-hypothecaire-melkior-clerge/options-hypothecaires/nos-taux/",
         "details": [
           {
@@ -367,7 +367,7 @@
       },
       "footer": {
         "business_name": "Melkior Clergé",
-        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
+        "description": "Melkior Clergé, courtier hypothécaire Multi-Prêts Hypothèques partout au Québec: achat, préautorisation, renouvellement, refinancement, consolidation.",
         "description_heading": "Résumé",
         "pages_heading": "Navigation",
         "legal_heading": "Légal",
