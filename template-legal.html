@@ -147,27 +147,29 @@
       </div>
       <p>{{cookie_consent.body}} <a href="{{privacy_path}}">{{cookie_consent.privacy_link_label}}</a></p>
       <form class="cookie-preferences" data-cookie-preferences>
-        <label class="cookie-option is-locked">
-          <input type="checkbox" checked disabled>
-          <span>
-            <strong>{{cookie_consent.necessary_label}}</strong>
-            <small>{{cookie_consent.necessary_description}}</small>
-          </span>
-        </label>
-        <label class="cookie-option">
-          <input type="checkbox" name="preferences" data-cookie-category="preferences">
-          <span>
-            <strong>{{cookie_consent.preferences_label}}</strong>
-            <small>{{cookie_consent.preferences_description}}</small>
-          </span>
-        </label>
-        <label class="cookie-option">
-          <input type="checkbox" name="media" data-cookie-category="media">
-          <span>
-            <strong>{{cookie_consent.media_label}}</strong>
-            <small>{{cookie_consent.media_description}}</small>
-          </span>
-        </label>
+        <div class="cookie-options-panel">
+          <label class="cookie-option is-locked">
+            <input type="checkbox" checked disabled>
+            <span>
+              <strong>{{cookie_consent.necessary_label}}</strong>
+              <small>{{cookie_consent.necessary_description}}</small>
+            </span>
+          </label>
+          <label class="cookie-option">
+            <input type="checkbox" name="preferences" data-cookie-category="preferences">
+            <span>
+              <strong>{{cookie_consent.preferences_label}}</strong>
+              <small>{{cookie_consent.preferences_description}}</small>
+            </span>
+          </label>
+          <label class="cookie-option">
+            <input type="checkbox" name="media" data-cookie-category="media">
+            <span>
+              <strong>{{cookie_consent.media_label}}</strong>
+              <small>{{cookie_consent.media_description}}</small>
+            </span>
+          </label>
+        </div>
         <button class="btn btn-primary" type="submit">{{cookie_consent.save_label}}</button>
       </form>
     </div>
