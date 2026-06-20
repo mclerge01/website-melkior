@@ -34,7 +34,7 @@ run_worker_first = ["/*"]
 
 [[send_email]]
 name = "SEND_EMAIL"
-allowed_sender_addresses = ["consultation@melkiorclerge.ca"]
+allowed_sender_addresses = ["mclerge@multi-prets.ca"]
 
 [[kv_namespaces]]
 binding = "CONTACT_HEALTH"

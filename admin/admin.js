@@ -71,7 +71,7 @@ const SHARED_FIELDS = [
   { key: "booking_url", label: "Lien de réservation en ligne", type: "text", full: true },
   { key: "office_address", label: "Adresse du bureau", type: "text", full: true },
   { key: "regions", label: "Régions desservies", type: "text", full: true },
-  { key: "profile_url", label: "Profil Multi-Prêts", type: "text", full: true },
+  { key: "profile_url", label: "Profil Multi-Prêts Hypothèques", type: "text", full: true },
   { key: "social.linkedin", label: "Profil LinkedIn", type: "text", full: true },
   { key: "social.instagram", label: "Profil Instagram", type: "text", full: true },
   { key: "social.facebook", label: "Profil Facebook", type: "text", full: true },
@@ -85,7 +85,7 @@ const SHARED_IMAGE_FIELDS = [
   { key: "hero", label: "Portrait principal", type: "image" },
   { key: "portrait", label: "Portrait À propos", type: "image" },
   { key: "og", label: "Image de partage par défaut", type: "image" },
-  { key: "multi_prets_logo", label: "Logo Multi-Prêts", type: "image" },
+  { key: "multi_prets_logo", label: "Logo Multi-Prêts Hypothèques", type: "image" },
 ];
 
 const CONTENT_SECTIONS = [
@@ -95,6 +95,8 @@ const CONTENT_SECTIONS = [
     fields: [
       { key: "site_name", label: "Nom affiché" },
       { key: "credential", label: "Profession / réseau" },
+      { key: "network_profile_label", label: "Libellé accessible du profil Multi-Prêts Hypothèques", full: true },
+      { key: "network_logo_alt", label: "Texte alternatif du logo Multi-Prêts Hypothèques", full: true },
       { key: "cta_text", label: "Bouton principal" },
       { key: "cta_link", label: "Lien du bouton" },
     ],
@@ -123,6 +125,29 @@ const CONTENT_SECTIONS = [
       { key: "message", label: "Message", type: "markdown", full: true },
       { key: "image", label: "Image optionnelle", type: "image", full: true },
       { key: "dismiss_label", label: "Bouton fermer" },
+    ],
+  },
+  {
+    key: "cookie_consent",
+    label: "Gestion des témoins",
+    fields: [
+      { key: "title", label: "Titre" },
+      { key: "body", label: "Message", type: "textarea", full: true },
+      { key: "privacy_link_label", label: "Lien vers la politique" },
+      { key: "accept_label", label: "Bouton accepter" },
+      { key: "reject_label", label: "Bouton refuser" },
+      { key: "manage_label", label: "Bouton gérer" },
+      { key: "save_label", label: "Bouton enregistrer" },
+      { key: "close_label", label: "Bouton fermer la fenêtre" },
+      { key: "necessary_label", label: "Catégorie nécessaires" },
+      { key: "necessary_description", label: "Description nécessaires", type: "textarea", full: true },
+      { key: "preferences_label", label: "Catégorie préférences" },
+      { key: "preferences_description", label: "Description préférences", type: "textarea", full: true },
+      { key: "media_label", label: "Catégorie médias" },
+      { key: "media_description", label: "Description médias", type: "textarea", full: true },
+      { key: "media_blocked_title", label: "Titre médias bloqués" },
+      { key: "media_blocked_text", label: "Texte médias bloqués", type: "textarea", full: true },
+      { key: "media_accept_label", label: "Bouton autoriser les médias" },
     ],
   },
   {

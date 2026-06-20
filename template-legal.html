@@ -50,17 +50,17 @@
   <header class="site-nav nav-light scrolled fixed top-0 w-full" id="site-nav">
     <div class="container nav-inner">
       <div class="nav-brand">
+        <a class="network-logo-link network-logo-primary" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="{{header.network_profile_label}}">
+          <img class="network-logo network-logo-plain" src="{{shared.images.multi_prets_logo_plain}}" alt="{{header.network_logo_alt}}" fetchpriority="high" decoding="async">
+          <img class="network-logo network-logo-contrast" src="{{shared.images.multi_prets_logo}}" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+        </a>
+        <span class="logo-divider" aria-hidden="true"></span>
         <a class="site-logo" href="/{{locale_slug}}/">
           <span class="logo-mark">MC</span>
-          <span>
+          <span class="site-logo-text">
             <strong>{{header.site_name}}</strong>
             <small>{{header.credential}}</small>
           </span>
-        </a>
-        <span class="logo-divider" aria-hidden="true"></span>
-        <a class="network-logo-link" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Profil Multi-Prêts de Melkior Clergé">
-          <img class="network-logo network-logo-plain" src="{{shared.images.multi_prets_logo_plain}}" alt="Multi-Prêts" fetchpriority="high" decoding="async">
-          <img class="network-logo network-logo-contrast" src="{{shared.images.multi_prets_logo}}" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
         </a>
       </div>
       <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false">
@@ -72,10 +72,6 @@
 {{/each}}
         <a class="language-link" href="{{language_switch.href}}" data-locale-target="{{language_switch.locale}}">{{language_switch.code}}</a>
         <a class="btn btn-primary nav-cta" href="{{nav_contact_href}}" target="_blank" rel="noopener">{{header.cta_text}}</a>
-        <a class="network-logo-link nav-menu-network-logo" href="{{shared.profile_url}}" target="_blank" rel="noopener" aria-label="Profil Multi-Prêts de Melkior Clergé">
-          <img class="network-logo network-logo-plain" src="{{shared.images.multi_prets_logo_plain}}" alt="Multi-Prêts" fetchpriority="high" decoding="async">
-          <img class="network-logo network-logo-contrast" src="{{shared.images.multi_prets_logo}}" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
-        </a>
       </nav>
     </div>
   </header>
@@ -130,6 +126,54 @@
       <p>© {{currentYear}} {{footer.business_name}}. {{footer.copyright}}</p>
     </div>
   </footer>
+  <section class="cookie-consent" id="cookie-consent" aria-labelledby="cookie-consent-title" hidden>
+    <div class="container cookie-consent-inner">
+      <div class="cookie-consent-copy">
+        <h2 id="cookie-consent-title">{{cookie_consent.title}}</h2>
+        <p>{{cookie_consent.body}} <a href="{{privacy_path}}">{{cookie_consent.privacy_link_label}}</a></p>
+      </div>
+      <div class="cookie-consent-actions">
+        <button class="btn btn-primary" type="button" data-cookie-accept-all>{{cookie_consent.accept_label}}</button>
+        <button class="btn btn-outline" type="button" data-cookie-reject>{{cookie_consent.reject_label}}</button>
+        <button class="btn btn-text" type="button" data-cookie-manage aria-expanded="false">{{cookie_consent.manage_label}}</button>
+      </div>
+    </div>
+  </section>
+  <div class="modal-backdrop hidden cookie-dialog-backdrop" data-cookie-dialog-backdrop>
+    <div class="modal cookie-dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-preferences-title" data-cookie-dialog tabindex="-1">
+      <div class="cookie-dialog-header">
+        <h2 id="cookie-preferences-title">{{cookie_consent.title}}</h2>
+        <button class="cookie-dialog-close" type="button" data-cookie-dialog-close aria-label="{{cookie_consent.close_label}}">×</button>
+      </div>
+      <p>{{cookie_consent.body}} <a href="{{privacy_path}}">{{cookie_consent.privacy_link_label}}</a></p>
+      <form class="cookie-preferences" data-cookie-preferences>
+        <div class="cookie-options-panel">
+          <label class="cookie-option is-locked">
+            <input type="checkbox" checked disabled>
+            <span>
+              <strong>{{cookie_consent.necessary_label}}</strong>
+              <small>{{cookie_consent.necessary_description}}</small>
+            </span>
+          </label>
+          <label class="cookie-option">
+            <input type="checkbox" name="preferences" data-cookie-category="preferences">
+            <span>
+              <strong>{{cookie_consent.preferences_label}}</strong>
+              <small>{{cookie_consent.preferences_description}}</small>
+            </span>
+          </label>
+          <label class="cookie-option">
+            <input type="checkbox" name="media" data-cookie-category="media">
+            <span>
+              <strong>{{cookie_consent.media_label}}</strong>
+              <small>{{cookie_consent.media_description}}</small>
+            </span>
+          </label>
+        </div>
+        <button class="btn btn-primary" type="submit">{{cookie_consent.save_label}}</button>
+      </form>
+    </div>
+  </div>
   <script src="/script.js"></script>
 </body>
 </html>

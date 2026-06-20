@@ -10,10 +10,168 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.getElementById("site-nav");
   const hamburger = document.querySelector(".hamburger");
   const navMenu = document.querySelector(".nav-menu");
+  const CONSENT_STORAGE_KEY = "melkior_cookie_consent_v1";
+  const DEFAULT_CONSENT = Object.freeze({
+    decided: false,
+    preferences: false,
+    media: false,
+  });
+
+  function clearCookie(name) {
+    document.cookie = `${encodeURIComponent(name)}=; path=/; max-age=0; samesite=lax`;
+  }
+
+  function readConsent() {
+    try {
+      const raw = window.localStorage?.getItem(CONSENT_STORAGE_KEY);
+      if (!raw) return { ...DEFAULT_CONSENT };
+      const parsed = JSON.parse(raw);
+      return {
+        decided: parsed?.decided === true,
+        preferences: parsed?.preferences === true,
+        media: parsed?.media === true,
+      };
+    } catch {
+      return { ...DEFAULT_CONSENT };
+    }
+  }
+
+  function hasConsent(category) {
+    return readConsent()[category] === true;
+  }
 
   function setLocaleCookie(locale) {
     if (!locale) return;
+    if (!hasConsent("preferences")) {
+      clearCookie("melkior_locale");
+      return;
+    }
     document.cookie = `melkior_locale=${encodeURIComponent(locale)}; path=/; max-age=31536000; samesite=lax`;
+  }
+
+  function writeConsent(nextConsent) {
+    const consent = {
+      ...readConsent(),
+      ...nextConsent,
+      decided: true,
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      window.localStorage?.setItem(CONSENT_STORAGE_KEY, JSON.stringify(consent));
+    } catch {
+      // Consent storage can be blocked by browser settings; keep the page usable.
+    }
+
+    if (consent.preferences) setLocaleCookie(body.dataset.locale);
+    else clearCookie("melkior_locale");
+
+    window.dispatchEvent(new CustomEvent("melkior:cookie-consent", { detail: consent }));
+    return consent;
+  }
+
+  function initCookieConsent() {
+    const banner = document.getElementById("cookie-consent");
+    if (!banner) return;
+
+    const dialogBackdrop = document.querySelector("[data-cookie-dialog-backdrop]");
+    const dialog = dialogBackdrop?.querySelector("[data-cookie-dialog]");
+    const form = dialogBackdrop?.querySelector("[data-cookie-preferences]");
+    const manageButton = banner.querySelector("[data-cookie-manage]");
+    const categoryInputs = Array.from(form?.querySelectorAll("[data-cookie-category]") || []);
+    let preferenceDialogReturnFocus = manageButton;
+
+    function syncForm(overrides = {}) {
+      const consent = readConsent();
+      categoryInputs.forEach((input) => {
+        const category = input.dataset.cookieCategory;
+        input.checked = Object.prototype.hasOwnProperty.call(overrides, category)
+          ? overrides[category] === true
+          : consent[category] === true;
+      });
+    }
+
+    function closePreferencesDialog({ restoreFocus = true } = {}) {
+      if (!dialogBackdrop) return;
+      dialogBackdrop.classList.add("hidden");
+      if (!navMenu?.classList.contains("active")) {
+        body.classList.remove("overflow-hidden");
+      }
+      manageButton?.setAttribute("aria-expanded", "false");
+      if (restoreFocus) preferenceDialogReturnFocus?.focus({ preventScroll: true });
+      preferenceDialogReturnFocus = manageButton;
+    }
+
+    function openPreferencesDialog({ returnFocusTarget = manageButton, overrides = {} } = {}) {
+      if (!dialogBackdrop || !dialog) return;
+      preferenceDialogReturnFocus = returnFocusTarget;
+      syncForm(overrides);
+      dialogBackdrop.classList.remove("hidden");
+      body.classList.add("overflow-hidden");
+      manageButton?.setAttribute("aria-expanded", "true");
+      dialog.focus({ preventScroll: true });
+    }
+
+    function hideBanner() {
+      banner.hidden = true;
+      closePreferencesDialog({ restoreFocus: false });
+    }
+
+    function saveFromForm() {
+      const consent = categoryInputs.reduce((next, input) => {
+        next[input.dataset.cookieCategory] = input.checked === true;
+        return next;
+      }, {});
+      writeConsent(consent);
+      hideBanner();
+      initInstagramWidgets({ loadImmediately: consent.media === true });
+    }
+
+    syncForm();
+    banner.hidden = readConsent().decided === true;
+
+    banner.querySelector("[data-cookie-accept-all]")?.addEventListener("click", () => {
+      writeConsent({ preferences: true, media: true });
+      hideBanner();
+      initInstagramWidgets({ loadImmediately: true });
+    });
+
+    banner.querySelector("[data-cookie-reject]")?.addEventListener("click", () => {
+      writeConsent({ preferences: false, media: false });
+      hideBanner();
+      initInstagramWidgets();
+    });
+
+    manageButton?.addEventListener("click", () => {
+      openPreferencesDialog();
+    });
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveFromForm();
+    });
+
+    dialogBackdrop?.addEventListener("click", (event) => {
+      if (event.target === dialogBackdrop) closePreferencesDialog();
+    });
+
+    dialogBackdrop?.querySelectorAll("[data-cookie-dialog-close]").forEach((button) => {
+      button.addEventListener("click", () => closePreferencesDialog());
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && dialogBackdrop && !dialogBackdrop.classList.contains("hidden")) {
+        closePreferencesDialog();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const mediaButton = target?.closest("[data-cookie-manage-media]");
+      if (!mediaButton) return;
+      event.preventDefault();
+      openPreferencesDialog({ returnFocusTarget: mediaButton, overrides: { media: true } });
+    });
   }
 
   document.querySelectorAll("[data-locale-target]").forEach((link) => {
@@ -32,9 +190,36 @@ document.addEventListener("DOMContentLoaded", () => {
     return /(bot|crawl|crawler|spider|slurp|bingpreview|facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterest|gptbot|chatgpt-user|oai-searchbot|claudebot|claude-user|anthropic-ai|perplexitybot|perplexity-user|ccbot|google-extended|applebot-extended|bytespider|meta-externalagent|meta-externalfetcher|diffbot|cohere-ai|omgili|semrushbot|ahrefsbot|mj12bot|dotbot|petalbot|yandex|baiduspider|duckduckbot|googlebot|bingbot)/i.test(ua);
   }
 
-  function initInstagramWidgets() {
+  function initInstagramWidgets({ loadImmediately = false } = {}) {
     const widgets = Array.from(document.querySelectorAll("[data-instagram-widget]"));
     if (!widgets.length) return;
+
+    function renderBlockedWidget(widget) {
+      if (!widget || widget.dataset.embedLoaded === "true") return;
+      const placeholder = document.createElement("div");
+      placeholder.className = "instagram-widget-placeholder";
+      placeholder.setAttribute("aria-live", "polite");
+
+      const title = document.createElement("strong");
+      title.textContent = String(widget.dataset.mediaBlockedTitle || "Media disabled").trim();
+      const text = document.createElement("span");
+      text.textContent = String(widget.dataset.mediaBlockedText || "This media is disabled until you accept media cookies.").trim();
+      const button = document.createElement("button");
+      button.className = "btn btn-outline";
+      button.type = "button";
+      button.textContent = String(widget.dataset.mediaAcceptLabel || "Allow media").trim();
+      button.setAttribute("data-cookie-manage-media", "");
+
+      placeholder.append(title, text, button);
+      widget.replaceChildren(placeholder);
+      widget.classList.remove("is-loaded");
+      widget.dataset.embedBlocked = "consent";
+    }
+
+    if (!hasConsent("media")) {
+      widgets.forEach(renderBlockedWidget);
+      return;
+    }
 
     if (isLikelyCrawlerUserAgent()) {
       widgets.forEach((widget) => {
@@ -63,7 +248,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       widget.replaceChildren(iframe);
       widget.dataset.embedLoaded = "true";
+      delete widget.dataset.embedBlocked;
       widget.classList.add("is-loaded");
+    }
+
+    if (loadImmediately) {
+      widgets.forEach(loadWidget);
+      return;
     }
 
     function removeScrollStartListeners() {
@@ -389,6 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startAuto();
   }
 
+  initCookieConsent();
   initInstagramWidgets();
   document.querySelectorAll("[data-paged-carousel]").forEach(initPagedCarousel);
 
