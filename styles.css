@@ -3197,6 +3197,7 @@ img.testimonial-avatar {
 
 @media (min-width: 1024px) {
   .cookie-consent-inner {
+    align-items: center;
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
