@@ -79,11 +79,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = dialogBackdrop?.querySelector("[data-cookie-preferences]");
     const manageButton = banner.querySelector("[data-cookie-manage]");
     const categoryInputs = Array.from(form?.querySelectorAll("[data-cookie-category]") || []);
+    let preferenceDialogReturnFocus = manageButton;
 
-    function syncForm() {
+    function syncForm(overrides = {}) {
       const consent = readConsent();
       categoryInputs.forEach((input) => {
-        input.checked = consent[input.dataset.cookieCategory] === true;
+        const category = input.dataset.cookieCategory;
+        input.checked = Object.prototype.hasOwnProperty.call(overrides, category)
+          ? overrides[category] === true
+          : consent[category] === true;
       });
     }
 
@@ -94,12 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
         body.classList.remove("overflow-hidden");
       }
       manageButton?.setAttribute("aria-expanded", "false");
-      if (restoreFocus) manageButton?.focus({ preventScroll: true });
+      if (restoreFocus) preferenceDialogReturnFocus?.focus({ preventScroll: true });
+      preferenceDialogReturnFocus = manageButton;
     }
 
-    function openPreferencesDialog() {
+    function openPreferencesDialog({ returnFocusTarget = manageButton, overrides = {} } = {}) {
       if (!dialogBackdrop || !dialog) return;
-      syncForm();
+      preferenceDialogReturnFocus = returnFocusTarget;
+      syncForm(overrides);
       dialogBackdrop.classList.remove("hidden");
       body.classList.add("overflow-hidden");
       manageButton?.setAttribute("aria-expanded", "true");
@@ -163,10 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const target = event.target instanceof Element ? event.target : null;
       const mediaButton = target?.closest("[data-cookie-manage-media]");
       if (!mediaButton) return;
-      const consent = readConsent();
-      writeConsent({ preferences: consent.preferences, media: true });
-      hideBanner();
-      initInstagramWidgets({ loadImmediately: true });
+      event.preventDefault();
+      openPreferencesDialog({ returnFocusTarget: mediaButton, overrides: { media: true } });
     });
   }
 
