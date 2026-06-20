@@ -77,9 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dialogBackdrop = document.querySelector("[data-cookie-dialog-backdrop]");
     const dialog = dialogBackdrop?.querySelector("[data-cookie-dialog]");
     const form = dialogBackdrop?.querySelector("[data-cookie-preferences]");
-    const manageButton = banner.querySelector("[data-cookie-manage]");
+    const manageButtons = Array.from(document.querySelectorAll("[data-cookie-manage]"));
+    const defaultManageButton = manageButtons.find((button) => button.closest("#cookie-consent")) || manageButtons[0] || null;
     const categoryInputs = Array.from(form?.querySelectorAll("[data-cookie-category]") || []);
-    let preferenceDialogReturnFocus = manageButton;
+    let preferenceDialogReturnFocus = defaultManageButton;
 
     function syncForm(overrides = {}) {
       const consent = readConsent();
@@ -97,18 +98,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!navMenu?.classList.contains("active")) {
         body.classList.remove("overflow-hidden");
       }
-      manageButton?.setAttribute("aria-expanded", "false");
+      manageButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
       if (restoreFocus) preferenceDialogReturnFocus?.focus({ preventScroll: true });
-      preferenceDialogReturnFocus = manageButton;
+      preferenceDialogReturnFocus = defaultManageButton;
     }
 
-    function openPreferencesDialog({ returnFocusTarget = manageButton, overrides = {} } = {}) {
+    function openPreferencesDialog({ returnFocusTarget = defaultManageButton, overrides = {} } = {}) {
       if (!dialogBackdrop || !dialog) return;
       preferenceDialogReturnFocus = returnFocusTarget;
       syncForm(overrides);
       dialogBackdrop.classList.remove("hidden");
       body.classList.add("overflow-hidden");
-      manageButton?.setAttribute("aria-expanded", "true");
+      manageButtons.forEach((button) => button.setAttribute("aria-expanded", "true"));
       dialog.focus({ preventScroll: true });
     }
 
@@ -142,8 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
       initInstagramWidgets();
     });
 
-    manageButton?.addEventListener("click", () => {
-      openPreferencesDialog();
+    manageButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        openPreferencesDialog({ returnFocusTarget: button });
+      });
     });
 
     form?.addEventListener("submit", (event) => {
