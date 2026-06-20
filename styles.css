@@ -1897,6 +1897,10 @@ img.testimonial-avatar {
   text-align: left;
 }
 
+.cookie-dialog p {
+  text-align: left;
+}
+
 .cookie-dialog-header {
   display: flex;
   gap: var(--space-4);
@@ -1933,7 +1937,23 @@ img.testimonial-avatar {
 }
 
 .cookie-dialog .cookie-preferences {
+  display: grid;
+  align-items: stretch;
   margin-top: var(--space-4);
+}
+
+.cookie-dialog .cookie-option {
+  width: 100%;
+  min-width: 0;
+  flex: none;
+}
+
+.cookie-dialog .cookie-option span {
+  text-align: left;
+}
+
+.cookie-dialog .cookie-preferences .btn {
+  justify-self: start;
 }
 
 .carousel-controls {
@@ -2593,6 +2613,19 @@ img.testimonial-avatar {
   margin-top: var(--content-gap);
 }
 
+.rich-text :where(ul, ol) {
+  margin-block: var(--content-gap);
+  padding-left: 1.25rem;
+}
+
+.rich-text :where(ul, ol) + p {
+  margin-top: var(--content-gap);
+}
+
+.rich-text li + li {
+  margin-top: 0.25rem;
+}
+
 .btn {
   --button-bg: transparent;
   --button-color: currentColor;
@@ -3212,6 +3245,10 @@ img.testimonial-avatar {
 
 @media (max-width: 420px) {
   .hero-actions .btn {
+    width: 100%;
+  }
+
+  .cookie-dialog .cookie-preferences .btn {
     width: 100%;
   }
 
