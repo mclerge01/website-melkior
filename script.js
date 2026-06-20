@@ -74,9 +74,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const banner = document.getElementById("cookie-consent");
     if (!banner) return;
 
-    const form = banner.querySelector("[data-cookie-preferences]");
+    const dialogBackdrop = document.querySelector("[data-cookie-dialog-backdrop]");
+    const dialog = dialogBackdrop?.querySelector("[data-cookie-dialog]");
+    const form = dialogBackdrop?.querySelector("[data-cookie-preferences]");
     const manageButton = banner.querySelector("[data-cookie-manage]");
-    const categoryInputs = Array.from(banner.querySelectorAll("[data-cookie-category]"));
+    const categoryInputs = Array.from(form?.querySelectorAll("[data-cookie-category]") || []);
 
     function syncForm() {
       const consent = readConsent();
@@ -85,10 +87,28 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
+    function closePreferencesDialog({ restoreFocus = true } = {}) {
+      if (!dialogBackdrop) return;
+      dialogBackdrop.classList.add("hidden");
+      if (!navMenu?.classList.contains("active")) {
+        body.classList.remove("overflow-hidden");
+      }
+      manageButton?.setAttribute("aria-expanded", "false");
+      if (restoreFocus) manageButton?.focus({ preventScroll: true });
+    }
+
+    function openPreferencesDialog() {
+      if (!dialogBackdrop || !dialog) return;
+      syncForm();
+      dialogBackdrop.classList.remove("hidden");
+      body.classList.add("overflow-hidden");
+      manageButton?.setAttribute("aria-expanded", "true");
+      dialog.focus({ preventScroll: true });
+    }
+
     function hideBanner() {
       banner.hidden = true;
-      form.hidden = true;
-      manageButton?.setAttribute("aria-expanded", "false");
+      closePreferencesDialog({ restoreFocus: false });
     }
 
     function saveFromForm() {
@@ -117,15 +137,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     manageButton?.addEventListener("click", () => {
-      const willOpen = form.hidden === true;
-      form.hidden = !willOpen;
-      manageButton.setAttribute("aria-expanded", String(willOpen));
-      syncForm();
+      openPreferencesDialog();
     });
 
     form?.addEventListener("submit", (event) => {
       event.preventDefault();
       saveFromForm();
+    });
+
+    dialogBackdrop?.addEventListener("click", (event) => {
+      if (event.target === dialogBackdrop) closePreferencesDialog();
+    });
+
+    dialogBackdrop?.querySelectorAll("[data-cookie-dialog-close]").forEach((button) => {
+      button.addEventListener("click", () => closePreferencesDialog());
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && dialogBackdrop && !dialogBackdrop.classList.contains("hidden")) {
+        closePreferencesDialog();
+      }
     });
 
     document.addEventListener("click", (event) => {

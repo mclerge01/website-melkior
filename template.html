@@ -502,7 +502,17 @@
         <button class="btn btn-outline" type="button" data-cookie-reject>{{cookie_consent.reject_label}}</button>
         <button class="btn btn-text" type="button" data-cookie-manage aria-expanded="false">{{cookie_consent.manage_label}}</button>
       </div>
-      <form class="cookie-preferences" data-cookie-preferences hidden>
+    </div>
+  </section>
+
+  <div class="modal-backdrop hidden cookie-dialog-backdrop" data-cookie-dialog-backdrop>
+    <div class="modal cookie-dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-preferences-title" data-cookie-dialog tabindex="-1">
+      <div class="cookie-dialog-header">
+        <h2 id="cookie-preferences-title">{{cookie_consent.title}}</h2>
+        <button class="cookie-dialog-close" type="button" data-cookie-dialog-close aria-label="{{cookie_consent.close_label}}">×</button>
+      </div>
+      <p>{{cookie_consent.body}} <a href="{{privacy_path}}">{{cookie_consent.privacy_link_label}}</a></p>
+      <form class="cookie-preferences" data-cookie-preferences>
         <label class="cookie-option is-locked">
           <input type="checkbox" checked disabled>
           <span>
@@ -527,7 +537,7 @@
         <button class="btn btn-primary" type="submit">{{cookie_consent.save_label}}</button>
       </form>
     </div>
-  </section>
+  </div>
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.0.5/dist/js/intlTelInputWithUtils.min.js"></script>

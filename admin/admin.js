@@ -138,6 +138,7 @@ const CONTENT_SECTIONS = [
       { key: "reject_label", label: "Bouton refuser" },
       { key: "manage_label", label: "Bouton gérer" },
       { key: "save_label", label: "Bouton enregistrer" },
+      { key: "close_label", label: "Bouton fermer la fenêtre" },
       { key: "necessary_label", label: "Catégorie nécessaires" },
       { key: "necessary_description", label: "Description nécessaires", type: "textarea", full: true },
       { key: "preferences_label", label: "Catégorie préférences" },

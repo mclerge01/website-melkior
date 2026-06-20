@@ -405,7 +405,8 @@
         "media_description": "Permet d'afficher le module Instagram/Fouita intégré.",
         "media_blocked_title": "Médias désactivés",
         "media_blocked_text": "Le fil Instagram est désactivé tant que vous n'avez pas accepté les témoins de médias.",
-        "media_accept_label": "Autoriser les médias"
+        "media_accept_label": "Autoriser les médias",
+        "close_label": "Fermer"
       }
     },
     "en-CA": {
@@ -753,7 +754,8 @@
         "media_description": "Allows the embedded Instagram/Fouita module to load.",
         "media_blocked_title": "Media disabled",
         "media_blocked_text": "The Instagram feed is disabled until you accept media cookies.",
-        "media_accept_label": "Allow media"
+        "media_accept_label": "Allow media",
+        "close_label": "Close"
       }
     }
   }

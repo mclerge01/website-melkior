@@ -1817,6 +1817,8 @@ img.testimonial-avatar {
   z-index: 80;
   inset: auto 0 0;
   padding-block: var(--space-4);
+  max-height: 48svh;
+  overflow-y: auto;
   color: var(--color-text);
   background: rgba(var(--color-white-rgb), 0.97);
   border-top: 1px solid var(--color-border);
@@ -1854,6 +1856,10 @@ img.testimonial-avatar {
   align-items: center;
 }
 
+.cookie-consent-actions .btn {
+  flex: 1 1 12rem;
+}
+
 .cookie-preferences {
   padding: var(--space-4);
   border: 1px solid var(--color-border);
@@ -1884,6 +1890,50 @@ img.testimonial-avatar {
 
 .cookie-option.is-locked {
   opacity: 0.78;
+}
+
+.cookie-dialog {
+  width: min(100%, 44rem);
+  text-align: left;
+}
+
+.cookie-dialog-header {
+  display: flex;
+  gap: var(--space-4);
+  align-items: start;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.cookie-dialog-header h2 {
+  color: var(--color-primary);
+  font-size: var(--text-2xl);
+  line-height: 1.2;
+}
+
+.cookie-dialog-close {
+  display: grid;
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--rounded-full);
+  color: var(--color-text);
+  background: var(--color-white);
+  cursor: pointer;
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.cookie-dialog-close:hover,
+.cookie-dialog-close:focus-visible {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.cookie-dialog .cookie-preferences {
+  margin-top: var(--space-4);
 }
 
 .carousel-controls {
@@ -2988,14 +3038,6 @@ img.testimonial-avatar {
     width: auto;
   }
 
-  .cookie-consent-inner {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .cookie-preferences {
-    grid-column: 1 / -1;
-  }
-
   .contact-action-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -3150,6 +3192,20 @@ img.testimonial-avatar {
 
   .nav-cta {
     padding-inline: var(--space-5);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cookie-consent-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .cookie-consent-actions {
+    justify-content: flex-end;
+  }
+
+  .cookie-consent-actions .btn {
+    flex: 0 0 auto;
   }
 }
 
