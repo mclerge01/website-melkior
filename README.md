@@ -258,7 +258,6 @@ Run before committing meaningful changes:
 
 ```bash
 npm run build
-node --test tests/*.mjs tests/*.js
 node --check admin/admin.js
 node --check build.js
 node --check lib/contact-health.mjs
