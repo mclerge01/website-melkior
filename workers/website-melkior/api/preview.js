@@ -1,4 +1,4 @@
-import { adminPublicOrigin, htmlResponse, jsonResponse, requireAdminJsonBody } from "../../../lib/admin-auth.mjs";
+import { adminPublicOrigin, jsonResponse, requireAdminJsonBody } from "../../../lib/admin-auth.mjs";
 import { prepareLocaleData } from "../../../lib/page-data.mjs";
 import { processMarkdown, render } from "../../../lib/render.mjs";
 
@@ -46,5 +46,7 @@ export async function onRequestPost(context) {
     render(template, prepareLocaleData(settings, locale, "home", { turnstileSiteKey: TURNSTILE_TEST_SITE_KEY })),
     `${adminPublicOrigin(context.env, context.request)}/`,
   );
-  return htmlResponse(html, { headers: auth.headers });
+  const headers = new Headers(auth.headers);
+  headers.set("Content-Type", "text/html; charset=utf-8");
+  return new Response(html, { headers });
 }

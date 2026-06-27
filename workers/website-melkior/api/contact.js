@@ -79,14 +79,7 @@ function contactLogMetadata({ locale, subject, referral, message }) {
 }
 
 function trackContactFormFailure(context, failure) {
-  const tracking = recordContactFormFailure(context.env, failure);
-  if (context.waitUntil) {
-    context.waitUntil(tracking);
-    return;
-  }
-  tracking.catch((error) => {
-    console.error({ event: "contact_form_failure_tracking_unhandled", error: errorSummary(error) });
-  });
+  context.waitUntil(recordContactFormFailure(context.env, failure));
 }
 
 /**
@@ -153,7 +146,7 @@ export async function onRequestOptions() {
 /**
  * Validate a contact submission, verify Turnstile, and queue email handoff.
  *
- * @param {{request: Request, env: Record<string, unknown>, waitUntil?: Function}} context - Worker route handler context.
+ * @param {{request: Request, env: Record<string, unknown>, waitUntil: Function}} context - Worker route handler context.
  * @returns {Promise<Response>} JSON contact form result.
  */
 export async function onRequestPost(context) {
@@ -279,16 +272,13 @@ export async function onRequestPost(context) {
 
   try {
     if (context.env.SEND_EMAIL) {
-      const delivery = deliverContactEmail(
-        context,
-        { from: fromEmail, to: toEmail, raw },
-        contactLogMetadata({ locale, subject, referral, message })
+      context.waitUntil(
+        deliverContactEmail(
+          context,
+          { from: fromEmail, to: toEmail, raw },
+          contactLogMetadata({ locale, subject, referral, message })
+        )
       );
-      if (context.waitUntil) {
-        context.waitUntil(delivery);
-      } else {
-        await delivery;
-      }
     } else if (isLocalDevelopmentRequest(context.request)) {
       console.log("Contact form dev mode:", {
         locale,

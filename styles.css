@@ -357,15 +357,6 @@ p {
   background: var(--color-white-soft);
 }
 
-.card-interactive {
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.card-interactive:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow);
-}
-
 .side-note {
   border-left: 3px solid var(--color-accent);
   padding: var(--card-padding-compact);
@@ -1195,35 +1186,6 @@ p {
   display: flex;
   justify-content: center;
   margin-top: var(--component-gap);
-}
-
-.section-cta {
-  padding: var(--card-padding-large);
-  border: 1px solid currentColor;
-  border-radius: var(--card-radius);
-  text-align: center;
-}
-
-.section-cta h3 {
-  font-size: var(--text-3xl);
-}
-
-.section-cta p:not(.eyebrow) {
-  max-width: 44rem;
-  margin: var(--space-4) auto 0;
-  color: var(--color-text-light);
-}
-
-.service-cta {
-  margin-top: var(--component-gap);
-  color: var(--color-white);
-  border-color: var(--color-white-border);
-  background: var(--color-white-soft);
-  box-shadow: var(--shadow-sm);
-}
-
-.service-cta p:not(.eyebrow) {
-  color: var(--color-white-muted);
 }
 
 .guide-item {
@@ -2776,15 +2738,6 @@ img.testimonial-avatar {
   --button-hover-bg: color-mix(in srgb, currentColor 12%, transparent);
   --button-hover-border: transparent;
   --button-hover-color: currentColor;
-}
-
-.btn-ghost {
-  --button-bg: transparent;
-  --button-color: var(--color-white);
-  --button-border: rgba(var(--color-white-rgb), 0.35);
-  --button-hover-bg: color-mix(in srgb, var(--button-color) 22%, transparent);
-  --button-hover-border: rgba(var(--color-white-rgb), 0.74);
-  --button-hover-color: var(--color-white);
 }
 
 .btn-lg {

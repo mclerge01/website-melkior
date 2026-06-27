@@ -5,7 +5,6 @@ import {
   githubErrorResponse,
   githubFetch,
   jsonResponse,
-  requireAdmin,
   requireAdminJsonBody,
   validateImageName,
   validateImageUpload,

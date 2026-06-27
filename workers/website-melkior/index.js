@@ -35,13 +35,12 @@ const API_ROUTES = [
  * @param {Request} request - Incoming request.
  * @param {Record<string, unknown>} env - Worker environment.
  * @param {{waitUntil: Function}} ctx - Worker execution context.
- * @returns {{request: Request, env: Record<string, unknown>, params: Record<string, string>, waitUntil: Function}} Route handler context.
+ * @returns {{request: Request, env: Record<string, unknown>, waitUntil: Function}} Route handler context.
  */
 function pagesContext(request, env, ctx) {
   return {
     request,
     env,
-    params: {},
     waitUntil: ctx.waitUntil.bind(ctx),
   };
 }

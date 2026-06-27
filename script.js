@@ -327,7 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const intervalMs = Math.max(0, Number(carousel.dataset.carouselInterval || 7000));
-    const mode = carousel.dataset.carouselMode || "page";
     let timer = null;
     let paused = false;
     let activeIndex = 0;
@@ -337,44 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return Array.from(track.children);
     }
 
-    function uniquePositions(positions) {
-      const normalized = positions.map((position) => Math.max(0, Math.round(position)));
-      return normalized.filter((position, index) => index === 0 || Math.abs(position - normalized[index - 1]) > 2);
-    }
-
-    function getPages() {
-      if (mode === "showcase") {
-        return getItems().map((_, index) => index);
-      }
-
-      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-      if (maxScroll <= 2) return [0];
-
-      if (mode === "item") {
-        const itemPages = getItems().map((child) => Math.min(child.offsetLeft, maxScroll));
-        return uniquePositions(itemPages);
-      }
-
-      const pageWidth = Math.max(1, track.clientWidth);
-      const pages = [];
-      for (let position = 0; position < maxScroll - 2; position += pageWidth) {
-        pages.push(position);
-      }
-      pages.push(maxScroll);
-      return uniquePositions(pages);
-    }
-
-    function currentPageIndex(pages = getPages()) {
-      if (mode === "showcase") return activeIndex;
-
-      const scrollLeft = track.scrollLeft;
-      return pages.reduce((closestIndex, page, index) => {
-        return Math.abs(page - scrollLeft) < Math.abs(pages[closestIndex] - scrollLeft) ? index : closestIndex;
-      }, 0);
-    }
-
     function measureShowcaseHeight() {
-      if (mode !== "showcase") return;
       const items = getItems();
       if (!items.length) return;
 
@@ -435,7 +397,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function scheduleShowcaseHeightMeasure() {
-      if (mode !== "showcase") return;
       if (heightFrame) window.cancelAnimationFrame(heightFrame);
       heightFrame = window.requestAnimationFrame(() => {
         heightFrame = 0;
@@ -444,7 +405,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateShowcase(index = activeIndex) {
-      if (mode !== "showcase") return;
       const items = getItems();
       const count = items.length;
       if (!count) return;
@@ -468,32 +428,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function setControlsState() {
-      const disabled = getPages().length <= 1;
+      const disabled = getItems().length <= 1;
       carousel.classList.toggle("has-carousel-pages", !disabled);
       if (prev) prev.disabled = disabled;
       if (next) next.disabled = disabled;
     }
 
-    function goToPage(index, behavior = "smooth") {
-      const pages = getPages();
-      if (pages.length <= 1) {
+    function goToPage(index) {
+      const count = getItems().length;
+      if (count <= 1) {
         setControlsState();
         return;
       }
-      const normalizedIndex = (index + pages.length) % pages.length;
-      if (mode === "showcase") {
-        updateShowcase(normalizedIndex);
-        setControlsState();
-        return;
-      }
-
-      track.scrollTo({ left: pages[normalizedIndex], behavior });
+      updateShowcase((index + count) % count);
       setControlsState();
     }
 
     function goBy(direction) {
-      const pages = getPages();
-      goToPage(currentPageIndex(pages) + direction);
+      goToPage(activeIndex + direction);
     }
 
     function stopAuto() {
@@ -503,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function startAuto() {
       stopAuto();
-      if (intervalMs <= 0 || reducedMotion.matches || getPages().length <= 1) return;
+      if (intervalMs <= 0 || reducedMotion.matches || getItems().length <= 1) return;
       timer = window.setInterval(() => {
         if (!paused && !document.hidden) goBy(1);
       }, intervalMs);
@@ -548,37 +500,24 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    if (mode !== "showcase") {
-      track.addEventListener("scroll", setControlsState, { passive: true });
-    }
-
     window.addEventListener("resize", () => {
-      if (mode === "showcase") {
-        scheduleShowcaseHeightMeasure();
-        updateShowcase(activeIndex);
-        resetAuto();
-        return;
-      }
-
-      const index = currentPageIndex();
-      goToPage(index, "auto");
+      scheduleShowcaseHeightMeasure();
+      updateShowcase(activeIndex);
       resetAuto();
     }, { passive: true });
     document.addEventListener("visibilitychange", resetAuto);
     reducedMotion.addEventListener?.("change", resetAuto);
 
     carousel.classList.add("is-paged");
-    if (mode === "showcase") carousel.classList.add("is-showcase");
+    carousel.classList.add("is-showcase");
     carousel.dataset.carouselReady = "true";
-    if (mode === "showcase") {
-      measureShowcaseHeight();
-      document.fonts?.ready.then(scheduleShowcaseHeightMeasure);
-      getItems().forEach((item) => {
-        item.querySelectorAll("img").forEach((image) => {
-          if (!image.complete) image.addEventListener("load", scheduleShowcaseHeightMeasure, { once: true });
-        });
+    measureShowcaseHeight();
+    document.fonts?.ready.then(scheduleShowcaseHeightMeasure);
+    getItems().forEach((item) => {
+      item.querySelectorAll("img").forEach((image) => {
+        if (!image.complete) image.addEventListener("load", scheduleShowcaseHeightMeasure, { once: true });
       });
-    }
+    });
     setControlsState();
     updateShowcase(0);
     startAuto();

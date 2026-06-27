@@ -74,8 +74,6 @@ export async function onRequestGet(context) {
   const clientSecret = context.env.GITHUB_CLIENT_SECRET;
   if (!clientId || !clientSecret) return redirectWithError(context, "oauth_not_configured", clearCookies);
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
   let tokenResponse;
   let tokenData = {};
   const redirectUri = adminPublicUrl(context.env, request, "/api/auth/callback");
@@ -93,14 +91,12 @@ export async function onRequestGet(context) {
         redirect_uri: redirectUri,
         code_verifier: challenge.verifier,
       }),
-      signal: controller.signal,
+      signal: AbortSignal.timeout(10000),
     });
     tokenData = await tokenResponse.json().catch(() => ({}));
   } catch (error) {
     console.error("GitHub token exchange failed:", error);
     return redirectWithError(context, "token_exchange_failed", clearCookies);
-  } finally {
-    clearTimeout(timeout);
   }
 
   if (!tokenResponse.ok || typeof tokenData.access_token !== "string" || !tokenData.access_token) {

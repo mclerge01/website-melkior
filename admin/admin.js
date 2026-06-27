@@ -1577,10 +1577,6 @@ function listItemSummary(item, index) {
   };
 }
 
-function listItemTitle(item, index) {
-  return listItemSummary(item, index).title;
-}
-
 function emptyItemForList(list) {
   const next = {};
   for (const field of list.fields || []) {
@@ -1688,13 +1684,6 @@ function createAdminIcon(name) {
     svg.appendChild(circle);
   }
   return svg;
-}
-
-function getTranslationSummary(missing = getMissingFieldCount()) {
-  if (!content?.locales?.["fr-CA"] || !content?.locales?.["en-CA"]) return "";
-  return missing
-    ? `${missing} champ${missing > 1 ? "s" : ""} à remplir.`
-    : "Tous les champs sont remplis.";
 }
 
 function createCompletionBadge(text, kind) {
@@ -1821,23 +1810,8 @@ function getFrenchSourcePath(path) {
   return path.replace(/^locales\.en-CA\./, "locales.fr-CA.");
 }
 
-function getMissingFieldCount() {
-  return getRequiredMissingFieldItems().length;
-}
-
 function getMissingLocaleFieldCount(localeKey) {
   return getRequiredMissingFieldItems(localeKey).length;
-}
-
-function getMissingSectionFieldCount(basePath, section) {
-  return getFieldCompletionSectionItems(basePath, section, "required").length;
-}
-
-function getMissingListFieldCount(path, list) {
-  const parts = String(path || "").split(".");
-  const section = CONTENT_SECTIONS.find((item) => item.key === parts[2]);
-  const locale = getLocaleFromPath(path);
-  return section && locale ? getFieldCompletionListItems(path, section, list, "required", locale).length : 0;
 }
 
 function getMissingListItemFieldCount(path, index, list = getListDefinitionForPath(path)) {

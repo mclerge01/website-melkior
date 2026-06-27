@@ -21,19 +21,7 @@ const IS_DEV_BUILD = process.argv.includes("--dev");
 
 function loadLocalEnv() {
   const envPath = join(ROOT, ".dev.vars");
-  if (!existsSync(envPath)) return;
-  for (const line of readFileSync(envPath, "utf-8").split(/\r?\n/)) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const separator = trimmed.indexOf("=");
-    if (separator <= 0) continue;
-    const key = trimmed.slice(0, separator).trim();
-    let value = trimmed.slice(separator + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-    if (/^[A-Z_][A-Z0-9_]*$/.test(key) && process.env[key] === undefined) process.env[key] = value;
-  }
+  if (existsSync(envPath)) process.loadEnvFile(envPath);
 }
 
 function readWranglerVar(name) {
@@ -477,48 +465,22 @@ Allow: /
 
 # Search and indexing crawlers are welcome.
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: Googlebot
-Allow: /
-
 User-agent: bingbot
-Allow: /
-
 User-agent: Applebot
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Claude-SearchBot
 Allow: /
 
 # AI training crawlers are not permitted.
 User-agent: GPTBot
-Disallow: /
-
 User-agent: ClaudeBot
-Disallow: /
-
 User-agent: Google-Extended
-Disallow: /
-
 User-agent: Google-CloudVertexBot
-Disallow: /
-
 User-agent: Applebot-Extended
-Disallow: /
-
 User-agent: Bytespider
-Disallow: /
-
 User-agent: CCBot
-Disallow: /
-
 User-agent: Amazonbot
-Disallow: /
-
 User-agent: meta-externalagent
 Disallow: /
 
