@@ -214,6 +214,32 @@ const CONTENT_SECTIONS = [
     ],
   },
   {
+    key: "partners",
+    label: "Institutions partenaires",
+    description: "Ajoutez, retirez ou réordonnez les institutions affichées avec le guide. Chaque logo peut être téléversé ou remplacé directement dans sa fiche.",
+    fields: [
+      { key: "eyebrow", label: "Surtitre" },
+      { key: "heading", label: "Titre", type: "markdown", full: true },
+      { key: "description", label: "Description", type: "textarea", full: true },
+      { key: "panel_label", label: "Libellé de l'encart" },
+      { key: "panel_stat", label: "Texte de l'encart", type: "textarea", full: true },
+      { key: "disclaimer", label: "Note de conformité", type: "textarea", full: true },
+    ],
+    lists: [
+      {
+        key: "items",
+        label: "Institutions",
+        fields: [
+          { key: "name", label: "Nom" },
+          { key: "note", label: "Courte note", type: "textarea", full: true },
+          { key: "logo", label: "Logo (téléverser ou remplacer)", type: "image", full: true },
+          { key: "logo_alt", label: "Texte alternatif du logo", full: true },
+          { key: "url", label: "Lien de l'institution", full: true },
+        ],
+      },
+    ],
+  },
+  {
     key: "about",
     label: "À propos",
     fields: [
@@ -2293,7 +2319,7 @@ async function loadContent() {
   contentSha = data.sha;
   activeLocale = content.site?.default_locale || "fr-CA";
   activeSeoLocale = activeLocale;
-  hasUnpublishedChanges = false;
+  hasUnpublishedChanges = Boolean(data.defaultsApplied);
   pendingImages = [];
   pendingImagePreviews.clear();
   applyColorTheme();
@@ -2498,7 +2524,12 @@ async function init() {
     renderChrome();
     renderActiveView();
     scheduleAdminAnchorScroll(adminAnchorIdFromHash(window.location.hash));
-    markClean();
+    if (hasUnpublishedChanges) {
+      refreshAdminState();
+      setStatus("saving", "Nouveau contenu à publier", "Les nouvelles sections préremplies seront enregistrées avec la prochaine publication.");
+    } else {
+      markClean();
+    }
   } catch {
     showLogin(error || "login_required");
   }

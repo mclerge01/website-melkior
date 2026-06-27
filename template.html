@@ -168,6 +168,62 @@
 {{/each}}
           </div>
         </div>
+        <div class="partner-institution-banner reveal-on-scroll">
+          <div class="partner-institution-copy">
+            <span>{{partners.eyebrow}}</span>
+            <h3>{{partners.heading}}</h3>
+            <p>{{partners.description}}</p>
+          </div>
+          <div class="partner-marquee" aria-label="{{partners.eyebrow}}">
+            <div class="partner-marquee-track">
+{{#each partners.items}}
+              <article class="partner-marquee-item">
+{{#if url}}
+                <a class="partner-marquee-link" href="{{url}}" target="_blank" rel="noopener noreferrer" aria-label="{{name}}">
+{{/if}}
+                  <span class="partner-card-inner">
+                    <span class="partner-logo-box">
+{{#if logo}}
+                      <img class="partner-logo-image" src="{{logo}}" alt="{{logo_alt}}" loading="lazy" decoding="async">
+{{/if}}
+                      <span class="partner-logo-fallback">{{name}}</span>
+                    </span>
+                    <span class="partner-card-copy">
+                      <strong class="partner-card-name">{{name}}</strong>
+                      <span class="partner-card-note">{{note}}</span>
+                    </span>
+                  </span>
+{{#if url}}
+                </a>
+{{/if}}
+              </article>
+{{/each}}
+{{#each partners.items}}
+              <article class="partner-marquee-item" aria-hidden="true">
+{{#if url}}
+                <a class="partner-marquee-link" href="{{url}}" target="_blank" rel="noopener noreferrer" tabindex="-1">
+{{/if}}
+                <span class="partner-card-inner">
+                  <span class="partner-logo-box">
+{{#if logo}}
+                    <img class="partner-logo-image" src="{{logo}}" alt="" loading="lazy" decoding="async">
+{{/if}}
+                    <span class="partner-logo-fallback">{{name}}</span>
+                  </span>
+                  <span class="partner-card-copy">
+                    <strong class="partner-card-name">{{name}}</strong>
+                    <span class="partner-card-note">{{note}}</span>
+                  </span>
+                </span>
+{{#if url}}
+                </a>
+{{/if}}
+              </article>
+{{/each}}
+            </div>
+          </div>
+          <p class="partner-institution-note">{{partners.panel_label}}: {{partners.panel_stat}}. {{partners.disclaimer}}</p>
+        </div>
       </div>
     </section>
 

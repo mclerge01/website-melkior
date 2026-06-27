@@ -365,7 +365,8 @@ if (!existsSync(join(ROOT, "template.html"))) {
   process.exit(1);
 }
 
-const settings = processMarkdown(JSON.parse(read("content/settings.json")));
+const defaultContent = JSON.parse(read("content/settings.json"));
+const settings = processMarkdown(defaultContent);
 const template = read("template.html");
 const legalTemplate = read("template-legal.html");
 
@@ -375,6 +376,7 @@ for (const path of ["styles.css", "script.js", "assets", "admin"]) {
 write("favicon.svg", generateFavicon(settings.theme));
 write("_headers", renderHeadersFile());
 await minifyStaticAssets();
+write("admin/default-content.json", `${JSON.stringify(defaultContent, null, 2)}\n`);
 write("admin/preview-template.txt", template);
 
 for (const locale of settings.site.locales) {

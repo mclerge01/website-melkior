@@ -277,6 +277,58 @@
           }
         ]
       },
+      "partners": {
+        "eyebrow": "Institutions partenaires",
+        "heading": "Un réseau de prêteurs pour comparer plus qu'une seule option.",
+        "description": "Selon votre profil et votre projet, Melkior peut vous aider à comparer des solutions auprès de différentes institutions financières reconnues.",
+        "panel_label": "Réseau accessible",
+        "panel_stat": "Comparer les options avant de choisir",
+        "disclaimer": "Les institutions et conditions disponibles varient selon le dossier, l'admissibilité et les critères des prêteurs.",
+        "items": [
+          {
+            "name": "Banque Nationale",
+            "note": "Options résidentielles et solutions bancaires",
+            "logo": "/assets/images/partners/national-bank-fr.svg",
+            "logo_alt": "Logo Banque Nationale",
+            "url": "https://www.bnc.ca/particuliers/hypotheque/pret.html"
+          },
+          {
+            "name": "Desjardins",
+            "note": "Solutions hypothécaires et accompagnement local",
+            "logo": "/assets/images/partners/desjardins-fr.svg",
+            "logo_alt": "Logo Desjardins",
+            "url": "https://www.desjardins.com/fr/hypotheque/prets-hypothecaires.html"
+          },
+          {
+            "name": "RBC Banque Royale",
+            "note": "Produits hypothécaires pour différents profils",
+            "logo": "/assets/images/partners/rbc.svg",
+            "logo_alt": "Logo RBC Banque Royale",
+            "url": "https://www.rbcroyalbank.com/fr/hypotheques/"
+          },
+          {
+            "name": "TD Canada Trust",
+            "note": "Options fixes, variables et personnalisées",
+            "logo": "/assets/images/partners/td.svg",
+            "logo_alt": "Logo TD Canada Trust",
+            "url": "https://www.td.com/ca/fr/services-bancaires-personnels/produits/prets-hypothecaires"
+          },
+          {
+            "name": "Banque Scotia",
+            "note": "Solutions de financement résidentiel",
+            "logo": "/assets/images/partners/scotiabank-fr.svg",
+            "logo_alt": "Logo Banque Scotia",
+            "url": "https://www.scotiabank.com/ca/fr/particuliers/centre-de-prets-hypothcaires.html"
+          },
+          {
+            "name": "BMO Banque de Montréal",
+            "note": "Prêts hypothécaires et refinancement",
+            "logo": "/assets/images/partners/bmo-fr.svg",
+            "logo_alt": "Logo BMO Banque de Montréal",
+            "url": "https://www.bmo.com/principal/particuliers/prets-hypothecaires/"
+          }
+        ]
+      },
       "media": {
         "eyebrow": "Médias",
         "heading": "Dans les *médias*",
@@ -623,6 +675,58 @@
             "name": "Sandra B.",
             "context": "Purchase",
             "translation_note": "Translated from French"
+          }
+        ]
+      },
+      "partners": {
+        "eyebrow": "Trusted institutions",
+        "heading": "A lender network built for better comparison.",
+        "description": "Depending on your profile and project, Melkior can help compare options across recognized financial institutions.",
+        "panel_label": "Accessible network",
+        "panel_stat": "Compare options before choosing",
+        "disclaimer": "Available institutions and conditions vary by file, eligibility, and lender criteria.",
+        "items": [
+          {
+            "name": "National Bank",
+            "note": "Residential options and banking solutions",
+            "logo": "/assets/images/partners/national-bank-en.svg",
+            "logo_alt": "National Bank logo",
+            "url": "https://www.nbc.ca/personal/mortgages.html"
+          },
+          {
+            "name": "Desjardins",
+            "note": "Mortgage solutions and local support",
+            "logo": "/assets/images/partners/desjardins-en.svg",
+            "logo_alt": "Desjardins logo",
+            "url": "https://www.desjardins.com/en/mortgage/mortgage-loans.html"
+          },
+          {
+            "name": "RBC Royal Bank",
+            "note": "Mortgage products for different profiles",
+            "logo": "/assets/images/partners/rbc.svg",
+            "logo_alt": "RBC Royal Bank logo",
+            "url": "https://www.rbcroyalbank.com/mortgages/"
+          },
+          {
+            "name": "TD Canada Trust",
+            "note": "Fixed, variable, and personalized options",
+            "logo": "/assets/images/partners/td.svg",
+            "logo_alt": "TD Canada Trust logo",
+            "url": "https://www.td.com/ca/en/personal-banking/products/mortgages"
+          },
+          {
+            "name": "Scotiabank",
+            "note": "Residential financing solutions",
+            "logo": "/assets/images/partners/scotiabank-en.svg",
+            "logo_alt": "Scotiabank logo",
+            "url": "https://www.scotiabank.com/ca/en/personal/mortgages.html"
+          },
+          {
+            "name": "BMO Bank of Montreal",
+            "note": "Mortgages and refinancing",
+            "logo": "/assets/images/partners/bmo-en.svg",
+            "logo_alt": "BMO Bank of Montreal logo",
+            "url": "https://www.bmo.com/main/personal/mortgages/"
           }
         ]
       },

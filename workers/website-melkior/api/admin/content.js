@@ -11,6 +11,14 @@ import {
   requireAdminJsonBody,
   textToBase64,
 } from "../../../../lib/admin-auth.mjs";
+import { applyMissingContentDefaults } from "../../../../lib/content-defaults.mjs";
+
+async function loadBundledContentDefaults(context) {
+  const request = new Request(new URL("/admin/default-content.json", context.request.url));
+  const response = await context.env.ASSETS.fetch(request);
+  if (!response.ok) return {};
+  return response.json();
+}
 
 /**
  * Return the current editable site content from GitHub.
@@ -28,7 +36,10 @@ export async function onRequestGet(context) {
   }
 
   const file = await response.json();
-  return jsonResponse({ content: JSON.parse(base64ToText(file.content)), sha: file.sha }, { headers: auth.headers });
+  const savedContent = JSON.parse(base64ToText(file.content));
+  const defaultContent = await loadBundledContentDefaults(context);
+  const { content, defaultsApplied } = applyMissingContentDefaults(savedContent, defaultContent);
+  return jsonResponse({ content, sha: file.sha, defaultsApplied }, { headers: auth.headers });
 }
 
 /**
