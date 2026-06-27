@@ -300,11 +300,11 @@
             "url": "https://www.desjardins.com/fr/hypotheque/prets-hypothecaires.html"
           },
           {
-            "name": "RBC Banque Royale",
-            "note": "Produits hypothécaires pour différents profils",
-            "logo": "/assets/images/partners/rbc.svg",
-            "logo_alt": "Logo RBC Banque Royale",
-            "url": "https://www.rbcroyalbank.com/fr/hypotheques/"
+            "name": "Financière First National",
+            "note": "Prêts hypothécaires résidentiels et commerciaux",
+            "logo": "/assets/images/partners/first-national-fr.svg",
+            "logo_alt": "Logo Financière First National",
+            "url": "https://www.firstnational.ca/fr"
           },
           {
             "name": "TD Canada Trust",
@@ -326,6 +326,20 @@
             "logo": "/assets/images/partners/bmo-fr.svg",
             "logo_alt": "Logo BMO Banque de Montréal",
             "url": "https://www.bmo.com/principal/particuliers/prets-hypothecaires/"
+          },
+          {
+            "name": "Banque Équitable",
+            "note": "Solutions hypothécaires pour des profils variés",
+            "logo": "/assets/images/partners/equitable-bank-fr.svg",
+            "logo_alt": "Logo Banque Équitable",
+            "url": "https://www.equitablebank.ca/fr"
+          },
+          {
+            "name": "CMLS",
+            "note": "Solutions hypothécaires résidentielles et commerciales",
+            "logo": "/assets/images/partners/cmls.svg",
+            "logo_alt": "Logo CMLS",
+            "url": "https://www.cmls.ca/fr"
           }
         ]
       },
@@ -701,11 +715,11 @@
             "url": "https://www.desjardins.com/en/mortgage/mortgage-loans.html"
           },
           {
-            "name": "RBC Royal Bank",
-            "note": "Mortgage products for different profiles",
-            "logo": "/assets/images/partners/rbc.svg",
-            "logo_alt": "RBC Royal Bank logo",
-            "url": "https://www.rbcroyalbank.com/mortgages/"
+            "name": "First National Financial",
+            "note": "Residential and commercial mortgage lending",
+            "logo": "/assets/images/partners/first-national-en.svg",
+            "logo_alt": "First National Financial logo",
+            "url": "https://www.firstnational.ca/"
           },
           {
             "name": "TD Canada Trust",
@@ -727,6 +741,20 @@
             "logo": "/assets/images/partners/bmo-en.svg",
             "logo_alt": "BMO Bank of Montreal logo",
             "url": "https://www.bmo.com/main/personal/mortgages/"
+          },
+          {
+            "name": "Equitable Bank",
+            "note": "Mortgage solutions for diverse borrower profiles",
+            "logo": "/assets/images/partners/equitable-bank-en.svg",
+            "logo_alt": "Equitable Bank logo",
+            "url": "https://www.equitablebank.ca/"
+          },
+          {
+            "name": "CMLS",
+            "note": "Residential and commercial mortgage solutions",
+            "logo": "/assets/images/partners/cmls.svg",
+            "logo_alt": "CMLS logo",
+            "url": "https://www.cmls.ca/"
           }
         ]
       },
