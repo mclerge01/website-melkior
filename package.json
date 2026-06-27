@@ -6,7 +6,7 @@
   "description": "Bilingual static website for Melkior Clergé",
   "scripts": {
     "build": "node build.js",
-    "dev": "node build.js --dev && wrangler dev --port 8788 --var ADMIN_COOKIE_SECURE:false --var ADMIN_PUBLIC_ORIGIN:http://127.0.0.1:8788",
+    "dev": "node build.js --dev && wrangler dev --port 8788 --var ADMIN_COOKIE_SECURE:false --var ADMIN_PUBLIC_ORIGIN:http://127.0.0.1:8788 --var GITHUB_CLIENT_ID:Ov23li6lTGpPRvClFLq6",
     "preview": "node build.js"
   },
   "dependencies": {
